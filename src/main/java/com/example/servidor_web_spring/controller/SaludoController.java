@@ -1,8 +1,8 @@
-
-package main.java.com.example.servidor_web_spring.controller;
+package com.example.servidor_web_spring.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,12 +13,26 @@ import org.springframework.web.bind.annotation.RestController;
 public class SaludoController {
 
     @GetMapping("/saludo")
-    public ResponseEntity<String> saludar(@RequestParam(required = false) String nombre) {
-        if (nombre != null && !nombre.isEmpty()) {
-            return new ResponseEntity<>("Hola " + nombre, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Solicitud no valida: El nombre es obligatorio", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> saludar(
+            @RequestParam(required = false) String nombre,
+            JwtAuthenticationToken authentication) {
+
+        if (nombre == null || nombre.isEmpty()) {
+            return new ResponseEntity<>(
+                    "Solicitud no valida: El nombre es obligatorio",
+                    HttpStatus.BAD_REQUEST);
         }
+
+        // Obtener el "preferred_username" del token (puede variar según Keycloak)
+        String usuarioToken = authentication.getToken().getClaimAsString("preferred_username");
+
+        if (!nombre.equals(usuarioToken)) {
+            return new ResponseEntity<>(
+                    "El nombre no coincide con el del token",
+                    HttpStatus.FORBIDDEN);
+        }
+
+        return new ResponseEntity<>("Hola " + nombre, HttpStatus.OK);
     }
 
     @RequestMapping("*")

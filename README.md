@@ -3,7 +3,7 @@
 Este proyecto implementa una API en **Spring Boot (Gradle)** que resuelve los retos propuestos:
 
 1. **Persistencia en Base de Datos**  
-   - Se eligió **MySQL** como motor de base de datos.  
+   - Se eligió **PostgreSQL** como motor de base de datos.  
    - Se despliega con **Docker Compose**.  
    - El servicio de saludo almacena el nombre de la persona y la fecha/hora en que accede al sistema.
 

@@ -1,0 +1,497 @@
+openapi: 3.0.3
+info:
+  title: API de Gestión de Usuarios y Saludos
+  description: >
+    API RESTful para registrar, autenticar y administrar usuarios, así como gestionar
+    saludos con soporte de paginación. Incluye autenticación con JWT y flujo completo
+    de recuperación de contraseñas.
+  version: "1.0.0"
+
+servers:
+  - url: http://localhost:8080/api
+    description: Servidor local de pruebas
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nombre:
+          type: string
+          example: "Santiago Londoño"
+        email:
+          type: string
+          format: email
+          example: "santiago@example.com"
+        fechaRegistro:
+          type: string
+          format: date-time
+          example: "2025-09-09T18:00:00Z"
+        estado:
+          type: string
+          enum: [activo, bloqueado]
+          example: activo
+    UserCreate:
+      type: object
+      required: [nombre, email, password]
+      properties:
+        nombre:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+    Login:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+          example: "santiago@example.com"
+        password:
+          type: string
+          format: password
+          example: "12345"
+    ResetPasswordRequest:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          format: email
+          example: "santiago@example.com"
+    ResetPasswordConfirm:
+      type: object
+      required: [token, newPassword]
+      properties:
+        token:
+          type: string
+          example: "abc123resettoken"
+        newPassword:
+          type: string
+          format: password
+          example: "nuevaContraseña123"
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 401
+        message:
+          type: string
+          example: "No autorizado"
+        details:
+          type: array
+          items:
+            type: string
+
+paths:
+  /usuarios:
+    get:
+      summary: Listar usuarios
+      description: Obtiene todos los usuarios registrados con soporte de paginación.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Número de página a recuperar.
+        - in: query
+          name: size
+          schema:
+            type: integer
+            default: 10
+          description: Cantidad de elementos por página.
+      responses:
+        "200":
+          description: Lista de usuarios.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                  size:
+                    type: integer
+                  totalElements:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+        "401":
+          description: No autorizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Prohibido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Error interno.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      summary: Registro de usuario
+      description: Permite registrar un nuevo usuario en el sistema.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        "201":
+          description: Usuario registrado con éxito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "400":
+          description: Datos inválidos.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "409":
+          description: El email ya está registrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /usuarios/{id}:
+    get:
+      summary: Obtener usuario por ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Usuario encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "401":
+          description: No autorizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Prohibido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Usuario no existe.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Error interno.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Actualizar usuario
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                email:
+                  type: string
+                  format: email
+      responses:
+        "200":
+          description: Usuario actualizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "400":
+          description: Datos inválidos.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: No autorizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Prohibido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Usuario no existe.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Error interno.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      summary: Eliminar usuario
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Usuario eliminado correctamente.
+        "401":
+          description: No autorizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Prohibido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Usuario no existe.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Error interno.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/login:
+    post:
+      summary: Login de usuario
+      description: Autenticación mediante email y contraseña.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+      responses:
+        "200":
+          description: Login exitoso. Devuelve token JWT.
+        "401":
+          description: Credenciales inválidas.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Usuario bloqueado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/request-password-reset:
+    post:
+      summary: Solicitar recuperación de contraseña
+      description: Envía un token de recuperación al correo electrónico del usuario.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+      responses:
+        "200":
+          description: Email enviado con instrucciones de recuperación.
+        "404":
+          description: Usuario no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "429":
+          description: Demasiadas solicitudes.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Error interno.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/reset-password:
+    post:
+      summary: Restablecer contraseña
+      description: Permite cambiar la contraseña del usuario validando el token enviado por correo.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordConfirm'
+      responses:
+        "200":
+          description: Contraseña restablecida exitosamente.
+        "400":
+          description: Token inválido o expirado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Usuario no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Error interno.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /saludos:
+    get:
+      summary: Listar saludos
+      description: Devuelve todos los registros de saludos almacenados en el sistema, con paginación.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Número de página a recuperar.
+        - in: query
+          name: size
+          schema:
+            type: integer
+            default: 10
+          description: Cantidad de elementos por página.
+      responses:
+        "200":
+          description: Lista de saludos paginada.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                  size:
+                    type: integer
+                  totalElements:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        nombre:
+                          type: string
+                          example: "Santiago"
+                        fechaHora:
+                          type: string
+                          format: date-time
+                          example: "2025-09-09T18:00:00Z"
+        "401":
+          description: No autorizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Prohibido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Error interno.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'

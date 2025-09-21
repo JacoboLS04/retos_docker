@@ -12,13 +12,17 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - JWT_SECRET=U7t8C34aqstQ6soj1Bub9JYk7Y4BnNT3
       - JWT_EXPIRATION_SECONDS=3600
-      - SPRING_MAIL_HOST=mailhog
-      - SPRING_MAIL_PORT=1025
-      - SPRING_MAIL_USERNAME=santiago.londonog@uqvirtual.edu.co
-      - SPRING_MAIL_PASSWORD=xvyz hhon jptr xxid
+
+      # 🔹 Configuración Gmail
+      - SPRING_MAIL_HOST=smtp.gmail.com
+      - SPRING_MAIL_PORT=587
+      - SPRING_MAIL_USERNAME=londgav01@gmail.com
+      - SPRING_MAIL_PASSWORD=dgcp rgve sazl arhk   # tu app password de Gmail
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH=true
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true
+
     depends_on:
       - postgres
-      - mailhog
 
   postgres:
     image: postgres:15
@@ -32,12 +36,6 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
-  mailhog:
-    image: mailhog/mailhog
-    container_name: retos-mailhog
-    ports:
-      - "8025:8025"   # UI
-      - "1025:1025"   # SMTP
-
 volumes:
   postgres-data:
+

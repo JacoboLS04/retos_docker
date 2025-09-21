@@ -6,17 +6,29 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService {
+
     private final JavaMailSender mailSender;
+
     public EmailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
+    // Método genérico
+    public void enviarCorreo(String to, String subject, String body) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(body);
+        mailSender.send(message);
+    }
+
+    // Método especializado para reset de contraseña
     public void sendResetEmail(String to, String resetToken) {
         String resetLink = String.format("http://localhost:8080/reset-password?token=%s", resetToken);
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(to);
-        msg.setSubject("Recuperación de contraseña");
-        msg.setText("Para recuperar su contraseña haga click o use este token: " + resetToken + "\nLink (dev): " + resetLink);
-        mailSender.send(msg);
+
+        String body = "Para recuperar su contraseña use este token: " + resetToken +
+                "\n\nO haga click en el siguiente enlace (solo para desarrollo): " + resetLink;
+
+        enviarCorreo(to, "Recuperación de contraseña", body);
     }
 }

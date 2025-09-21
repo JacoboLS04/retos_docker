@@ -5,6 +5,7 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,7 +37,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/users/register", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
+                        // permitir todo el bundle de auth (login, reset request/confirm)
+                        .requestMatchers("/api/auth/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "https://editor.swagger.io").permitAll()
+                        // permitir creación de usuarios vía POST /api/users (registro público)
+                        .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
+                        // el resto requiere autenticación
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));

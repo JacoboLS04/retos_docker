@@ -17,6 +17,9 @@ public class User {
     private String email;
 
     @Column(nullable = false)
+    private String telefono;
+
+    @Column(nullable = false)
     private String password; // bcrypt
 
     private String resetToken;
@@ -35,6 +38,14 @@ public class User {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
 
     public String getResetToken() { return resetToken; }
     public void setResetToken(String resetToken) { this.resetToken = resetToken; }

@@ -16,22 +16,30 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final EventPublisher eventPublisher;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, EventPublisher eventPublisher) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.eventPublisher = eventPublisher;
     }
 
     // ---------------------------
     // Registro
     // ---------------------------
-    public User register(String nombre, String email, String rawPassword) {
+    public User register(String nombre, String email, String rawPassword, String telefono) {
         User u = new User();
         u.setNombre(nombre);
         u.setEmail(email);
-        // Siempre encriptar la contraseña
+        u.setTelefono(telefono);
         u.setPassword(passwordEncoder.encode(rawPassword));
-        return userRepository.save(u);
+
+        User saved = userRepository.save(u);
+
+        // 🔹 Publicar evento DESPUÉS de guardar
+        eventPublisher.publishUserRegisteredEvent(saved.getId(), saved.getEmail(), saved.getNombre(), saved.getTelefono());
+
+        return saved;
     }
 
     // ---------------------------
@@ -39,6 +47,13 @@ public class UserService {
     // ---------------------------
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    // ---------------------------
+    // Login
+    // ---------------------------
+    public void notifyLogin(User user) {
+        eventPublisher.publishUserLoginEvent(user.getId(), user.getEmail(), user.getTelefono());
     }
 
     // ---------------------------
@@ -84,6 +99,10 @@ public class UserService {
         user.setResetToken(token);
         user.setResetTokenExpiry(OffsetDateTime.now().plusHours(hoursValid));
         userRepository.save(user);
+
+        // 🔹 Publicar evento
+        eventPublisher.publishPasswordResetRequestedEvent(user.getId(), user.getEmail(), token, user.getTelefono());
+
         return token;
     }
 
@@ -94,5 +113,18 @@ public class UserService {
         user.setResetToken(null);
         user.setResetTokenExpiry(null);
         userRepository.save(user);
+    }
+
+    // ---------------------------
+    // Cambio de contraseña
+    // ---------------------------
+    public void changePassword(User user, String newPassword) {
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setResetToken(null);
+        user.setResetTokenExpiry(null);
+        userRepository.save(user);
+
+        // 🔹 Publicar evento
+        eventPublisher.publishPasswordChangedEvent(user.getId(), user.getEmail(), user.getTelefono());
     }
 }

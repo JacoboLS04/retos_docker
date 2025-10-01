@@ -27,7 +27,7 @@ public class SaludoController {
     /**
      * Endpoint opcional: devolver un saludo inmediato y registrarlo.
      * GET /api/saludo?nombre=Santiago
-     */
+
     @GetMapping("/saludo")
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<?> saludo(@RequestParam(required = false) String nombre,
@@ -59,7 +59,7 @@ public class SaludoController {
     /**
      * Listar saludos con paginación
      * GET /api/saludos?page=0&size=10
-     */
+
     @GetMapping("/saludos")
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<?> listar(@RequestParam(defaultValue = "0") int page,
@@ -83,11 +83,11 @@ public class SaludoController {
 
     /**
      * Helper para construir errores consistentes
-     */
+
     private ResponseEntity<Map<String, Object>> buildError(HttpStatus status, String message) {
         return ResponseEntity.status(status).body(Map.of(
                 "code", status.value(),
                 "message", message
         ));
-    }
+    } */
 }

@@ -34,6 +34,7 @@ public class UserController {
         String nombre = body.get("nombre");
         String email = body.get("email");
         String password = body.get("password");
+        String telefono = body.get("telefono");
 
         if (nombre == null || email == null || password == null) {
             return buildError(HttpStatus.BAD_REQUEST, "missing_fields");
@@ -43,7 +44,7 @@ public class UserController {
             return buildError(HttpStatus.CONFLICT, "email_exists");
         }
 
-        User u = userService.register(nombre, email, password);
+        User u = userService.register(nombre, email, password, telefono);
         u.setPassword(null); // nunca devolver la contraseña
 
         return ResponseEntity.status(HttpStatus.CREATED).body(u);
@@ -52,7 +53,7 @@ public class UserController {
     /**
      * Listar usuarios con paginación
      * Método: GET /api/usuarios?page=0&size=10
-     */
+
     @GetMapping
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<?> getAllUsers(
@@ -74,12 +75,12 @@ public class UserController {
         response.put("data", usersPage.getContent());
 
         return ResponseEntity.ok(response);
-    }
+    } */
 
     /**
      * Obtener un usuario por ID
      * Método: GET /api/usuarios/{id}
-     */
+
     @GetMapping("/{id}")
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<?> getUserById(
@@ -96,13 +97,13 @@ public class UserController {
                     return ResponseEntity.ok(u); // <- ahora ResponseEntity<?>
                 })
                 .orElseGet(() -> buildError(HttpStatus.NOT_FOUND, "user_not_found"));
-    }
+    } */
 
 
     /**
      * Actualizar un usuario
      * Método: PUT /api/usuarios/{id}
-     */
+
     @PutMapping("/{id}")
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<?> updateUser(
@@ -133,7 +134,7 @@ public class UserController {
                     return ResponseEntity.ok(u);
                 })
                 .orElseGet(() -> buildError(HttpStatus.NOT_FOUND, "user_not_found"));
-    }
+    } */
 
     /**
      * Eliminar un usuario

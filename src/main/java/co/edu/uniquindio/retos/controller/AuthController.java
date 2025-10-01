@@ -40,14 +40,20 @@ public class AuthController {
 
         return userService.findByEmail(email)
                 .filter(u -> encoder.matches(password, u.getPassword()))
-                .map(u -> ResponseEntity.ok(Map.of(
-                        "token", tokenService.generateToken(u),
-                        "expiresIn", System.getenv("JWT_EXPIRATION_SECONDS") != null
-                                ? System.getenv("JWT_EXPIRATION_SECONDS")
-                                : "3600"
-                )))
+                .map(u -> {
+                    // 🔹 Publicar evento de login exitoso
+                    userService.notifyLogin(u);
+
+                    return ResponseEntity.ok(Map.of(
+                            "token", tokenService.generateToken(u),
+                            "expiresIn", System.getenv("JWT_EXPIRATION_SECONDS") != null
+                                    ? System.getenv("JWT_EXPIRATION_SECONDS")
+                                    : "3600"
+                    ));
+                })
                 .orElse(buildError(HttpStatus.UNAUTHORIZED, "invalid_credentials"));
     }
+
 
     // ---------------------------
     // Request password reset (antes: forgot-password)
@@ -84,14 +90,15 @@ public class AuthController {
                             user.getResetTokenExpiry().isBefore(OffsetDateTime.now())) {
                         return buildError(HttpStatus.BAD_REQUEST, "token_expired");
                     }
-                    user.setPassword(encoder.encode(newPassword));
-                    userService.clearResetToken(user);
-                    userService.save(user);
+
+                    // 🔹 Usar método que guarda y publica el evento
+                    userService.changePassword(user, newPassword);
 
                     return ResponseEntity.ok(Map.of("message", "password_reset"));
                 })
                 .orElse(buildError(HttpStatus.BAD_REQUEST, "invalid_token"));
     }
+
 
     // ---------------------------
     // Helper para respuestas de error

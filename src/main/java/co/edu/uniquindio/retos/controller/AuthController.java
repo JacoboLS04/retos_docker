@@ -1,6 +1,5 @@
 package co.edu.uniquindio.retos.controller;
 
-import co.edu.uniquindio.retos.model.User;
 import co.edu.uniquindio.retos.service.EmailService;
 import co.edu.uniquindio.retos.service.TokenService;
 import co.edu.uniquindio.retos.service.UserService;

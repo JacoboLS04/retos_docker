@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "User Success Schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": ["integer", "number"],
+      "description": "ID único del usuario"
+    },
+    "nombre": {
+      "type": "string",
+      "description": "Nombre completo del usuario"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Correo electrónico del usuario"
+    },
+    "estado": {
+      "type": "string",
+      "enum": ["activo", "bloqueado"],
+      "description": "Estado actual del usuario"
+    },
+    "fechaRegistro": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Fecha de creación del usuario"
+    }
+  },
+  "required": ["id", "nombre", "email"],
+  "additionalProperties": true
+}

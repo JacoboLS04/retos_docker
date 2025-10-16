@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.5'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'io.qameta.allure' version '2.11.2'
 }
 
 group = 'co.edu.uniquindio'
@@ -10,7 +11,7 @@ description = 'retos'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(18)
     }
 }
 
@@ -23,22 +24,56 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-    implementation 'org.postgresql:postgresql'
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+    implementation 'org.postgresql:postgresql'
+
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0' // swagger ui
-    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'org.springframework.boot:spring-boot-starter-amqp'
-    testImplementation("io.cucumber:cucumber-java:7.29.0")
-    testImplementation("io.cucumber:cucumber-junit:7.29.0")
-}
 
+
+    // Cucumber
+    testImplementation 'io.cucumber:cucumber-java:7.18.1'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.18.1'
+    // Cucumber DI with PicoContainer (constructor injection support)
+    testImplementation 'io.cucumber:cucumber-picocontainer:7.18.1'
+
+    // JUnit Platform - versiones alineadas
+    testImplementation platform('org.junit:junit-bom:5.10.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.junit.platform:junit-platform-suite'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Allure
+    testImplementation 'io.qameta.allure:allure-cucumber7-jvm:2.24.0'
+    testImplementation 'io.qameta.allure:allure-rest-assured:2.24.0'
+
+    // RestAssured
+    testImplementation 'io.rest-assured:rest-assured:5.4.0'
+    testImplementation 'io.rest-assured:json-schema-validator:5.4.0'
+
+    // Utilidades
+    testImplementation 'net.datafaker:datafaker:2.4.0'
+}
 
 tasks.named('test') {
     useJUnitPlatform()
+    systemProperty 'cucumber.junit-platform.naming-strategy', 'long'
 }
+
+allure {
+    version = "2.24.0"
+    adapter {
+        frameworks {
+            cucumber7 { enabled = true }
+        }
+        autoconfigureListeners = true
+        aspectjWeaver = false
+    }
+}
+

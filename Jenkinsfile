@@ -36,7 +36,9 @@ pipeline {
           if command -v dos2unix >/dev/null 2>&1; then
             dos2unix ./gradlew || true
           fi
-          ./gradlew --no-daemon clean test || true
+          ./gradlew --version
+          java -version || true
+          ./gradlew --no-daemon clean test --stacktrace --info
         '''
       }
       post {
@@ -87,16 +89,16 @@ pipeline {
 
     stage('SonarQube Analysis') {
       steps {
-        withSonarQubeEnv('SonarQube') { // Requiere configurar el servidor en Jenkins con este nombre
+        withSonarQubeEnv('SonarQube') {
           sh '''
-            ${SCANNER_HOME}/bin/sonar-scanner \
+            set -e
+            echo "Running Sonar via Gradle plugin (will compile first)"
+            ./gradlew --no-daemon sonarqube \
               -Dsonar.projectKey="${SONAR_PROJECT_KEY}" \
               -Dsonar.projectName="${SONAR_PROJECT_NAME}" \
-              -Dsonar.sources=src/main/java \
-              -Dsonar.tests=src/test/java \
-              -Dsonar.java.binaries=build/classes/java/main \
-              -Dsonar.java.test.binaries=build/classes/java/test \
-              -Dsonar.junit.reportPaths=build/test-results
+              -Dsonar.host.url="$SONAR_HOST_URL" \
+              -Dsonar.login="$SONAR_AUTH_TOKEN" \
+              --stacktrace --info
           '''
         }
       }

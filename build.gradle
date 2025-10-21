@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '3.5.5'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'io.qameta.allure' version '2.11.2'
+    id 'org.sonarqube' version '4.4.1.3373'
 }
 
 group = 'co.edu.uniquindio'
@@ -74,6 +75,16 @@ allure {
         }
         autoconfigureListeners = true
         aspectjWeaver = false
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", System.getProperty('sonar.projectKey', 'retos_docker')
+        property "sonar.projectName", System.getProperty('sonar.projectName', 'Retos_Docker')
+        property "sonar.sources", "src/main/java"
+        property "sonar.tests", "src/test/java"
+        // Let the plugin infer binaries from Gradle build; no hard-coded paths
     }
 }
 

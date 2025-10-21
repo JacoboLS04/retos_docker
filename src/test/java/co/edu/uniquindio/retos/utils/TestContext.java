@@ -18,9 +18,39 @@ public class TestContext {
     private Response lastResponse;
     private String jwtToken;
     private final Faker faker = new Faker();
+    private String lastEmail;
+    private String lastPassword;
+    private Long lastUserId;
 
     public String getBaseUrl() {
         return baseUrl;
+    }
+
+    // Build a full URL from baseUrl and a step-provided path, avoiding duplicate "/api" and slashes
+    public String url(String path) {
+        String base = getBaseUrl();
+        String p = path == null ? "" : path.trim();
+        if (p.isEmpty()) return base;
+        // If base ends with /api or /api/ and path starts with /api or /api/ then drop the leading /api from path
+        boolean baseEndsWithApi = base.endsWith("/api") || base.endsWith("/api/");
+        boolean pathStartsWithApi = p.equals("/api") || p.startsWith("/api/");
+        if (baseEndsWithApi && pathStartsWithApi) {
+            if (p.equals("/api")) {
+                p = "/"; // points to api root
+            } else {
+                p = p.substring(4); // remove leading /api
+            }
+        }
+        // Normalize slashes
+        boolean baseEndsWithSlash = base.endsWith("/");
+        boolean pathStartsWithSlash = p.startsWith("/");
+        if (baseEndsWithSlash && pathStartsWithSlash) {
+            return base + p.substring(1);
+        } else if (!baseEndsWithSlash && !pathStartsWithSlash) {
+            return base + "/" + p;
+        } else {
+            return base + p;
+        }
     }
 
     public Response getLastResponse() {
@@ -42,6 +72,15 @@ public class TestContext {
     public Faker getFaker() {
         return faker;
     }
+
+    public String getLastEmail() { return lastEmail; }
+    public void setLastEmail(String lastEmail) { this.lastEmail = lastEmail; }
+
+    public String getLastPassword() { return lastPassword; }
+    public void setLastPassword(String lastPassword) { this.lastPassword = lastPassword; }
+
+    public Long getLastUserId() { return lastUserId; }
+    public void setLastUserId(Long lastUserId) { this.lastUserId = lastUserId; }
 
     // 🔹 Método útil para depurar respuestas
     public void logLastResponse() {
@@ -66,7 +105,7 @@ public class TestContext {
                     .contentType(ContentType.JSON)
                     .body(body)
                     .when()
-                    .post(getBaseUrl() + "/usuarios")
+                    .post(url("/usuarios"))
                     .then()
                     .statusCode(org.hamcrest.Matchers.anyOf(org.hamcrest.Matchers.is(201), org.hamcrest.Matchers.is(409)));
         } catch (AssertionError ignored) {
@@ -78,11 +117,11 @@ public class TestContext {
         Map<String, Object> login = new HashMap<>();
         login.put("email", email);
         login.put("password", password);
-        Response res = given()
+    Response res = given()
                 .contentType(ContentType.JSON)
                 .body(login)
                 .when()
-                .post(getBaseUrl() + "/auth/login");
+        .post(url("/auth/login"));
         setLastResponse(res);
         String token = null;
         try {

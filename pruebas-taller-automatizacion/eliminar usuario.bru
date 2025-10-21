@@ -1,0 +1,24 @@
+meta {
+  name: eliminar usuario
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url}}/usuarios/{{user_id}}
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+tests {
+    - name: Código 204 - Usuario eliminado correctamente
+      assert: response.status == 204
+}
+
+settings {
+  encodeUrl: true
+}

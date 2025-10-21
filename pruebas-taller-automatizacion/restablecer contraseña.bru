@@ -1,0 +1,30 @@
+meta {
+  name: restablecer contraseña
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{base_url}}/auth/reset-password
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "token":"{{reset_token}}",
+    "newPassword": "54321"
+  }
+}
+
+tests {
+    - name: Código 200 - Contraseña restablecida correctamente
+      assert: response.status == 200
+  
+    - name: La respuesta contiene mensaje password_reset
+      assert: response.body.message == "password_reset"
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,31 @@
+meta {
+  name: login
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/auth/login
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email": "{{email}}",
+    "password": "{{password}}"
+  }
+}
+
+tests {
+  tests:
+    - name: Código 200 - Login exitoso
+      assert: response.status == 200
+  
+    - name: Guardar token JWT
+      exec: vars.token = response.body.token
+}
+
+settings {
+  encodeUrl: true
+}

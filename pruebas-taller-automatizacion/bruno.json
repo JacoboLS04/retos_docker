@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "pruebas-taller-automatizacion",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

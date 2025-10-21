@@ -56,6 +56,30 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
+  orchestrator-db:
+    image: postgres:15
+    container_name: orchestrator-postgres
+    environment:
+      - POSTGRES_DB=orchestrator_db
+      - POSTGRES_USER=retos_user
+      - POSTGRES_PASSWORD=retos_pass
+    ports:
+      - "5433:5432"
+    volumes:
+      - orchestrator-data:/var/lib/postgresql/data
+
+  notifications-db:
+    image: postgres:15
+    container_name: notifications-postgres
+    environment:
+      - POSTGRES_DB=notifications_db
+      - POSTGRES_USER=retos_user
+      - POSTGRES_PASSWORD=retos_pass
+    ports:
+      - "5434:5432"
+    volumes:
+      - notifications-data:/var/lib/postgresql/data
+
   rabbitmq:
     image: rabbitmq:3-management
     container_name: retos-rabbitmq
@@ -77,7 +101,7 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
-      postgres:
+      orchestrator-db:
         condition: service_started
     environment:
       - RABBIT_URL=amqp://guest:guest@rabbitmq:5672
@@ -85,7 +109,7 @@ services:
       - NOTIFICATION_EVENTS_QUEUE=notification.events.queue
 
       # 🔹 Configuración DB Orchestrator
-      - DB_HOST=postgres
+      - DB_HOST=orchestrator-db
       - DB_PORT=5432
       - DB_NAME=orchestrator_db
       - DB_USER=retos_user
@@ -100,12 +124,12 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
-      postgres:
+      notifications-db:
         condition: service_started
     environment:
       - RABBIT_HOST=rabbitmq
       - NOTIFICATION_EVENTS_QUEUE=notification.events.queue
-      - DB_HOST=postgres
+      - DB_HOST=notifications-db
       - DB_PORT=5432
       - DB_NAME=notifications_db
       - DB_USER=retos_user
@@ -118,4 +142,6 @@ services:
     restart: always
 volumes:
   postgres-data:
+  orchestrator-data:
+  notifications-data:
 

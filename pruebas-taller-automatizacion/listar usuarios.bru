@@ -1,0 +1,32 @@
+meta {
+  name: listar usuarios
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/usuarios?page=0&size=10
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 0
+  size: 10
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+tests {
+    - name: Código 200 - Lista de usuarios devuelta
+      assert: response.status == 200
+  
+    - name: La respuesta contiene lista de usuarios
+      assert: response.body.data.length >= 0
+}
+
+settings {
+  encodeUrl: true
+}

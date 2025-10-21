@@ -1,0 +1,32 @@
+meta {
+  name: solicitar restablecimiento de contraseña
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/auth/request-password-reset
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email":"{{email}}"
+  }
+}
+
+tests {
+    - name: Código 200 - Correo de restablecimiento enviado
+      assert: response.status == 200
+  
+    - name: La respuesta contiene mensaje correcto
+      assert: response.body.message == "reset_email_sent"
+  
+    - name: Guardar token temporal de restablecimiento
+      exec: vars.reset_token = response.body.resetToken
+}
+
+settings {
+  encodeUrl: true
+}

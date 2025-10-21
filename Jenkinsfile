@@ -92,13 +92,27 @@ pipeline {
         withSonarQubeEnv('SonarQube') {
           sh '''
             set -e
-            echo "Running Sonar via Gradle plugin (will compile first)"
-            ./gradlew --no-daemon sonarqube \
-              -Dsonar.projectKey="${SONAR_PROJECT_KEY}" \
-              -Dsonar.projectName="${SONAR_PROJECT_NAME}" \
-              -Dsonar.host.url="$SONAR_HOST_URL" \
-              -Dsonar.login="$SONAR_AUTH_TOKEN" \
-              --stacktrace --info
+            echo "Detectando si el proyecto tiene tarea Gradle 'sonarqube'..."
+            if ./gradlew -q tasks --all | grep -q '^sonarqube\b'; then
+              echo "Encontrada tarea 'sonarqube'. Ejecutando análisis vía Gradle plugin."
+              ./gradlew --no-daemon sonarqube \
+                -Dsonar.projectKey="${SONAR_PROJECT_KEY}" \
+                -Dsonar.projectName="${SONAR_PROJECT_NAME}" \
+                -Dsonar.host.url="$SONAR_HOST_URL" \
+                -Dsonar.login="$SONAR_AUTH_TOKEN" \
+                --stacktrace --info
+            else
+              echo "No existe la tarea 'sonarqube'. Usando SonarScanner CLI con configuración mínima."
+              CMD="${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=\"${SONAR_PROJECT_KEY}\" -Dsonar.projectName=\"${SONAR_PROJECT_NAME}\" -Dsonar.host.url=\"$SONAR_HOST_URL\" -Dsonar.login=\"$SONAR_AUTH_TOKEN\" -Dsonar.sources=src/main/java"
+              if [ -d "src/test/java" ]; then
+                CMD="$CMD -Dsonar.tests=src/test/java"
+              fi
+              if [ -d "build/test-results" ]; then
+                CMD="$CMD -Dsonar.junit.reportPaths=build/test-results"
+              fi
+              echo "$CMD"
+              eval "$CMD"
+            fi
           '''
         }
       }

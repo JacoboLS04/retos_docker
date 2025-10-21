@@ -140,8 +140,54 @@ services:
       - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
       - TWILIO_PHONE=${TWILIO_PHONE}
     restart: always
+
+  # Jenkins (CI)
+  jenkins:
+    image: jenkins/jenkins:lts-jdk17
+    container_name: retos-jenkins
+    restart: unless-stopped
+    ports:
+      - "8090:8080"   # UI en http://localhost:8090
+      - "50000:50000" # Puerto de agentes (JNLP)
+    volumes:
+      - jenkins-data:/var/jenkins_home
+
+  # SonarQube Database (PostgreSQL)
+  sonarqube-db:
+    image: postgres:15
+    container_name: sonarqube-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+      - POSTGRES_DB=sonarqube
+    volumes:
+      - sonarqube_db:/var/lib/postgresql/data
+
+  # SonarQube (Calidad de código)
+  sonarqube:
+    image: sonarqube:lts-community
+    container_name: sonarqube
+    restart: unless-stopped
+    depends_on:
+      - sonarqube-db
+    ports:
+      - "9000:9000"   # UI en http://localhost:9000
+    environment:
+      - SONAR_JDBC_URL=jdbc:postgresql://sonarqube-db:5432/sonarqube
+      - SONAR_JDBC_USERNAME=sonar
+      - SONAR_JDBC_PASSWORD=sonar
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
 volumes:
   postgres-data:
   orchestrator-data:
   notifications-data:
+  jenkins-data:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+  sonarqube_db:
 

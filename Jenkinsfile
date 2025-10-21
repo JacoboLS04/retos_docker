@@ -32,31 +32,55 @@ pipeline {
         sh '''
           set -e
           chmod +x ./gradlew || true
-          ./gradlew --no-daemon clean test
+          # Ensure Unix line endings on gradlew (in case checked out with CRLF)
+          if command -v dos2unix >/dev/null 2>&1; then
+            dos2unix ./gradlew || true
+          fi
+          ./gradlew --no-daemon clean test || true
         '''
       }
       post {
         always {
           // Publica resultados JUnit para historial en Jenkins
-          junit allowEmptyResults: true, testResults: 'build/test-results/test/*.xml'
+          // Amplía los patrones para capturar más ubicaciones posibles
+          junit allowEmptyResults: true, testResults: 'build/test-results/**/*.xml,**/target/surefire-reports/*.xml'
 
-          // Publica el reporte HTML que utiliza index.html (Gradle)
+          // Publica el reporte HTML que utiliza index.html (Gradle) si existe
           script {
-            try {
+            def reportDir = 'build/reports/tests/test'
+            if (fileExists(reportDir + '/index.html')) {
               publishHTML(target: [
-                allowMissing: true,
+                allowMissing: false,
                 alwaysLinkToLastBuild: true,
                 keepAll: true,
-                reportDir: 'build/reports/tests/test',
+                reportDir: reportDir,
                 reportFiles: 'index.html',
                 reportName: 'Unit Test Report'
               ])
-            } catch (Throwable e) {
-              echo "No se pudo publicar el reporte HTML (¿falta plugin HTML Publisher?): ${e.message}"
+            } else {
+              echo "No existe el directorio de reportes HTML: ${reportDir}. Listando workspace para diagnóstico..."
+              sh 'ls -la'
+              sh 'ls -la build || true'
+              sh 'ls -la build/reports || true'
+              sh 'ls -la build/test-results || true'
+            }
+
+            archiveArtifacts artifacts: 'build/reports/tests/**,build/test-results/**', allowEmptyArchive: true
+            // Publicar Allure results si existen
+            script {
+              def allureDir = 'build/allure-results'
+              if (fileExists(allureDir)) {
+                echo "Allure results encontrados en ${allureDir}. Intentando publicarlos (requiere plugin Allure)."
+                try {
+                  allure includeProperties: false, jdk: '', results: [[path: allureDir]]
+                } catch (Throwable e) {
+                  echo "No se pudo publicar Allure (¿falta plugin Allure?): ${e.message}"
+                }
+              } else {
+                echo "No se encontraron Allure results en ${allureDir}."
+              }
             }
           }
-
-          archiveArtifacts artifacts: 'build/reports/tests/**', allowEmptyArchive: true
         }
       }
     }
@@ -72,7 +96,7 @@ pipeline {
               -Dsonar.tests=src/test/java \
               -Dsonar.java.binaries=build/classes/java/main \
               -Dsonar.java.test.binaries=build/classes/java/test \
-              -Dsonar.junit.reportPaths=build/test-results/test
+              -Dsonar.junit.reportPaths=build/test-results
           '''
         }
       }
@@ -157,14 +181,18 @@ pipeline {
             ]
             for (c in candidates) {
               try {
-                publishHTML(target: [
-                  allowMissing: true,
-                  alwaysLinkToLastBuild: true,
-                  keepAll: true,
-                  reportDir: c.dir,
-                  reportFiles: 'index.html',
-                  reportName: c.name
-                ])
+                if (fileExists(c.dir + '/index.html')) {
+                  publishHTML(target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: c.dir,
+                    reportFiles: 'index.html',
+                    reportName: c.name
+                  ])
+                } else {
+                  echo "No existe ${c.dir}/index.html, salto publicación: ${c.name}"
+                }
               } catch (Throwable e) {
                 echo "No se pudo publicar reporte HTML en ${c.dir}: ${e.message}"
               }

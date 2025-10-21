@@ -41,7 +41,24 @@ pipeline {
               fi
               ./gradlew --version
               java -version || true
+
+              # Apunta los tests al servicio dentro de la red de Docker Compose
+              export BASE_URL=http://retos-spring-app:8080
+              export API_BASE_URL="$BASE_URL"
+              export APP_BASE_URL="$BASE_URL"
+
+              echo "Esperando que la app en ${BASE_URL} esté disponible..."
+              for i in $(seq 1 60); do
+                if curl -sS -m 2 "$BASE_URL" > /dev/null; then
+                  echo "App alcanzable"
+                  break
+                fi
+                echo "Reintento $i..."
+                sleep 2
+              done
+
               ./gradlew --no-daemon clean test --stacktrace --info
+                -Dbase.url="$BASE_URL" -Dapp.base-url="$BASE_URL" -DAPI_BASE_URL="$BASE_URL" \
             '''
           }
         }

@@ -155,7 +155,7 @@ services:
   # SonarQube Database (PostgreSQL)
   sonarqube-db:
     image: postgres:15
-    container_name: sonarqube-postgres
+    container_name: sonarqube-postgres-automatizacion
     restart: unless-stopped
     environment:
       - POSTGRES_USER=sonar
@@ -167,7 +167,7 @@ services:
   # SonarQube (Calidad de código)
   sonarqube:
     image: sonarqube:lts-community
-    container_name: sonarqube
+    container_name: sonarqube-automatizacion
     restart: unless-stopped
     depends_on:
       - sonarqube-db

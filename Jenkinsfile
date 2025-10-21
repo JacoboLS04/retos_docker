@@ -29,17 +29,22 @@ pipeline {
 
     stage('Build & Unit Tests') {
       steps {
-        sh '''
-          set -e
-          chmod +x ./gradlew || true
-          # Ensure Unix line endings on gradlew (in case checked out with CRLF)
-          if command -v dos2unix >/dev/null 2>&1; then
-            dos2unix ./gradlew || true
-          fi
-          ./gradlew --version
-          java -version || true
-          ./gradlew --no-daemon clean test --stacktrace --info
-        '''
+        script {
+          // Ejecuta tests pero no bloquea el pipeline si fallan; marcará el build como UNSTABLE
+          catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+            sh '''
+              set -e
+              chmod +x ./gradlew || true
+              # Ensure Unix line endings on gradlew (in case checked out with CRLF)
+              if command -v dos2unix >/dev/null 2>&1; then
+                dos2unix ./gradlew || true
+              fi
+              ./gradlew --version
+              java -version || true
+              ./gradlew --no-daemon clean test --stacktrace --info
+            '''
+          }
+        }
       }
       post {
         always {

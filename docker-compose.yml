@@ -143,7 +143,7 @@ services:
 
   # Jenkins (CI)
   jenkins:
-    image: jenkins/jenkins:lts-jdk17
+    image: jenkins/jenkins:lts-jdk21
     container_name: retos-jenkins
     restart: unless-stopped
     ports:
@@ -151,6 +151,7 @@ services:
       - "50000:50000" # Puerto de agentes (JNLP)
     volumes:
       - jenkins-data:/var/jenkins_home
+      - ./:/var/jenkins_home/workspace/retos-automatizacion
 
   # SonarQube Database (PostgreSQL)
   sonarqube-db:

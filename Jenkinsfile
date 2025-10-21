@@ -9,7 +9,7 @@ pipeline {
 
   parameters {
     string(name: 'SONAR_PROJECT_KEY', defaultValue: 'retos_docker', description: 'Clave del proyecto en SonarQube')
-    string(name: 'SONAR_PROJECT_NAME', defaultValue: 'Retos Docker', description: 'Nombre del proyecto en SonarQube')
+  string(name: 'SONAR_PROJECT_NAME', defaultValue: 'Retos_Docker', description: 'Nombre del proyecto en SonarQube')
     booleanParam(name: 'RUN_AUTOMATION_TESTS', defaultValue: false, description: 'Clonar y ejecutar proyecto de automatización de pruebas')
     string(name: 'AUTOMATION_REPO_URL', defaultValue: 'https://github.com/JacoboLS04/retos_docker.git', description: 'URL del repositorio de automatización (opcional si está en este repo)')
     string(name: 'AUTOMATION_REPO_BRANCH', defaultValue: 'taller-automatizacion', description: 'Rama del repo de automatización')
@@ -90,8 +90,8 @@ pipeline {
         withSonarQubeEnv('SonarQube') { // Requiere configurar el servidor en Jenkins con este nombre
           sh '''
             ${SCANNER_HOME}/bin/sonar-scanner \
-              -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
-              -Dsonar.projectName=${SONAR_PROJECT_NAME} \
+              -Dsonar.projectKey="${SONAR_PROJECT_KEY}" \
+              -Dsonar.projectName="${SONAR_PROJECT_NAME}" \
               -Dsonar.sources=src/main/java \
               -Dsonar.tests=src/test/java \
               -Dsonar.java.binaries=build/classes/java/main \

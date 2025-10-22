@@ -48,7 +48,12 @@ pipeline {
               export APP_BASE_URL="$BASE_URL"
 
               echo "Esperando que la app en ${BASE_URL} esté disponible..."
+              HEALTH_URL="$BASE_URL/actuator/health"
               for i in $(seq 1 60); do
+                if curl -sS -m 2 "$HEALTH_URL" | grep -qi 'UP'; then
+                  echo "App saludable (actuator)"
+                  break
+                fi
                 if curl -sS -m 2 "$BASE_URL" > /dev/null; then
                   echo "App alcanzable"
                   break
@@ -131,6 +136,11 @@ pipeline {
               fi
               if [ -d "build/test-results" ]; then
                 CMD="$CMD -Dsonar.junit.reportPaths=build/test-results"
+              fi
+              if [ -d "build/classes/java/main" ]; then
+                CMD="$CMD -Dsonar.java.binaries=build/classes/java/main"
+              elif [ -d "build/classes" ]; then
+                CMD="$CMD -Dsonar.java.binaries=build/classes"
               fi
               echo "$CMD"
               eval "$CMD"

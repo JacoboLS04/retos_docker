@@ -11,12 +11,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Limpiar workspace antes de clonar
-                cleanWs()
-                // Clonar específicamente el repositorio y rama
-                git branch: env.BRANCH,
-                    url: env.REPO_URL,
-                    credentialsId: 'github-credentials' // Necesitarás configurar estas credenciales en Jenkins
+                checkout scm
             }
         }
 

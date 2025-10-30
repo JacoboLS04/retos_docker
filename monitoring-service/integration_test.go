@@ -98,7 +98,7 @@ func TestIntegration_ServiceLifecycle(t *testing.T) {
 		}
 
 		body, _ := ioutil.ReadAll(resp.Body)
-		
+
 		if !bytes.Contains(body, []byte("service_up")) {
 			t.Error("metrics missing service_up")
 		}

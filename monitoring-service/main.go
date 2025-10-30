@@ -112,7 +112,7 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 	// actualizar métricas de prometheus
 	serviceUp.WithLabelValues(s.URL, s.Name).Set(float64(up))
 	serviceLastCheck.WithLabelValues(s.URL, s.Name).Set(float64(time.Now().Unix()))
-	
+
 	w.WriteHeader(http.StatusCreated)
 }
 

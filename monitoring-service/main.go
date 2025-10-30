@@ -70,7 +70,15 @@ func init() {
 }
 
 func main() {
-	// configuration moved to init() so unit tests also honor env vars
+	// Re-read env here so integration tests (which set env then call main) override defaults
+	if v := os.Getenv("SCRAPE_INTERVAL_SECONDS"); v != "" {
+		if d, err := time.ParseDuration(v + "s"); err == nil {
+			scrapeFreq = d
+		}
+	}
+	if p := os.Getenv("TARGETS_FILE"); p != "" {
+		filePath = p
+	}
 
 	r := mux.NewRouter()
 	r.HandleFunc("/register", registerHandler).Methods("POST")

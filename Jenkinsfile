@@ -1,10 +1,15 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'golang:1.21'  // Usar la imagen oficial de Go
+            args '-v $HOME/.cache:/root/.cache'  // Cache para los módulos de Go
+        }
+    }
 
     environment {
-        GO_VERSION = 'go1.21'
         REPO_URL = 'https://github.com/JacoboLS04/retos_docker.git'
         BRANCH = 'taller-observabilidad'
+        GO111MODULE = 'on'  // Habilitar módulos de Go
     }
 
     stages {
@@ -19,11 +24,14 @@ pipeline {
             }
         }
 
-        stage('Setup Go') {
+        stage('Setup') {
             steps {
                 script {
-                    // Asegurarse de que Go esté instalado
-                    sh 'go version || true'
+                    // Verificar versión de Go y configuración
+                    sh '''
+                        go version
+                        go env
+                    '''
                 }
             }
         }
@@ -32,8 +40,9 @@ pipeline {
             steps {
                 dir('retos_observabilidad/monitoring-service') {
                     script {
-                        // Ejecutar las pruebas unitarias con cobertura
+                        // Descargar dependencias y ejecutar pruebas unitarias
                         sh '''
+                            go mod tidy
                             go test -v -coverprofile=coverage.out ./... -run "^Test[^Integration]"
                             go tool cover -html=coverage.out -o unit-coverage.html
                         '''
@@ -48,6 +57,7 @@ pipeline {
                     script {
                         // Ejecutar las pruebas de integración
                         sh '''
+                            go mod tidy
                             go test -v -tags=integration -coverprofile=integration-coverage.out ./... -run "^TestIntegration"
                             go tool cover -html=integration-coverage.out -o integration-coverage.html
                         '''

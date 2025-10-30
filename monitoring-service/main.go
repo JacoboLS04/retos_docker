@@ -96,6 +96,23 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "failed to write targets", http.StatusInternalServerError)
 		return
 	}
+	// Ejecutar un check inicial para este servicio
+	up := 0
+	client := &http.Client{Timeout: 5 * time.Second}
+	resp, err := client.Get(s.URL)
+	if err == nil && resp.StatusCode >= 200 && resp.StatusCode < 300 {
+		up = 1
+	}
+	mu.Lock()
+	if rs, ok := services[s.Name]; ok {
+		rs.lastUp = up
+		rs.lastTime = time.Now()
+	}
+	mu.Unlock()
+	// actualizar métricas de prometheus
+	serviceUp.WithLabelValues(s.URL, s.Name).Set(float64(up))
+	serviceLastCheck.WithLabelValues(s.URL, s.Name).Set(float64(time.Now().Unix()))
+	
 	w.WriteHeader(http.StatusCreated)
 }
 

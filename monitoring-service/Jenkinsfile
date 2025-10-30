@@ -1,0 +1,68 @@
+pipeline {
+    agent any
+
+    environment {
+        GO_VERSION = 'go1.21'
+        WORKSPACE_PATH = "${WORKSPACE}/monitoring-service"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Setup Go') {
+            steps {
+                script {
+                    // Asegurarse de que Go esté instalado
+                    sh 'go version || true'
+                }
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                dir('monitoring-service') {
+                    script {
+                        // Ejecutar las pruebas con cobertura
+                        sh '''
+                            go test -v -coverprofile=coverage.out ./...
+                            go tool cover -html=coverage.out -o coverage.html
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Test Results') {
+            steps {
+                dir('monitoring-service') {
+                    // Publicar los resultados de las pruebas
+                    publishHTML(target: [
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: '.',
+                        reportFiles: 'coverage.html',
+                        reportName: 'Go Test Coverage Report'
+                    ])
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Limpiar el workspace después de la ejecución
+            cleanWs()
+        }
+        success {
+            echo 'Pipeline ejecutado exitosamente!'
+        }
+        failure {
+            echo 'El pipeline ha fallado'
+        }
+    }
+}

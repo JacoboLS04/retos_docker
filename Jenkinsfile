@@ -44,6 +44,10 @@ pipeline {
                         # Crear directorio temporal para los tests
                         mkdir -p test_output
                         
+                        echo "Instalando herramientas para reportes JUnit (go-junit-report)..."
+                        go install github.com/jstemmer/go-junit-report/v2@latest
+                        echo "go-junit-report instalado en: $HOME/go/bin/go-junit-report"
+                        
                         echo "Inicializando módulo Go..."
                         go mod init monitoring-service || true
                         echo "Descargando dependencias..."
@@ -63,8 +67,10 @@ pipeline {
                         # Configurar el directorio de salida para los tests
                         export TARGETS_FILE="$PWD/test_output/targets.json"
                         
-                        # No usar || echo aquí para que falle si no hay pruebas
-                        TMPDIR="$PWD/test_output" go test -v -coverprofile=coverage.out .
+                        # Ejecutar pruebas y generar reporte JUnit
+                        set -o pipefail
+                        TMPDIR="$PWD/test_output" go test -v -coverprofile=coverage.out . | tee unit-test.out
+                        "$HOME/go/bin/go-junit-report" -set-exit-code < unit-test.out > unit-junit.xml
                         if [ -f coverage.out ]; then
                             go tool cover -html=coverage.out -o unit-coverage.html
                         fi
@@ -81,8 +87,10 @@ pipeline {
                         # Configurar el directorio de salida para los tests
                         export TARGETS_FILE="$PWD/test_output/targets.json"
                         
-                        # No usar || echo aquí para que falle si no hay pruebas
-                        TMPDIR="$PWD/test_output" go test -v -tags=integration -coverprofile=integration-coverage.out .
+                        # Ejecutar pruebas y generar reporte JUnit
+                        set -o pipefail
+                        TMPDIR="$PWD/test_output" go test -v -tags=integration -coverprofile=integration-coverage.out . | tee integration-test.out
+                        "$HOME/go/bin/go-junit-report" -set-exit-code < integration-test.out > integration-junit.xml
                         if [ -f integration-coverage.out ]; then
                             go tool cover -html=integration-coverage.out -o integration-coverage.html
                         fi
@@ -91,19 +99,21 @@ pipeline {
             }
         }
 
-        stage('Coverage Report') {
+        stage('Publish Reports') {
             steps {
                 dir('monitoring-service') {
                     script {
-                        def hasReports = sh(script: '''
-                            if [ -f unit-coverage.html ] || [ -f integration-coverage.html ]; then
-                                echo "true"
-                            else
-                                echo "false"
-                            fi
-                        ''', returnStdout: true).trim()
+                        // Publicar JUnit (tendencia en Jenkins)
+                        def haveJUnit = fileExists('unit-junit.xml') || fileExists('integration-junit.xml')
+                        if (haveJUnit) {
+                            junit allowEmptyResults: true, testResults: 'unit-junit.xml, integration-junit.xml'
+                        } else {
+                            echo 'No se encontraron reportes JUnit.'
+                        }
 
-                        if (hasReports == 'true') {
+                        // Publicar cobertura HTML si existe
+                        def hasCoverage = fileExists('unit-coverage.html') || fileExists('integration-coverage.html')
+                        if (hasCoverage) {
                             publishHTML([
                                 allowMissing: true,
                                 alwaysLinkToLastBuild: true,
@@ -113,7 +123,18 @@ pipeline {
                                 reportName: 'Test Coverage Reports'
                             ])
                         } else {
-                            error 'No coverage reports were generated. Tests may have failed or no Go files were found.'
+                            echo 'No se generaron reportes de cobertura HTML.'
+                        }
+
+                        // Publicar Allure si hay resultados y el plugin está disponible
+                        if (fileExists('allure-results')) {
+                            try {
+                                allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
+                            } catch (err) {
+                                echo 'Plugin de Allure no configurado o no disponible. Saltando publicación de Allure.'
+                            }
+                        } else {
+                            echo 'No se encontraron resultados Allure (allure-results). Para habilitarlo, integra un adaptador Allure en las pruebas Go.'
                         }
                     }
                 }

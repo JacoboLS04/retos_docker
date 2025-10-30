@@ -1,15 +1,12 @@
 pipeline {
-    agent {
-        dockerContainer {
-            image 'golang:1.21'  // Usar la imagen oficial de Go
-            args '-v $HOME/.cache:/root/.cache'  // Cache para los módulos de Go
-        }
-    }
+    agent any
 
     environment {
         REPO_URL = 'https://github.com/JacoboLS04/retos_docker.git'
         BRANCH = 'taller-observabilidad'
-        GO111MODULE = 'on'  // Habilitar módulos de Go
+        GO111MODULE = 'on'
+        GOROOT = tool 'go-1.21'  // Nombre de la instalación de Go configurada en Jenkins
+        PATH = "${env.GOROOT}/bin:${env.PATH}"
     }
 
     stages {

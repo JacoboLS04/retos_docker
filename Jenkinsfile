@@ -44,8 +44,11 @@ pipeline {
             steps {
                 dir('retos_observabilidad/monitoring-service') {
                     sh '''
-                        go test -v -coverprofile=coverage.out ./... -run "^Test[^Integration]"
-                        go tool cover -html=coverage.out -o unit-coverage.html
+                        echo "Ejecutando pruebas unitarias..."
+                        ls -la
+                        cd src  # Entrar al directorio src donde están los archivos .go
+                        go test -v -coverprofile=coverage.out .
+                        go tool cover -html=coverage.out -o ../unit-coverage.html
                     '''
                 }
             }
@@ -55,8 +58,10 @@ pipeline {
             steps {
                 dir('retos_observabilidad/monitoring-service') {
                     sh '''
-                        go test -v -tags=integration -coverprofile=integration-coverage.out ./... -run "^TestIntegration"
-                        go tool cover -html=integration-coverage.out -o integration-coverage.html
+                        echo "Ejecutando pruebas de integración..."
+                        cd src  # Entrar al directorio src donde están los archivos .go
+                        go test -v -tags=integration -coverprofile=integration-coverage.out .
+                        go tool cover -html=integration-coverage.out -o ../integration-coverage.html
                     '''
                 }
             }

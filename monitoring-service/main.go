@@ -57,10 +57,8 @@ var (
 func init() {
 	prometheus.MustRegister(serviceUp)
 	prometheus.MustRegister(serviceLastCheck)
-}
 
-func main() {
-	// optional override via env
+	// Read runtime configuration from environment so tests (which don't call main()) pick it up
 	if v := os.Getenv("SCRAPE_INTERVAL_SECONDS"); v != "" {
 		if d, err := time.ParseDuration(v + "s"); err == nil {
 			scrapeFreq = d
@@ -69,6 +67,10 @@ func main() {
 	if p := os.Getenv("TARGETS_FILE"); p != "" {
 		filePath = p
 	}
+}
+
+func main() {
+	// configuration moved to init() so unit tests also honor env vars
 
 	r := mux.NewRouter()
 	r.HandleFunc("/register", registerHandler).Methods("POST")

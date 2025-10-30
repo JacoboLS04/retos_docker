@@ -1,80 +1,132 @@
-Monitoring Service (Go)
+# Monitoring Service (Go)
 
-This small service allows registering microservices to be monitored by Prometheus/Blackbox.
+Servicio ligero para registrar y monitorear microservicios con Prometheus/Blackbox.
 
-Features:
-- POST /register {"name":"svc","url":"http://svc:8080/health"}
-- GET /services
-- /metrics Prometheus metrics (service_up, service_last_check_timestamp)
-- POST /alert Alertmanager webhook receiver (forwards to notifications service)
+## Endpoints
+- POST `/register` con cuerpo `{"name":"svc","url":"http://svc:8080/health"}`
+- GET `/services` lista los servicios registrados y su último estado
+- GET `/metrics` expone métricas de Prometheus (`service_up`, `service_last_check_timestamp`)
+- POST `/alert` recibe webhooks de Alertmanager y los reenvía a un microservicio de notificaciones
 
-Docker:
-- writes file_sd targets to `/out/targets.json` (mount this to Prometheus `/etc/prometheus/file_sd`).
+## Variables de entorno
+- `PORT` (por defecto `8085`)
+- `TARGETS_FILE` (por defecto `/out/targets.json`) Ruta donde se escribe el archivo file_sd para Prometheus
+- `NOTIFICATIONS_ENDPOINT` (opcional) URL del servicio de notificaciones para reenviar alertas
 
-Env:
-- PORT (default 8085)
-- TARGETS_FILE (default /out/targets.json)
-- NOTIFICATIONS_ENDPOINT (optional) to forward Alertmanager webhooks
+Nota sobre permisos: si ejecutas los tests o el servicio sin privilegios, evita usar rutas del sistema como `/out`. Define `TARGETS_FILE` apuntando a un directorio de trabajo (p. ej. `./test_output/targets.json`). El código crea automáticamente el directorio padre de esa ruta.
 
-## Tests and Development
+---
 
-### Windows Users
-For Windows users, we provide a `test.bat` script to run tests. This script provides the same functionality as Make but is compatible with Windows systems:
+## Pruebas: ¿Qué valida cada test?
 
+Archivo `main_test.go` (pruebas unitarias):
+- `TestRegisterHandler`
+   - Caso válido: registra un servicio y escribe el archivo de targets.
+   - Casos inválidos: rechaza registro sin `name` o sin `url` con `400 Bad Request`.
+- `TestListHandler`
+   - Devuelve el listado de servicios registrados con su último estado y timestamp.
+- `TestRunChecks`
+   - Ejecuta chequeos de salud contra un servidor HTTP simulado y actualiza `lastUp` y `lastTime`.
+- `TestAlertHandler`
+   - Acepta un webhook de alerta y lo reenvía a `NOTIFICATIONS_ENDPOINT` (simulado en la prueba).
+
+Archivo `integration_test.go` (pruebas de integración, tag `integration`):
+- `TestIntegration_ServiceLifecycle`
+   - Levanta el servicio real en un puerto de pruebas.
+   - Registra un servicio y verifica que se cree `targets.json` en la ruta definida por `TARGETS_FILE`.
+   - Lista servicios y valida que el registrado aparece.
+   - Consulta `/metrics` y valida que existan las métricas principales.
+   - Envía un webhook a `/alert` y espera `200 OK`.
+
+---
+
+## Cómo ejecutar las pruebas localmente
+
+### Windows (PowerShell) con `test.bat`
 ```powershell
-# Run all tests
+# Ejecutar todas las pruebas
 .\test.bat test
 
-# Run only unit tests
+# Solo unit tests
 .\test.bat test-unit
 
-# Run only integration tests
+# Solo integración (requiere tag)
 .\test.bat test-integration
 
-# Run the service
+# Ejecutar servicio
 .\test.bat run
 
-# Build the service
+# Compilar
 .\test.bat build
 ```
 
-### Unix/Linux Users (Make)
-For Unix/Linux users, we use Make to simplify and standardize development tasks. Make is a build automation tool that helps manage project tasks efficiently:
-
+### Unix/Linux (Makefile)
 ```bash
-# Run all tests (both unit and integration)
+# Todas las pruebas (unit + integration)
 make test
 
-# Run only unit tests
+# Unit tests
 make test-unit
 
-# Run only integration tests
+# Integration tests
 make test-integration
 
-# Run the service
+# Ejecutar servicio
 make run
 
-# Build the service
+# Compilar
 make build
 ```
 
-### Why Make?
-We use Make in this project for several reasons:
+### Comandos Go directos
+```bash
+# Unit tests con cobertura
+go test -v -cover ./...
 
-1. **Standardization**: Provides a consistent interface for common development tasks across different environments.
-2. **Automation**: Automates repetitive tasks and complex test scenarios.
-3. **Dependencies**: Manages build dependencies and ensures proper execution order.
-4. **Efficiency**: Reduces the need to remember long command sequences.
+# Integration tests (requiere tag "integration")
+go test -v -tags=integration ./...
 
-### Test Types
+# Generar reporte HTML de cobertura (ejemplo en el paquete actual)
+go test -coverprofile=coverage.out . && \
+   go tool cover -html=coverage.out -o coverage.html
+```
 
-1. **Unit Tests**
-   - Test individual components in isolation
-   - Located in `*_test.go` files
-   - Don't require external services
+Para evitar problemas de permisos al escribir `targets.json`, exporta `TARGETS_FILE` a una ruta dentro de tu proyecto:
+```bash
+export TARGETS_FILE="$PWD/test_output/targets.json"
+mkdir -p "$(dirname "$TARGETS_FILE")"
+```
 
-2. **Integration Tests**
-   - Test complete service workflows
-   - Located in `integration_test.go`
-   - Use build tag `integration`
-   - Test actual HTTP endpoints and Prometheus metrics
+---
+
+## Reportes en Jenkins
+- El pipeline convierte la salida de `go test` a JUnit con `go-junit-report`, por lo que verás:
+   - Tendencias de pruebas (verde/rojo, flakiness) en Jenkins.
+   - Reportes de cobertura en HTML (unit e integration).
+- Allure (opcional): si integras un adaptador Allure para Go (por ejemplo, `github.com/ozontech/allure-go`) y generas `allure-results/`, el pipeline publicará automáticamente el reporte Allure (si el plugin está instalado en Jenkins).
+
+### Requisitos del agente de Jenkins
+- Go instalado (se usa la herramienta `go-1.21`).
+- Plugin JUnit y Publish HTML (para mostrar resultados y cobertura).
+- Plugin Allure (opcional) si deseas reportes Allure.
+
+---
+
+## Solución de problemas (FAQ)
+**Permiso denegado al crear `/out`**
+- Define `TARGETS_FILE` a una ruta dentro del workspace (p. ej. `./test_output/targets.json`). El servicio creará el directorio padre si no existe.
+
+**Las pruebas de integración fallan por puerto en uso**
+- El test usa por defecto el puerto `8086` (variable `PORT`). Ajusta `PORT` si hay conflicto.
+
+**El reenvío de alertas falla en integración**
+- El servicio intenta contactar `NOTIFICATIONS_ENDPOINT` (por defecto `http://ms-notifications:8080/alerts`). En pruebas unitarias se simula; en integración puedes definir una URL mock o ignorar el log de error si no afecta las aserciones.
+
+---
+
+## Desarrollo
+Variables principales:
+- `filePath` (ruta efectiva de `TARGETS_FILE`)
+- Métricas Prometheus: `service_up`, `service_last_check_timestamp`
+
+El servicio realiza chequeos periódicos (configurables con `SCRAPE_INTERVAL_SECONDS`) y actualiza métricas y estados de los servicios registrados.

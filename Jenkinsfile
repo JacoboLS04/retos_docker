@@ -1,18 +1,11 @@
 pipeline {
-    agent {
-        label 'built-in'  // Usar el nodo built-in de Jenkins
-    }
-
-    options {
-        skipDefaultCheckout(true)  // Skip automatic checkout
-        disableConcurrentBuilds()  // No permitir builds concurrentes
-    }
+    agent any  // Usar cualquier agente disponible
 
     environment {
         REPO_URL = 'https://github.com/JacoboLS04/retos_docker.git'
         BRANCH = 'taller-observabilidad'
         GO111MODULE = 'on'
-        GOROOT = tool 'go-1.21'  // Nombre de la instalación de Go configurada en Jenkins
+        GOROOT = tool 'go-1.21'
         PATH = "${env.GOROOT}/bin:${env.PATH}"
     }
 
@@ -89,7 +82,15 @@ pipeline {
 
     post {
         always {
-            cleanWs()  // Limpiar el workspace después de la ejecución
+            node('built-in') {  // Ejecutar en un nodo específico
+                script {
+                    try {
+                        cleanWs()  // Limpiar el workspace después de la ejecución
+                    } catch (Exception e) {
+                        echo "Error durante la limpieza: ${e.message}"
+                    }
+                }
+            }
         }
         success {
             echo 'Pipeline ejecutado exitosamente!'

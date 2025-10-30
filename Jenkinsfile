@@ -41,6 +41,9 @@ pipeline {
                             exit 1
                         fi
                         
+                        # Crear directorio temporal para los tests
+                        mkdir -p test_output
+                        
                         echo "Inicializando módulo Go..."
                         go mod init monitoring-service || true
                         echo "Descargando dependencias..."
@@ -57,8 +60,11 @@ pipeline {
                 dir('monitoring-service') {
                     sh '''
                         echo "Ejecutando pruebas unitarias..."
+                        # Configurar el directorio de salida para los tests
+                        export TARGETS_FILE="$PWD/test_output/targets.json"
+                        
                         # No usar || echo aquí para que falle si no hay pruebas
-                        go test -v -coverprofile=coverage.out .
+                        TMPDIR="$PWD/test_output" go test -v -coverprofile=coverage.out .
                         if [ -f coverage.out ]; then
                             go tool cover -html=coverage.out -o unit-coverage.html
                         fi
@@ -72,8 +78,11 @@ pipeline {
                 dir('monitoring-service') {
                     sh '''
                         echo "Ejecutando pruebas de integración..."
+                        # Configurar el directorio de salida para los tests
+                        export TARGETS_FILE="$PWD/test_output/targets.json"
+                        
                         # No usar || echo aquí para que falle si no hay pruebas
-                        go test -v -tags=integration -coverprofile=integration-coverage.out .
+                        TMPDIR="$PWD/test_output" go test -v -tags=integration -coverprofile=integration-coverage.out .
                         if [ -f integration-coverage.out ]; then
                             go tool cover -html=integration-coverage.out -o integration-coverage.html
                         fi

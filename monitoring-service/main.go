@@ -28,6 +28,16 @@ type RegService struct {
 	lastTime time.Time
 }
 
+// lastSlashIndex returns the index of the last '/' in the path
+func lastSlashIndex(path string) int {
+	for i := len(path) - 1; i >= 0; i-- {
+		if path[i] == '/' {
+			return i
+		}
+	}
+	return -1
+}
+
 var (
 	mu         sync.RWMutex
 	services   = map[string]*RegService{}
@@ -214,9 +224,15 @@ func writeTargetsFile() error {
 	if err != nil {
 		return err
 	}
-	// ensure out dir exists
-	if err := os.MkdirAll("/out", 0755); err != nil {
-		return err
+	// ensure parent directory exists
+	targetDir := ""
+	if idx := lastSlashIndex(filePath); idx >= 0 {
+		targetDir = filePath[:idx]
+	}
+	if targetDir != "" {
+		if err := os.MkdirAll(targetDir, 0755); err != nil {
+			return err
+		}
 	}
 	return ioutil.WriteFile(filePath, b, 0644)
 }

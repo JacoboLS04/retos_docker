@@ -24,8 +24,18 @@ pipeline {
         stage('Setup') {
             steps {
                 dir('retos_observabilidad/monitoring-service') {
-                    sh 'go version'
-                    sh 'go mod tidy'
+                    sh '''
+                        pwd
+                        ls -la
+                        echo "Verificando entorno Go..."
+                        go version
+                        echo "Inicializando módulo Go..."
+                        go mod init monitoring-service || true
+                        echo "Descargando dependencias..."
+                        go mod tidy
+                        echo "Listando módulos..."
+                        go list -m all
+                    '''
                 }
             }
         }

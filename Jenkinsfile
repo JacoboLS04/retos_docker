@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        docker {
+        dockerContainer {
             image 'golang:1.21'  // Usar la imagen oficial de Go
             args '-v $HOME/.cache:/root/.cache'  // Cache para los módulos de Go
         }

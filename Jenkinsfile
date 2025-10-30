@@ -1,5 +1,12 @@
 pipeline {
-    agent any
+    agent {
+        label 'built-in'  // Usar el nodo built-in de Jenkins
+    }
+
+    options {
+        skipDefaultCheckout(true)  // Skip automatic checkout
+        disableConcurrentBuilds()  // No permitir builds concurrentes
+    }
 
     environment {
         REPO_URL = 'https://github.com/JacoboLS04/retos_docker.git'
@@ -66,30 +73,15 @@ pipeline {
         stage('Test Results') {
             steps {
                 dir('retos_observabilidad/monitoring-service') {
-                    // Publicar los resultados de las pruebas (ejecutar dentro de node)
-                    script {
-                        node {
-                            // Publicar los resultados de las pruebas unitarias
-                            publishHTML(target: [
-                                allowMissing: false,
-                                alwaysLinkToLastBuild: true,
-                                keepAll: true,
-                                reportDir: '.',
-                                reportFiles: 'unit-coverage.html',
-                                reportName: 'Unit Test Coverage Report'
-                            ])
-
-                            // Publicar los resultados de las pruebas de integración
-                            publishHTML(target: [
-                                allowMissing: false,
-                                alwaysLinkToLastBuild: true,
-                                keepAll: true,
-                                reportDir: '.',
-                                reportFiles: 'integration-coverage.html',
-                                reportName: 'Integration Test Coverage Report'
-                            ])
-                        }
-                    }
+                    // Publicar los resultados de las pruebas
+                    publishHTML([
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: '.',
+                        reportFiles: 'unit-coverage.html,integration-coverage.html',
+                        reportName: 'Test Coverage Reports'
+                    ])
                 }
             }
         }
@@ -97,12 +89,7 @@ pipeline {
 
     post {
         always {
-            // Limpiar el workspace después de la ejecución (asegurar node context)
-            script {
-                node {
-                    cleanWs()
-                }
-            }
+            cleanWs()  // Limpiar el workspace después de la ejecución
         }
         success {
             echo 'Pipeline ejecutado exitosamente!'

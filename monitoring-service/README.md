@@ -71,6 +71,14 @@ make test-unit
 # Integration tests
 make test-integration
 
+# End-to-end (E2E) contra el stack completo
+# Requiere que el stack esté arriba y accesible desde el host
+# Variables útiles:
+#   MONITORING_BASE_URL (por defecto http://localhost:8085)
+#   PROMETHEUS_BASE_URL (opcional, por defecto http://localhost:9090)
+#   TARGET_SERVICE_URL  (por defecto http://prometheus:9090/-/healthy)
+make test-e2e
+
 # Ejecutar servicio
 make run
 
@@ -89,6 +97,16 @@ go test -v -tags=integration ./...
 # Generar reporte HTML de cobertura (ejemplo en el paquete actual)
 go test -coverprofile=coverage.out . && \
    go tool cover -html=coverage.out -o coverage.html
+```
+
+### Pruebas E2E (Go directas)
+```bash
+# Ajusta variables según tu entorno
+export MONITORING_BASE_URL=http://localhost:8085
+export PROMETHEUS_BASE_URL=http://localhost:9090   # opcional
+export TARGET_SERVICE_URL=http://prometheus:9090/-/healthy
+
+go test -v -tags=e2e ./e2e -timeout 2m
 ```
 
 Para evitar problemas de permisos al escribir `targets.json`, exporta `TARGETS_FILE` a una ruta dentro de tu proyecto:

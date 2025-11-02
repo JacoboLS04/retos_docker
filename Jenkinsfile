@@ -1,0 +1,137 @@
+pipeline {
+  agent any
+
+  options {
+    skipDefaultCheckout(false)
+    timestamps()
+    ansiColor('xterm')
+  }
+
+  parameters {
+    booleanParam(name: 'DOCKER_BUILD', defaultValue: true, description: 'Build Docker image')
+    booleanParam(name: 'DOCKER_PUSH', defaultValue: false, description: 'Push Docker image to registry')
+    string(name: 'IMAGE_NAME', defaultValue: 'gestion-perfiles', description: 'Docker image name (without registry)')
+    string(name: 'REGISTRY_URL', defaultValue: '', description: 'Docker registry URL (e.g., ghcr.io/owner or registry.hub.docker.com)')
+    string(name: 'REGISTRY_CREDENTIALS_ID', defaultValue: '', description: 'Jenkins credentials ID for docker login (username/password or token)')
+  }
+
+  environment {
+    // Used by health endpoint if manifest version is not available
+    APP_VERSION = "${env.BUILD_TAG ?: "dev"}"
+    // Change if your Jenkins has a configured JDK tool named differently
+    // JAVA_HOME = tool name: 'jdk17'
+  }
+
+  stages {
+    stage('Prepare') {
+      steps {
+        script {
+          echo "Workspace: ${pwd()}"
+          // Ensure we run Gradle from the sibling wrapper in reto-automatizacion
+          // Build path vars for Windows/Linux
+          env.GRADLEW_WIN = "..\\reto-automatizacion\\gradlew.bat"
+          env.GRADLEW_NIX = "../reto-automatizacion/gradlew"
+        }
+      }
+    }
+
+    stage('Build & Test') {
+      steps {
+        dir('gestion-perfiles') {
+          script {
+            // Full build including tests; produces bootJar by default with Spring Boot plugin
+            if (isUnix()) {
+              sh "${env.GRADLEW_NIX} -p . clean build --no-daemon --stacktrace"
+            } else {
+              bat "${env.GRADLEW_WIN} -p . clean build --no-daemon --stacktrace"
+            }
+          }
+        }
+      }
+      post {
+        always {
+          junit allowEmptyResults: true, testResults: 'gestion-perfiles/build/test-results/test/*.xml'
+        }
+        success {
+          archiveArtifacts artifacts: 'gestion-perfiles/build/libs/*.jar', fingerprint: true, onlyIfSuccessful: true
+        }
+      }
+    }
+
+    stage('Docker Build') {
+      when { expression { return params.DOCKER_BUILD } }
+      steps {
+        dir('gestion-perfiles') {
+          script {
+            def tag = env.BUILD_NUMBER
+            def fullImage = params.REGISTRY_URL?.trim() ? 
+              "${params.REGISTRY_URL}/${params.IMAGE_NAME}:${tag}" : 
+              "${params.IMAGE_NAME}:${tag}"
+
+            echo "Building image: ${fullImage}"
+            if (isUnix()) {
+              sh "docker build -t ${fullImage} ."
+            } else {
+              bat "docker build -t ${fullImage} ."
+            }
+
+            // Also tag as latest on main/master branch
+            def branch = env.BRANCH_NAME ?: env.GIT_BRANCH ?: ''
+            if (branch == 'main' || branch == 'master') {
+              def latest = params.REGISTRY_URL?.trim() ? 
+                "${params.REGISTRY_URL}/${params.IMAGE_NAME}:latest" : 
+                "${params.IMAGE_NAME}:latest"
+              if (isUnix()) {
+                sh "docker tag ${fullImage} ${latest}"
+              } else {
+                bat "docker tag ${fullImage} ${latest}"
+              }
+            }
+          }
+        }
+      }
+    }
+
+    stage('Docker Push') {
+      when { expression { return params.DOCKER_BUILD && params.DOCKER_PUSH && params.REGISTRY_URL?.trim() && params.REGISTRY_CREDENTIALS_ID?.trim() } }
+      steps {
+        dir('gestion-perfiles') {
+          script {
+            def tag = env.BUILD_NUMBER
+            def base = "${params.REGISTRY_URL}/${params.IMAGE_NAME}"
+            def fullImage = "${base}:${tag}"
+            def latest = "${base}:latest"
+
+            withCredentials([usernamePassword(credentialsId: params.REGISTRY_CREDENTIALS_ID, usernameVariable: 'REG_USER', passwordVariable: 'REG_PASS')]) {
+              if (isUnix()) {
+                sh "echo $REG_PASS | docker login ${params.REGISTRY_URL} -u $REG_USER --password-stdin"
+                sh "docker push ${fullImage} || true"
+                // push latest if it exists
+                sh "docker images -q ${latest} >/dev/null 2>&1 && docker push ${latest} || true"
+                sh "docker logout ${params.REGISTRY_URL} || true"
+              } else {
+                bat "docker login ${params.REGISTRY_URL} -u %REG_USER% -p %REG_PASS%"
+                bat "docker push ${fullImage}"
+                // On Windows, ignore error if latest tag missing
+                bat "for /f \"tokens=*\" %i in ('docker images -q ${latest}') do docker push ${latest}"
+                bat "docker logout ${params.REGISTRY_URL}"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  post {
+    success {
+      echo 'Pipeline completed successfully.'
+    }
+    failure {
+      echo 'Pipeline failed.'
+    }
+    always {
+      echo "Done."
+    }
+  }
+}

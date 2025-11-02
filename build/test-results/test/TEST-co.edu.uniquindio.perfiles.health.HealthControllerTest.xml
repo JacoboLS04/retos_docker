@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="co.edu.uniquindio.perfiles.health.HealthControllerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2025-11-02T23:32:39.856Z" hostname="SANTIAGO" time="0.019">
+  <properties/>
+  <testcase name="livenessEndpointOk()" classname="co.edu.uniquindio.perfiles.health.HealthControllerTest" time="0.006"/>
+  <testcase name="readinessEndpointOk()" classname="co.edu.uniquindio.perfiles.health.HealthControllerTest" time="0.005"/>
+  <testcase name="healthRootIsAccessibleAndContainsChecks()" classname="co.edu.uniquindio.perfiles.health.HealthControllerTest" time="0.006"/>
+  <system-out><![CDATA[2025-11-02T18:32:39.844-05:00  INFO 24716 --- [gestion-perfiles] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.edu.uniquindio.perfiles.health.HealthControllerTest]: HealthControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-11-02T18:32:39.854-05:00  INFO 24716 --- [gestion-perfiles] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.edu.uniquindio.perfiles.ProfileServiceApplication for test class co.edu.uniquindio.perfiles.health.HealthControllerTest
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

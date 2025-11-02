@@ -1,0 +1,246 @@
+openapi: 3.0.3
+info:
+  title: Gestión de Perfiles API
+  version: "1.0.0"
+  description: Microservicio para gestionar el perfil del usuario autenticado.
+servers:
+  - url: http://localhost:8083
+    description: Dev
+security:
+  - bearerAuth: []
+paths:
+  /profile:
+    get:
+      summary: Obtiene el perfil del usuario autenticado
+      tags: [Perfil]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+        "401":
+          description: No autenticado
+        "404":
+          description: Perfil no encontrado
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+    post:
+      summary: Crea el perfil del usuario autenticado
+      tags: [Perfil]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileRequest'
+      responses:
+        "201":
+          description: Creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+        "400":
+          description: Datos inválidos
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        "401":
+          description: No autenticado
+        "409":
+          description: Ya existe
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+    put:
+      summary: Reemplaza (o crea) el perfil del usuario autenticado
+      tags: [Perfil]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileRequest'
+      responses:
+        "200":
+          description: Actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+        "400":
+          description: Datos inválidos
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        "401":
+          description: No autenticado
+    patch:
+      summary: Actualización parcial del perfil del usuario autenticado
+      tags: [Perfil]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfilePatchRequest'
+      responses:
+        "200":
+          description: Actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+        "400":
+          description: Datos inválidos
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        "401":
+          description: No autenticado
+        "404":
+          description: No existe
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+    delete:
+      summary: Elimina el perfil del usuario autenticado
+      tags: [Perfil]
+      security:
+        - bearerAuth: []
+      responses:
+        "204":
+          description: Eliminado
+        "401":
+          description: No autenticado
+        "404":
+          description: No existe
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ProfileResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        pageUrl:
+          type: string
+          format: uri
+        nickname:
+          type: string
+          maxLength: 50
+        contactPublic:
+          type: boolean
+        address:
+          type: string
+          maxLength: 255
+        bio:
+          type: string
+          maxLength: 2000
+        organization:
+          type: string
+          maxLength: 255
+        country:
+          type: string
+          maxLength: 100
+        socialLinks:
+          type: object
+          additionalProperties:
+            type: string
+            format: uri
+    ProfileRequest:
+      type: object
+      properties:
+        pageUrl:
+          type: string
+          format: uri
+        nickname:
+          type: string
+          maxLength: 50
+        contactPublic:
+          type: boolean
+        address:
+          type: string
+          maxLength: 255
+        bio:
+          type: string
+          maxLength: 2000
+        organization:
+          type: string
+          maxLength: 255
+        country:
+          type: string
+          maxLength: 100
+        socialLinks:
+          type: object
+          additionalProperties:
+            type: string
+            format: uri
+    ProfilePatchRequest:
+      type: object
+      properties:
+        pageUrl:
+          type: string
+          format: uri
+        nickname:
+          type: string
+        contactPublic:
+          type: boolean
+        address:
+          type: string
+        bio:
+          type: string
+        organization:
+          type: string
+        country:
+          type: string
+        socialLinks:
+          type: object
+          additionalProperties:
+            type: string
+            format: uri
+    ProblemDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
+        fields:
+          type: object
+          additionalProperties:
+            type: string

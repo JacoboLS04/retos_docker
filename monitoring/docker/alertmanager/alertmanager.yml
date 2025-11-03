@@ -1,0 +1,26 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: 'monitoring-webhook'
+  group_by: ['alertname', 'instance']
+  group_wait: 10s
+  group_interval: 1m
+  repeat_interval: 2h
+  routes:
+    - receiver: 'team-email'
+      continue: true
+
+receivers:
+  - name: 'monitoring-webhook'
+    webhook_configs:
+      - url: http://monitoring-service:8085/alert
+        send_resolved: true
+  - name: 'team-email'
+    email_configs:
+      - to: londgav01@gmail.com
+        from: londgav01@gmail.com
+        smarthost: smtp.gmail.com:587
+        auth_username: londgav01@gmail.com
+        auth_password_file: /run/secrets/gmail_app_password
+        require_tls: true

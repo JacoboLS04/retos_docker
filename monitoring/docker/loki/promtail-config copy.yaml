@@ -1,0 +1,57 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  # Read container logs from Docker's container json files
+  - job_name: docker_containers
+    static_configs:
+      server:
+        http_listen_port: 9080
+        grpc_listen_port: 0
+
+      positions:
+        filename: /tmp/positions.yaml
+
+      clients:
+        - url: http://loki:3100/loki/api/v1/push
+
+      scrape_configs:
+        # Read container logs from Docker's container json files (json-file driver)
+        - job_name: docker_containers
+          static_configs:
+            - targets: ['localhost']
+              labels:
+                job: "docker"
+                __path__: "/var/lib/docker/containers/*/*-json.log"
+
+        # Read generic system logs
+        - job_name: varlogs
+          static_configs:
+            - targets: ['localhost']
+              labels:
+                job: "varlogs"
+                __path__: "/var/log/*log"
+
+        # Additional docker logs catch-all (alternate path)
+        - job_name: docker-logs
+          static_configs:
+            - targets: ['localhost']
+              labels:
+                job: "docker"
+                __path__: "/var/lib/docker/containers/*/*.log"
+          pipeline_stages:
+            - docker: {}
+
+      # Nota: en Windows Docker Desktop las rutas a los containers pueden diferir; montar
+      # /var/lib/docker/containers desde el host Docker Engine funciona en la mayoría de
+      # setups con Docker Desktop. Si usas Docker Desktop en Windows y no ves logs,
+      # considera montar un volumen con los ficheros de logs o instrumentar la app para
+      # enviar JSON a stdout y usar Promtail para parsearlo.
+                  labels:

@@ -1,0 +1,20 @@
+groups:
+  - name: service-health
+    rules:
+      - alert: ServiceDown
+        expr: probe_success == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Servicio caído: {{ $labels.instance }}"
+          description: "La comprobación de salud falló (probe_success=0) por más de 1 minuto para {{ $labels.instance }}"
+
+      - alert: ServiceSlow
+        expr: probe_duration_seconds > 2
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Servicio lento: {{ $labels.instance }}"
+          description: "El tiempo de respuesta supera 2s (promedio puntual) en {{ $labels.instance }}"

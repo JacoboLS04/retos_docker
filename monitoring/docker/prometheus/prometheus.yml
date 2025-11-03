@@ -1,0 +1,31 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ["alertmanager:9093"]
+
+rule_files:
+  - /etc/prometheus/alerts.yml
+
+scrape_configs:
+  # Probe each service's health endpoint via blackbox exporter
+  - job_name: 'blackbox'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    file_sd_configs:
+      - files:
+        - /etc/prometheus/file_sd/targets.json
+    relabel_configs:
+      # Tell blackbox the real target
+      - source_labels: [__address__]
+        target_label: __param_target
+      # Set instance label to the target URL
+      - source_labels: [__param_target]
+        target_label: instance
+      # Actually scrape the blackbox exporter
+      - target_label: __address__
+        replacement: blackbox:9115

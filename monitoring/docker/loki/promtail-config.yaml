@@ -1,0 +1,46 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  # Receive Docker container logs via syslog driver (works well on Windows hosts)
+  - job_name: docker_syslog
+    syslog:
+      listen_address: 0.0.0.0:1514
+      label_structured_data: true
+      labels:
+        job: docker
+    relabel_configs:
+      - source_labels: ['__syslog_message_app_name']
+        regex: '([^|]+)\|([^|]+)\|([^|]+)'
+        target_label: container
+        replacement: '$2'
+      - source_labels: ['__syslog_message_app_name']
+        regex: '([^|]+)\|([^|]+)\|([^|]+)'
+        target_label: image
+        replacement: '$2'
+      - source_labels: ['__syslog_message_app_name']
+        regex: '([^|]+)\|([^|]+)\|([^|]+)'
+        target_label: cid
+        replacement: '$3'
+      # Set service equal to container (since container_name identifies microservice here)
+      - source_labels: ['container']
+        target_label: service
+      - source_labels: ['__syslog_message_hostname']
+        target_label: host
+      - source_labels: ['__syslog_message_severity']
+        target_label: level
+
+  # Optional: read generic system logs from /var/log
+  - job_name: varlogs
+    static_configs:
+      - targets: ['localhost']
+        labels:
+          job: varlogs
+          __path__: /var/log/*log

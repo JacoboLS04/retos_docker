@@ -1,10 +1,11 @@
 // Declarative Jenkins pipeline to test the api-gateway microservice
 pipeline {
   agent {
-    // Uses Docker agent with Node.js runtime so the pipeline is portable
+    // Docker agent with Node.js runtime; reuseNode keeps workspace/context for pipeline-level post & late stages
     docker {
       image 'node:20'
       args '-u root:root'
+      reuseNode true
     }
   }
 
@@ -72,43 +73,35 @@ pipeline {
       steps {
         echo 'Waiting for /health to respond (retries)'
         sh '''
-        set -e
-        for i in 1 2 3 4 5; do
-          if curl -sSf http://localhost:${PORT}/health -m 2; then
-            echo 'Health OK'
-            exit 0
-          fi
-          echo 'Waiting for service...'
-          sleep 2
-        done
-        echo 'Health check failed'
-        cat /tmp/gateway.log || true
-        exit 1
+          set -e
+          for i in 1 2 3 4 5; do
+            if curl -sSf http://localhost:${PORT}/health -m 2; then
+              echo 'Health OK'
+              exit 0
+            fi
+            echo 'Waiting for service...'
+            sleep 2
+          done
+          echo 'Health check failed'
+          cat /tmp/gateway.log || true
+          exit 1
         '''
       }
     }
-  }
 
-  post {
-    always {
-      script {
-        try {
-          echo 'Pipeline finished — printing gateway log (tail)'
-          sh 'if [ -f /tmp/gateway.log ]; then tail -n 200 /tmp/gateway.log; fi'
-        } catch (Exception e) {
-          echo "Could not read gateway log: ${e.message}"
-        }
+    stage('Collect Logs & Cleanup') {
+      steps {
+        echo 'Tail gateway log (if exists)'
+        sh 'if [ -f /tmp/gateway.log ]; then tail -n 200 /tmp/gateway.log || true; fi'
+        echo 'Cleanup: kill node processes if any (best-effort)'
+        sh "pkill -f 'node src/index.js' || true"
       }
     }
-    cleanup {
-      script {
-        try {
-          echo 'Cleanup: kill node processes if any (best-effort)'
-          sh "pkill -f 'node src/index.js' || true"
-        } catch (Exception e) {
-          echo "Cleanup warning: ${e.message}"
-        }
-      }
+  }
+  // Keep post minimal; heavy log & cleanup moved to final stage to ensure workspace context
+  post {
+    always {
+      echo 'Pipeline finished.'
     }
   }
 }

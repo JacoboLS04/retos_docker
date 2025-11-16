@@ -24,11 +24,5 @@
 		"nock": "^13.3.0",
 		"supertest": "^6.3.3",
 		"jest-junit": "^16.0.0"
-	},
-	"jest": {
-		"config": "jest.config.js",
-		"testEnvironment": "./jest-environment.js",
-		"setupFilesAfterEnv": ["<rootDir>/tests/setup.js"],
-		"testTimeout": 20000
 	}
 }

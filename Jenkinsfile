@@ -30,8 +30,9 @@ pipeline {
     stage('Unit Tests') {
       steps {
         echo '=== Running Jest unit tests ==='
-        // Load preload (stubs localStorage & cleans NODE_OPTIONS) then custom environment
-        sh 'export NODE_ENV=test; node -r ./preload.js -r ./jest-environment.js ./node_modules/jest/bin/jest.js --config=jest.config.js --runInBand --reporters=default --reporters=jest-junit --no-coverage'
+        sh 'touch .localstorage'
+        // Provide a localstorage file to satisfy Node 25 experimental webstorage, override NODE_OPTIONS entirely
+        sh 'NODE_OPTIONS="--localstorage-file=.localstorage" NODE_ENV=test node -r ./jest-environment.js ./node_modules/jest/bin/jest.js --config=jest.config.js --runInBand --reporters=default --reporters=jest-junit --no-coverage'
       }
       post {
         always {
@@ -44,8 +45,7 @@ pipeline {
       steps {
         echo '=== Running Cucumber BDD tests ==='
         sh 'mkdir -p reports'
-        // Force NODE_ENV=test and use local cucumber-js
-        sh 'export NODE_ENV=test; ./node_modules/.bin/cucumber-js --format json:reports/cucumber-report.json --format html:reports/cucumber-report.html'
+        sh 'NODE_OPTIONS="--localstorage-file=.localstorage" NODE_ENV=test ./node_modules/.bin/cucumber-js --format json:reports/cucumber-report.json --format html:reports/cucumber-report.html'
       }
       post {
         always {

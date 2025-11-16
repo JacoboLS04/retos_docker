@@ -11,7 +11,11 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  if (server && server.close) server.close();
+  if (server && server.close) {
+    await new Promise((resolve) => server.close(resolve));
+  }
+  // Wait for port to be released
+  await new Promise(resolve => setTimeout(resolve, 100));
 });
 
 describe('API Gateway basic routes', () => {

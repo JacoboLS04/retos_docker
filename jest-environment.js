@@ -1,12 +1,21 @@
 const NodeEnvironment = require('jest-environment-node').TestEnvironment;
 
 class CustomEnvironment extends NodeEnvironment {
+  constructor(config, context) {
+    super(
+      Object.assign({}, config, {
+        testEnvironmentOptions: Object.assign({}, config.testEnvironmentOptions, {
+          url: 'http://localhost',
+        }),
+      }),
+      context
+    );
+  }
+
   async setup() {
     await super.setup();
-    // Prevent localStorage initialization error
-    if (typeof this.global.localStorage === 'undefined') {
-      this.global.localStorage = null;
-    }
+    // Override localStorage to prevent initialization error
+    this.global.localStorage = undefined;
   }
 }
 

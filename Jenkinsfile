@@ -9,7 +9,8 @@ pipeline {
   environment {
     CI = 'true'
     PORT = '3001'
-    JEST_JUNIT_OUTPUT = 'junit.xml'
+    // Store JUnit XML under reports/junit for clarity
+    JEST_JUNIT_OUTPUT = 'reports/junit/junit.xml'
   }
 
   stages {
@@ -30,13 +31,14 @@ pipeline {
     stage('Unit Tests') {
       steps {
         echo '=== Running Jest unit tests ==='
+        sh 'mkdir -p reports/junit'
         sh 'touch .localstorage'
-        // Provide a localstorage file to satisfy Node 25 experimental webstorage, override NODE_OPTIONS entirely
-        sh 'NODE_OPTIONS="--localstorage-file=.localstorage" NODE_ENV=test node -r ./jest-environment.js ./node_modules/jest/bin/jest.js --config=jest.config.js --runInBand --reporters=default --reporters=jest-junit --no-coverage'
+        // Run Jest with coverage and junit reporter
+        sh 'NODE_OPTIONS="--localstorage-file=.localstorage" NODE_ENV=test node -r ./jest-environment.js ./node_modules/jest/bin/jest.js --config=jest.config.js --runInBand --coverage --reporters=default --reporters=jest-junit'
       }
       post {
         always {
-          junit allowEmptyResults: true, testResults: 'junit.xml'
+          junit allowEmptyResults: true, testResults: 'reports/junit/junit.xml'
         }
       }
     }
@@ -89,6 +91,41 @@ pipeline {
         echo '=== Cleanup ==='
         sh 'tail -n 50 /tmp/gateway.log || true'
         sh "pkill -f 'node src/index.js' || true"
+      }
+    }
+
+    stage('Publish Reports') {
+      steps {
+        echo '=== Publishing HTML reports ==='
+        script {
+          // Archive coverage HTML if exists
+          if (fileExists('coverage/lcov-report/index.html')) {
+            archiveArtifacts artifacts: 'coverage/lcov-report/**', allowEmptyArchive: true
+            try {
+              publishHTML(target: [
+                reportDir: 'coverage/lcov-report',
+                reportFiles: 'index.html',
+                reportName: 'Coverage Report',
+                keepAll: true,
+                alwaysLinkToLastBuild: true,
+                allowMissing: true
+              ])
+            } catch (ignored) { echo 'HTML Publisher not available for coverage.' }
+          } else { echo 'Coverage report not found.' }
+
+          if (fileExists('reports/cucumber-report.html')) {
+            try {
+              publishHTML(target: [
+                reportDir: 'reports',
+                reportFiles: 'cucumber-report.html',
+                reportName: 'Cucumber Report',
+                keepAll: true,
+                alwaysLinkToLastBuild: true,
+                allowMissing: true
+              ])
+            } catch (ignored) { echo 'HTML Publisher not available for cucumber.' }
+          } else { echo 'Cucumber HTML report not found.' }
+        }
       }
     }
   }

@@ -50,7 +50,28 @@ pipeline {
       }
       post {
         always {
+          // Publish JUnit test results for unit tests
           junit allowEmptyResults: true, testResults: 'gestion-perfiles/build/test-results/test/*.xml'
+          
+          // Publish Cucumber BDD test reports
+          script {
+            if (fileExists('gestion-perfiles/build/reports/cucumber/cucumber-report.html')) {
+              publishHTML(target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: 'gestion-perfiles/build/reports/cucumber',
+                reportFiles: 'cucumber-report.html',
+                reportName: 'Cucumber BDD Report',
+                reportTitles: 'BDD Test Results'
+              ])
+            }
+            
+            // Archive Cucumber JSON report
+            if (fileExists('gestion-perfiles/build/reports/cucumber/cucumber-report.json')) {
+              archiveArtifacts artifacts: 'gestion-perfiles/build/reports/cucumber/cucumber-report.json', allowEmptyArchive: true
+            }
+          }
         }
         success {
           archiveArtifacts artifacts: 'gestion-perfiles/build/libs/*.jar', fingerprint: true, onlyIfSuccessful: true

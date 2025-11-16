@@ -1,11 +1,8 @@
 module.exports = {
   testEnvironment: 'node',
+  testEnvironmentOptions: {
+    url: 'http://localhost'
+  },
   setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
-  testTimeout: 10000,
+  testTimeout: 20000,
 };
-module.exports = {
-	testEnvironment: 'node',
-	setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
-	testTimeout: 20000,
-};
-

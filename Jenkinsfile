@@ -30,8 +30,8 @@ pipeline {
     stage('Unit Tests') {
       steps {
         echo '=== Running Jest unit tests ==='
-        // Force using local Jest binary and explicit config so CI can't override environment
-        sh 'export NODE_ENV=test; ./node_modules/.bin/jest --config=jest.config.js --runInBand --reporters=default --reporters=jest-junit --no-coverage'
+        // Force loading our custom Jest environment before Jest runs (avoid CI/tool overrides)
+        sh 'export NODE_ENV=test; node -r ./jest-environment.js ./node_modules/jest/bin/jest.js --config=jest.config.js --runInBand --reporters=default --reporters=jest-junit --no-coverage'
       }
       post {
         always {

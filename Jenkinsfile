@@ -8,6 +8,8 @@ pipeline {
 
     tools {
         go 'go-1.21'
+        maven 'Maven 3.9'
+        jdk 'JDK 17'
     }
 
     environment {
@@ -99,19 +101,31 @@ pipeline {
             }
         }
 
+        stage('Java Build & Test') {
+            steps {
+                script {
+                    echo "Compilando proyecto Java Spring Boot..."
+                    sh 'mvn clean compile'
+                    
+                    echo "Ejecutando tests de Cucumber con generación de reportes Allure..."
+                    sh 'mvn test'
+                }
+            }
+        }
+
         stage('Publish Reports') {
             steps {
-                dir('monitoring-service') {
-                    script {
-                        // Publicar JUnit (tendencia en Jenkins)
+                script {
+                    // Publicar JUnit para Go tests
+                    dir('monitoring-service') {
                         def haveJUnit = fileExists('unit-junit.xml') || fileExists('integration-junit.xml')
                         if (haveJUnit) {
                             junit allowEmptyResults: true, testResults: 'unit-junit.xml, integration-junit.xml'
                         } else {
-                            echo 'No se encontraron reportes JUnit.'
+                            echo 'No se encontraron reportes JUnit de Go.'
                         }
 
-                        // Publicar cobertura HTML si existe
+                        // Publicar cobertura HTML de Go
                         def hasCoverage = fileExists('unit-coverage.html') || fileExists('integration-coverage.html')
                         if (hasCoverage) {
                             publishHTML([
@@ -120,22 +134,36 @@ pipeline {
                                 keepAll: true,
                                 reportDir: '.',
                                 reportFiles: 'unit-coverage.html,integration-coverage.html',
-                                reportName: 'Test Coverage Reports'
+                                reportName: 'Go Test Coverage Reports'
                             ])
                         } else {
-                            echo 'No se generaron reportes de cobertura HTML.'
+                            echo 'No se generaron reportes de cobertura HTML de Go.'
                         }
+                    }
 
-                        // Publicar Allure si hay resultados y el plugin está disponible
-                        if (fileExists('allure-results')) {
-                            try {
-                                allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
-                            } catch (err) {
-                                echo 'Plugin de Allure no configurado o no disponible. Saltando publicación de Allure.'
-                            }
-                        } else {
-                            echo 'No se encontraron resultados Allure (allure-results). Para habilitarlo, integra un adaptador Allure en las pruebas Go.'
-                        }
+                    // Publicar reportes de Cucumber HTML
+                    def cucumberHtmlExists = fileExists('target/cucumber-reports/cucumber-report.html')
+                    if (cucumberHtmlExists) {
+                        publishHTML([
+                            allowMissing: false,
+                            alwaysLinkToLastBuild: true,
+                            keepAll: true,
+                            reportDir: 'target/cucumber-reports',
+                            reportFiles: 'cucumber-report.html',
+                            reportName: 'Cucumber HTML Report'
+                        ])
+                    }
+
+                    // Publicar reportes Allure (Java/Cucumber)
+                    def allureResultsExist = fileExists('target/allure-results')
+                    if (allureResultsExist) {
+                        allure([
+                            includeProperties: false,
+                            jdk: '',
+                            results: [[path: 'target/allure-results']]
+                        ])
+                    } else {
+                        echo 'No se encontraron resultados Allure para Java/Cucumber.'
                     }
                 }
             }

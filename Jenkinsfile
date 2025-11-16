@@ -1,10 +1,9 @@
 // Declarative Jenkins pipeline to test the api-gateway microservice
 pipeline {
-  agent {
-    dockerfile {
-      filename 'Dockerfile'
-      args '-u root:root'
-    }
+  agent any
+
+  tools {
+    nodejs 'NodeJS'
   }
 
   environment {

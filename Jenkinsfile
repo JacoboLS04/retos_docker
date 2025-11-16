@@ -142,6 +142,22 @@ pipeline {
       echo 'Unit Tests: Check "Test Result" tab'
       echo 'Coverage: Check "Coverage Report" tab or download artifacts'
       echo 'BDD Tests: Download reports/cucumber-report.json from artifacts'
+      
+      // Generate Allure Report from cucumber and junit results
+      script {
+        try {
+          allure([
+            includeProperties: false,
+            jdk: '',
+            properties: [],
+            reportBuildPolicy: 'ALWAYS',
+            results: [[path: 'reports']]
+          ])
+        } catch (err) {
+          echo "Allure report generation failed: ${err}"
+          echo "Make sure Allure plugin is installed and configured in Jenkins"
+        }
+      }
     }
   }
 }

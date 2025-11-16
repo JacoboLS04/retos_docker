@@ -98,6 +98,9 @@ pipeline {
       steps {
         echo '=== Publishing HTML reports ==='
         script {
+          // Archive all test artifacts
+          archiveArtifacts artifacts: 'reports/**', allowEmptyArchive: true
+          
           // Archive coverage HTML if exists
           if (fileExists('coverage/lcov-report/index.html')) {
             archiveArtifacts artifacts: 'coverage/lcov-report/**', allowEmptyArchive: true
@@ -113,7 +116,9 @@ pipeline {
             } catch (ignored) { echo 'HTML Publisher not available for coverage.' }
           } else { echo 'Coverage report not found.' }
 
-          if (fileExists('reports/cucumber-report.html')) {
+          // Publish Cucumber JSON as downloadable artifact
+          if (fileExists('reports/cucumber-report.json')) {
+            echo 'Cucumber JSON available in artifacts'
             try {
               publishHTML(target: [
                 reportDir: 'reports',
@@ -128,40 +133,15 @@ pipeline {
         }
       }
     }
-
-    stage('Generate Allure Results') {
-      steps {
-        echo '=== Preparing Allure results ==='
-        script {
-          sh 'mkdir -p allure-results'
-          
-          // Copy Cucumber JSON for Allure
-          if (fileExists('reports/cucumber-report.json')) {
-            sh 'cp reports/cucumber-report.json allure-results/'
-            echo 'Cucumber JSON copied to allure-results/'
-          } else {
-            echo 'Warning: Cucumber JSON not found'
-          }
-          
-          // Copy JUnit XML for Allure (optional, for unit tests)
-          if (fileExists('reports/junit/junit.xml')) {
-            sh 'cp reports/junit/junit.xml allure-results/'
-            echo 'JUnit XML copied to allure-results/'
-          } else {
-            echo 'Warning: JUnit XML not found'
-          }
-        }
-      }
-    }
   }
 
   post {
     always {
       echo 'Pipeline complete'
-      // Allure plugin will pick up results from allure-results/ directory
-      allure includeProperties: false, 
-             jdk: '', 
-             results: [[path: 'allure-results']]
+      echo '=== Test Results Summary ==='
+      echo 'Unit Tests: Check "Test Result" tab'
+      echo 'Coverage: Check "Coverage Report" tab or download artifacts'
+      echo 'BDD Tests: Download reports/cucumber-report.json from artifacts'
     }
   }
 }

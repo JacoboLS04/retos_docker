@@ -30,7 +30,7 @@ pipeline {
     stage('Unit Tests') {
       steps {
         echo '=== Running Jest unit tests ==='
-        sh 'npx jest --ci --reporters=default --reporters=jest-junit'
+        sh 'npx jest --ci --reporters=default --reporters=jest-junit --env=node --no-coverage'
       }
       post {
         always {

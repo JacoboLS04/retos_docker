@@ -128,11 +128,40 @@ pipeline {
         }
       }
     }
+
+    stage('Generate Allure Results') {
+      steps {
+        echo '=== Preparing Allure results ==='
+        script {
+          sh 'mkdir -p allure-results'
+          
+          // Copy Cucumber JSON for Allure
+          if (fileExists('reports/cucumber-report.json')) {
+            sh 'cp reports/cucumber-report.json allure-results/'
+            echo 'Cucumber JSON copied to allure-results/'
+          } else {
+            echo 'Warning: Cucumber JSON not found'
+          }
+          
+          // Copy JUnit XML for Allure (optional, for unit tests)
+          if (fileExists('reports/junit/junit.xml')) {
+            sh 'cp reports/junit/junit.xml allure-results/'
+            echo 'JUnit XML copied to allure-results/'
+          } else {
+            echo 'Warning: JUnit XML not found'
+          }
+        }
+      }
+    }
   }
 
   post {
     always {
       echo 'Pipeline complete'
+      // Allure plugin will pick up results from allure-results/ directory
+      allure includeProperties: false, 
+             jdk: '', 
+             results: [[path: 'allure-results']]
     }
   }
 }

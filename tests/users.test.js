@@ -5,6 +5,7 @@ const { app, startServer } = require('../src/index');
 let server;
 
 beforeAll(async () => {
+  process.env.NODE_ENV = 'test';
   process.env.AUTH_SERVICE_URL = process.env.AUTH_SERVICE_URL || 'http://auth-service:8080';
   process.env.PROFILE_SERVICE_URL = process.env.PROFILE_SERVICE_URL || 'http://profile-service:8081';
   server = await startServer();

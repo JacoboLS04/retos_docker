@@ -151,10 +151,16 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 3001;
 
 const startServer = async () => {
-	const server = app.listen(PORT, () => console.log(`API Gateway running on port ${PORT}`));
+	const port = process.env.NODE_ENV === 'test' ? 0 : PORT;
+	const server = app.listen(port, () => {
+		const actualPort = server.address().port;
+		console.log(`API Gateway running on port ${actualPort}`);
+	});
 
 	// Initialize rabbitmq in background (best-effort)
-	initializeRabbitMQ().catch((err) => console.error('Initial RabbitMQ connection failed:', err.message));
+	if (process.env.NODE_ENV !== 'test') {
+		initializeRabbitMQ().catch((err) => console.error('Initial RabbitMQ connection failed:', err.message));
+	}
 
 	process.on('SIGTERM', () => {
 		console.log('Received SIGTERM. Shutting down.');

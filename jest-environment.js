@@ -1,22 +1,33 @@
-const NodeEnvironment = require('jest-environment-node').TestEnvironment;
+const { TestEnvironment } = require('jest-environment-node');
 
-class CustomEnvironment extends NodeEnvironment {
+class CustomTestEnvironment extends TestEnvironment {
   constructor(config, context) {
-    super(
-      Object.assign({}, config, {
-        testEnvironmentOptions: Object.assign({}, config.testEnvironmentOptions, {
+    // Patch the config to avoid localStorage issues
+    const patchedConfig = {
+      ...config,
+      projectConfig: {
+        ...config.projectConfig,
+        testEnvironmentOptions: {
+          ...(config.projectConfig?.testEnvironmentOptions || {}),
           url: 'http://localhost',
-        }),
-      }),
-      context
-    );
+        },
+      },
+    };
+    
+    super(patchedConfig, context);
   }
 
   async setup() {
     await super.setup();
-    // Override localStorage to prevent initialization error
-    this.global.localStorage = undefined;
+  }
+
+  async teardown() {
+    await super.teardown();
+  }
+
+  getVmContext() {
+    return super.getVmContext();
   }
 }
 
-module.exports = CustomEnvironment;
+module.exports = CustomTestEnvironment;

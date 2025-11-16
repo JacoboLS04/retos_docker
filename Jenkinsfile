@@ -30,7 +30,8 @@ pipeline {
     stage('Unit Tests') {
       steps {
         echo '=== Running Jest unit tests ==='
-        sh 'NODE_OPTIONS=--dns-result-order=ipv4first npx jest --ci --reporters=default --reporters=jest-junit --no-coverage'
+        // Force using local Jest binary and explicit config so CI can't override environment
+        sh 'export NODE_ENV=test; ./node_modules/.bin/jest --config=jest.config.js --runInBand --reporters=default --reporters=jest-junit --no-coverage'
       }
       post {
         always {
@@ -43,7 +44,8 @@ pipeline {
       steps {
         echo '=== Running Cucumber BDD tests ==='
         sh 'mkdir -p reports'
-        sh 'npm run test:bdd -- --format json:reports/cucumber-report.json --format html:reports/cucumber-report.html'
+        // Force NODE_ENV=test and use local cucumber-js
+        sh 'export NODE_ENV=test; ./node_modules/.bin/cucumber-js --format json:reports/cucumber-report.json --format html:reports/cucumber-report.html'
       }
       post {
         always {

@@ -23,7 +23,7 @@ pipeline {
       steps {
         echo '=== Installing dependencies ==='
         sh 'node --version && npm --version'
-        sh 'npm ci'
+        sh 'npm install --production=false'
       }
     }
 

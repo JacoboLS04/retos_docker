@@ -1,9 +1,10 @@
 // Declarative Jenkins pipeline to test the api-gateway microservice
 pipeline {
-  agent any
-
-  tools {
-    nodejs 'NodeJS'
+  agent {
+    docker {
+      image 'node:20-alpine'
+      args '-u root:root'
+    }
   }
 
   environment {
@@ -16,15 +17,7 @@ pipeline {
     stage('Setup Environment') {
       steps {
         echo '=== Installing system dependencies ==='
-        sh '''
-          if command -v apt-get > /dev/null 2>&1; then
-            apt-get update && apt-get install -y libatomic1 curl
-          elif command -v yum > /dev/null 2>&1; then
-            yum install -y libatomic curl
-          elif command -v apk > /dev/null 2>&1; then
-            apk add --no-cache libatomic curl
-          fi
-        '''
+        sh 'apk add --no-cache curl'
       }
     }
 

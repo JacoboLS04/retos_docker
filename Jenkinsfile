@@ -91,12 +91,24 @@ pipeline {
 
   post {
     always {
-      echo 'Pipeline finished — printing gateway log (tail)'
-      sh 'if [ -f /tmp/gateway.log ]; then tail -n 200 /tmp/gateway.log; fi'
+      script {
+        try {
+          echo 'Pipeline finished — printing gateway log (tail)'
+          sh 'if [ -f /tmp/gateway.log ]; then tail -n 200 /tmp/gateway.log; fi'
+        } catch (Exception e) {
+          echo "Could not read gateway log: ${e.message}"
+        }
+      }
     }
     cleanup {
-      echo 'Cleanup: kill node processes if any (best-effort)'
-      sh "pkill -f 'node src/index.js' || true"
+      script {
+        try {
+          echo 'Cleanup: kill node processes if any (best-effort)'
+          sh "pkill -f 'node src/index.js' || true"
+        } catch (Exception e) {
+          echo "Cleanup warning: ${e.message}"
+        }
+      }
     }
   }
 }

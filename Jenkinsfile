@@ -1,13 +1,6 @@
 // Declarative Jenkins pipeline to test the api-gateway microservice
 pipeline {
-  agent {
-    // Docker agent with Node.js runtime; reuseNode keeps workspace/context for pipeline-level post & late stages
-    docker {
-      image 'node:20'
-      args '-u root:root'
-      reuseNode true
-    }
-  }
+  agent any
 
   environment {
     CI = 'true'
@@ -22,86 +15,92 @@ pipeline {
       }
     }
 
-    stage('Install') {
-      steps {
-        echo 'Installing npm dependencies (dev dependencies included)'
-        sh 'npm ci'
-      }
-    }
-
-    stage('Unit Tests') {
-      steps {
-        echo 'Running Jest unit tests with JUnit reporter'
-        // Use jest-junit reporter to produce JUnit xml
-        sh 'npx jest --ci --reporters=default --reporters=jest-junit'
-      }
-      post {
-        always {
-          junit allowEmptyResults: true, testResults: 'junit.xml'
+    stage('Build and Test') {
+      agent {
+        docker {
+          image 'node:20'
+          args '-u root:root'
+          reuseNode true
         }
       }
-    }
+      stages {
+        stage('Install') {
+          steps {
+            echo '=== Installing dependencies ==='
+            sh 'node --version && npm --version'
+            sh 'npm ci'
+          }
+        }
 
-    stage('BDD Tests') {
-      steps {
-        echo 'Running Cucumber BDD tests (Gherkin scenarios in Spanish)'
-        sh 'npm run test:bdd -- --format json:reports/cucumber-report.json --format html:reports/cucumber-report.html'
-      }
-      post {
-        always {
-          // Publish Cucumber reports if available
-          script {
-            if (fileExists('reports/cucumber-report.json')) {
-              echo 'Cucumber JSON report generated'
-              // Optionally archive the HTML report
-              archiveArtifacts artifacts: 'reports/cucumber-report.html', allowEmptyArchive: true
+        stage('Unit Tests') {
+          steps {
+            echo '=== Running Jest unit tests ==='
+            sh 'npx jest --ci --reporters=default --reporters=jest-junit'
+          }
+          post {
+            always {
+              junit allowEmptyResults: true, testResults: 'junit.xml'
             }
+          }
+        }
+
+        stage('BDD Tests') {
+          steps {
+            echo '=== Running Cucumber BDD tests ==='
+            sh 'mkdir -p reports'
+            sh 'npm run test:bdd -- --format json:reports/cucumber-report.json --format html:reports/cucumber-report.html'
+          }
+          post {
+            always {
+              script {
+                if (fileExists('reports/cucumber-report.html')) {
+                  archiveArtifacts artifacts: 'reports/cucumber-report.html', allowEmptyArchive: true
+                }
+              }
+            }
+          }
+        }
+
+        stage('Start Service') {
+          steps {
+            echo '=== Starting api-gateway for health check ==='
+            sh 'nohup npm start > /tmp/gateway.log 2>&1 & sleep 3'
+          }
+        }
+
+        stage('Health Check') {
+          steps {
+            echo '=== Checking /health endpoint ==='
+            sh '''
+              for i in 1 2 3 4 5; do
+                if curl -sSf http://localhost:${PORT}/health -m 2; then
+                  echo "Health check passed"
+                  exit 0
+                fi
+                echo "Retry $i/5..."
+                sleep 2
+              done
+              echo "Health check failed"
+              tail -n 100 /tmp/gateway.log || true
+              exit 1
+            '''
+          }
+        }
+
+        stage('Cleanup') {
+          steps {
+            echo '=== Cleanup ==='
+            sh 'tail -n 50 /tmp/gateway.log || true'
+            sh "pkill -f 'node src/index.js' || true"
           }
         }
       }
     }
-
-    stage('Start Service') {
-      steps {
-        echo 'Starting api-gateway in background for health check'
-        // Start in background and redirect logs
-        sh 'nohup npm start > /tmp/gateway.log 2>&1 & sleep 2'
-      }
-    }
-
-    stage('Health Check') {
-      steps {
-        echo 'Waiting for /health to respond (retries)'
-        sh '''
-          set -e
-          for i in 1 2 3 4 5; do
-            if curl -sSf http://localhost:${PORT}/health -m 2; then
-              echo 'Health OK'
-              exit 0
-            fi
-            echo 'Waiting for service...'
-            sleep 2
-          done
-          echo 'Health check failed'
-          cat /tmp/gateway.log || true
-          exit 1
-        '''
-      }
-    }
-
-    stage('Collect Logs & Cleanup') {
-      steps {
-        echo 'Tail gateway log (if exists)'
-        sh 'if [ -f /tmp/gateway.log ]; then tail -n 200 /tmp/gateway.log || true; fi'
-        echo 'Cleanup: kill node processes if any (best-effort)'
-        sh "pkill -f 'node src/index.js' || true"
-      }
-    }
   }
-  // Keep post minimal; heavy log & cleanup moved to final stage to ensure workspace context
+
   post {
     always {
-      echo 'Pipeline finished.'
+      echo 'Pipeline complete'
     }
   }
 }

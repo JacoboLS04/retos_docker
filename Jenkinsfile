@@ -1,10 +1,9 @@
 // Declarative Jenkins pipeline to test the api-gateway microservice
 pipeline {
-  agent {
-    docker {
-      image 'node:20-alpine'
-      args '-u root:root'
-    }
+  agent any
+
+  tools {
+    nodejs 'NodeJS'
   }
 
   environment {
@@ -14,13 +13,6 @@ pipeline {
   }
 
   stages {
-    stage('Setup Environment') {
-      steps {
-        echo '=== Installing system dependencies ==='
-        sh 'apk add --no-cache curl'
-      }
-    }
-
     stage('Checkout') {
       steps {
         checkout scm

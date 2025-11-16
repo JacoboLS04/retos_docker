@@ -1,33 +1,21 @@
 const { TestEnvironment } = require('jest-environment-node');
 
-class CustomTestEnvironment extends TestEnvironment {
-  constructor(config, context) {
-    // Patch the config to avoid localStorage issues
-    const patchedConfig = {
-      ...config,
-      projectConfig: {
-        ...config.projectConfig,
-        testEnvironmentOptions: {
-          ...(config.projectConfig?.testEnvironmentOptions || {}),
-          url: 'http://localhost',
-        },
-      },
-    };
-    
-    super(patchedConfig, context);
-  }
-
+class MinimalEnvironment extends TestEnvironment {
   async setup() {
     await super.setup();
-  }
-
-  async teardown() {
-    await super.teardown();
-  }
-
-  getVmContext() {
-    return super.getVmContext();
+    // Ensure localStorage stub still present inside Jest global
+    if (typeof this.global.localStorage === 'undefined') {
+      const store = new Map();
+      this.global.localStorage = {
+        getItem: (k) => (store.has(k) ? store.get(k) : null),
+        setItem: (k, v) => { store.set(k, String(v)); },
+        removeItem: (k) => { store.delete(k); },
+        clear: () => { store.clear(); },
+        key: (i) => Array.from(store.keys())[i] || null,
+        get length() { return store.size; }
+      };
+    }
   }
 }
 
-module.exports = CustomTestEnvironment;
+module.exports = MinimalEnvironment;

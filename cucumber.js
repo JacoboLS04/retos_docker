@@ -6,7 +6,7 @@ module.exports = {
       'progress-bar',
       'html:reports/cucumber-report.html',
       'json:reports/cucumber-report.json',
-      '@shelex/cucumber-allure'
+      'node_modules/allure-cucumberjs'
     ],
     formatOptions: {
       snippetInterface: 'async-await',

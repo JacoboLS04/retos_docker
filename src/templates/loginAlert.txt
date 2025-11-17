@@ -1,0 +1,6 @@
+⚠️ Alerta de Seguridad
+
+Hola {{nombre}},
+
+Detectamos un nuevo inicio de sesión en tu cuenta.
+Si no fuiste tú, cambia tu contraseña inmediatamente.

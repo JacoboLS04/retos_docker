@@ -1,0 +1,81 @@
+Feature: Email Notification Service # features/email_notifications.feature:1
+  As a notification system
+  I want to send email notifications
+  So that users receive important information via email
+  Scenario: Send welcome email successfully                    # features/email_notifications.feature:6
+    Given the email service is available                       # features/steps/email_steps.py:6
+    When I send a welcome email to "user@example.com"          # features/steps/email_steps.py:24
+    Then the email should be sent successfully                 # features/steps/email_steps.py:78
+    And the notification log should record the email as "SENT" # features/steps/email_steps.py:97
+
+  Scenario: Send password reset email                        # features/email_notifications.feature:12
+    Given the email service is available                     # features/steps/email_steps.py:6
+    When I send a password reset email to "user@example.com" # features/steps/email_steps.py:36
+    Then the email should contain a reset link               # features/steps/email_steps.py:84
+    And the notification should be logged                    # features/steps/email_steps.py:108
+
+  Scenario: Handle email service failure                  # features/email_notifications.feature:18
+    Given the email service is unavailable                # features/steps/email_steps.py:16
+    When I attempt to send an email to "user@example.com" # features/steps/email_steps.py:53
+    Then the email should fail to send                    # features/steps/email_steps.py:91
+    And the notification log should record the error      # features/steps/email_steps.py:103
+
+  Scenario: Send email with HTML content                                          # features/email_notifications.feature:24
+    Given the email service is available                                          # features/steps/email_steps.py:6
+    When I send an HTML email to "user@example.com" with content "<h1>Hello</h1>" # features/steps/email_steps.py:65
+    Then the email should be sent successfully                                    # features/steps/email_steps.py:78
+    And the content should be HTML formatted                                      # features/steps/email_steps.py:113
+
+Feature: Health Check Endpoints # features/health_check.feature:1
+  As a system administrator
+  I want to monitor the notification service health
+  So that I can ensure the service is running correctly
+  Scenario: Check overall service health            # features/health_check.feature:6
+    When I request the service health status        # features/steps/health_steps.py:6
+    Then the health status should be "UP"           # features/steps/health_steps.py:27
+    And the response should include readiness check # features/steps/health_steps.py:43
+    And the response should include liveness check  # features/steps/health_steps.py:50
+
+  Scenario: Check service readiness                    # features/health_check.feature:12
+    When I check the readiness endpoint                # features/steps/health_steps.py:13
+    Then the readiness status should be "UP"           # features/steps/health_steps.py:33
+    And the response should include uptime information # features/steps/health_steps.py:57
+
+  Scenario: Check service liveness                       # features/health_check.feature:17
+    When I check the liveness endpoint                   # features/steps/health_steps.py:20
+    Then the liveness status should be "UP"              # features/steps/health_steps.py:38
+    And the response should confirm the service is alive # features/steps/health_steps.py:62
+
+  Scenario: Health check includes version information               # features/health_check.feature:22
+    When I request the service health status                        # features/steps/health_steps.py:6
+    Then the response should include version number                 # features/steps/health_steps.py:69
+    And the response should include uptime in human readable format # features/steps/health_steps.py:75
+
+Feature: SMS Notification Service # features/sms_notifications.feature:1
+  As a notification system
+  I want to send SMS notifications
+  So that users receive urgent alerts on their mobile phones
+  Scenario: Send verification code via SMS                   # features/sms_notifications.feature:6
+    Given the SMS service is available                       # features/steps/sms_steps.py:6
+    When I send a verification code SMS to "+1234567890"     # features/steps/sms_steps.py:24
+    Then the SMS should be delivered successfully            # features/steps/sms_steps.py:81
+    And the notification log should record the SMS as "SENT" # features/steps/sms_steps.py:104
+
+  Scenario: Send login alert via SMS               # features/sms_notifications.feature:12
+    Given the SMS service is available             # features/steps/sms_steps.py:6
+    When I send a login alert SMS to "+9876543210" # features/steps/sms_steps.py:37
+    Then the SMS should be delivered successfully  # features/steps/sms_steps.py:81
+    And the message should indicate a new login    # features/steps/sms_steps.py:87
+
+  Scenario: Reject SMS with invalid phone number           # features/sms_notifications.feature:18
+    Given the SMS service is available                     # features/steps/sms_steps.py:6
+    When I attempt to send SMS to an empty phone number    # features/steps/sms_steps.py:50
+    Then the SMS should not be sent                        # features/steps/sms_steps.py:93
+    And the notification log should record "FAILED" status # features/steps/sms_steps.py:109
+
+  Scenario: Handle SMS service failure                     # features/sms_notifications.feature:24
+    Given the SMS service is unavailable                   # features/steps/sms_steps.py:16
+    When I attempt to send an SMS to "+1234567890"         # features/steps/sms_steps.py:69
+    Then the SMS should fail to send                       # features/steps/sms_steps.py:98
+    And the error should be logged in the notification log # features/steps/sms_steps.py:118
+

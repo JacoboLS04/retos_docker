@@ -33,14 +33,14 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo '📦 Clonando repositorio...'
+                echo 'Clonando repositorio...'
                 checkout scm
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                echo '📥 Instalando dependencias de Node.js...'
+                echo 'Instalando dependencias de Node.js...'
                 script {
                     if (isUnix()) {
                         sh 'npm ci'
@@ -53,7 +53,7 @@ pipeline {
 
         stage('Lint & Build') {
             steps {
-                echo '🔨 Compilando TypeScript...'
+                echo 'Compilando TypeScript...'
                 script {
                     if (isUnix()) {
                         sh 'npm run build'
@@ -66,7 +66,7 @@ pipeline {
 
         stage('Unit Tests') {
             steps {
-                echo '🧪 Ejecutando tests unitarios con Jest...'
+                echo 'Ejecutando tests unitarios con Jest...'
                 script {
                     if (isUnix()) {
                         sh 'npm test -- --ci --coverage --reporters=default --reporters=jest-junit'
@@ -95,7 +95,7 @@ pipeline {
 
         stage('BDD Tests (Cucumber)') {
             steps {
-                echo '🥒 Ejecutando tests BDD con Cucumber...'
+                echo 'Ejecutando tests BDD con Cucumber...'
                 script {
                     // Crear directorio de reportes si no existe
                     if (isUnix()) {
@@ -139,7 +139,7 @@ pipeline {
                 }
             }
             steps {
-                echo '🐳 Construyendo imagen Docker...'
+                echo 'Construyendo imagen Docker...'
                 script {
                     def imageTag = "${env.BUILD_NUMBER}-${env.GIT_COMMIT.take(7)}"
                     if (isUnix()) {
@@ -162,7 +162,7 @@ pipeline {
                 }
             }
             steps {
-                echo '🔒 Escaneando vulnerabilidades...'
+                echo 'Escaneando vulnerabilidades...'
                 script {
                     if (isUnix()) {
                         sh 'npm audit --audit-level=moderate || true'
@@ -178,7 +178,7 @@ pipeline {
                 branch 'develop'
             }
             steps {
-                echo '🚀 Desplegando a entorno de staging...'
+                echo 'Desplegando a entorno de staging...'
                 script {
                     // Aquí va tu lógica de despliegue a staging
                     // Por ejemplo: kubectl, docker-compose, etc.
@@ -195,7 +195,7 @@ pipeline {
                 }
             }
             steps {
-                echo '🚀 Desplegando a producción...'
+                echo 'Desplegando a producción...'
                 input message: '¿Desplegar a producción?', ok: 'Deploy'
                 script {
                     // Aquí va tu lógica de despliegue a producción
@@ -207,15 +207,15 @@ pipeline {
 
     post {
         success {
-            echo '✅ Pipeline ejecutado exitosamente'
+            echo 'Pipeline ejecutado exitosamente'
             // Notificaciones de éxito (Slack, Email, etc.)
         }
         failure {
-            echo '❌ Pipeline falló'
+            echo 'Pipeline falló'
             // Notificaciones de fallo
         }
         always {
-            echo '🧹 Limpieza completada'
+            echo 'Limpieza completada'
         }
     }
 }

@@ -151,29 +151,6 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            when {
-                anyOf {
-                    branch 'main'
-                    branch 'develop'
-                    branch 'master'
-                }
-            }
-            steps {
-                echo 'Construyendo imagen Docker...'
-                script {
-                    def imageTag = "${env.BUILD_NUMBER}-${env.GIT_COMMIT.take(7)}"
-                    if (isUnix()) {
-                        sh "docker build -t notification-orchestrator:${imageTag} ."
-                        sh "docker tag notification-orchestrator:${imageTag} notification-orchestrator:latest"
-                    } else {
-                        bat "docker build -t notification-orchestrator:${imageTag} ."
-                        bat "docker tag notification-orchestrator:${imageTag} notification-orchestrator:latest"
-                    }
-                }
-            }
-        }
-
         stage('Security Scan') {
             when {
                 anyOf {
@@ -193,37 +170,7 @@ pipeline {
                 }
             }
         }
-
-        stage('Deploy to Staging') {
-            when {
-                branch 'develop'
-            }
-            steps {
-                echo 'Desplegando a entorno de staging...'
-                script {
-                    // Aquí va tu lógica de despliegue a staging
-                    // Por ejemplo: kubectl, docker-compose, etc.
-                    echo 'Despliegue a staging configurado según tu infraestructura'
-                }
-            }
-        }
-
-        stage('Deploy to Production') {
-            when {
-                anyOf {
-                    branch 'main'
-                    branch 'master'
-                }
-            }
-            steps {
-                echo 'Desplegando a producción...'
-                input message: '¿Desplegar a producción?', ok: 'Deploy'
-                script {
-                    // Aquí va tu lógica de despliegue a producción
-                    echo 'Despliegue a producción configurado según tu infraestructura'
-                }
-            }
-        }
+        
     }
 
     post {

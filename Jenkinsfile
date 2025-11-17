@@ -8,8 +8,6 @@ pipeline {
 
     tools {
         go 'go-1.21'
-        maven 'Maven 3.9'
-        jdk 'JDK 17'
     }
 
     environment {
@@ -105,10 +103,10 @@ pipeline {
             steps {
                 script {
                     echo "Compilando proyecto Java Spring Boot..."
-                    sh 'mvn clean compile'
+                    sh './mvnw clean compile'
                     
                     echo "Ejecutando tests de Cucumber con generación de reportes Allure..."
-                    sh 'mvn test'
+                    sh './mvnw test'
                 }
             }
         }

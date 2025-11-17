@@ -10,8 +10,6 @@ pipeline {
         DB_HOST = 'localhost'
         DB_PORT = '5432'
         DB_NAME = 'notification_test'
-        DB_USER = credentials('db-user')
-        DB_PASSWORD = credentials('db-password')
         
         // Configuración de RabbitMQ para tests
         RABBIT_URL = 'amqp://guest:guest@localhost:5672'
@@ -77,18 +75,24 @@ pipeline {
             }
             post {
                 always {
-                    // Publicar resultados de tests unitarios
-                    junit 'junit.xml'
-                    // Publicar cobertura de código
-                    publishHTML([
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: 'coverage/lcov-report',
-                        reportFiles: 'index.html',
-                        reportName: 'Jest Coverage Report',
-                        reportTitles: 'Code Coverage'
-                    ])
+                    script {
+                        // Publicar resultados de tests unitarios si existen
+                        if (fileExists('junit.xml')) {
+                            junit allowEmptyResults: true, testResults: 'junit.xml'
+                        }
+                        // Publicar cobertura de código si existe
+                        if (fileExists('coverage/lcov-report/index.html')) {
+                            publishHTML([
+                                allowMissing: true,
+                                alwaysLinkToLastBuild: true,
+                                keepAll: true,
+                                reportDir: 'coverage/lcov-report',
+                                reportFiles: 'index.html',
+                                reportName: 'Jest Coverage Report',
+                                reportTitles: 'Code Coverage'
+                            ])
+                        }
+                    }
                 }
             }
         }
@@ -109,23 +113,29 @@ pipeline {
             }
             post {
                 always {
-                    // Publicar reporte HTML de Cucumber
-                    publishHTML([
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: 'reports',
-                        reportFiles: 'cucumber-report.html',
-                        reportName: 'Cucumber BDD Report',
-                        reportTitles: 'BDD Test Results'
-                    ])
-                    
-                    // Publicar resultados JSON de Cucumber para métricas
-                    cucumber(
-                        fileIncludePattern: '**/cucumber-report.json',
-                        sortingMethod: 'ALPHABETICAL',
-                        trendsLimit: 100
-                    )
+                    script {
+                        // Publicar reporte HTML de Cucumber si existe
+                        if (fileExists('reports/cucumber-report.html')) {
+                            publishHTML([
+                                allowMissing: true,
+                                alwaysLinkToLastBuild: true,
+                                keepAll: true,
+                                reportDir: 'reports',
+                                reportFiles: 'cucumber-report.html',
+                                reportName: 'Cucumber BDD Report',
+                                reportTitles: 'BDD Test Results'
+                            ])
+                        }
+                        
+                        // Publicar resultados JSON de Cucumber para métricas si existe
+                        if (fileExists('reports/cucumber-report.json')) {
+                            cucumber(
+                                fileIncludePattern: '**/cucumber-report.json',
+                                sortingMethod: 'ALPHABETICAL',
+                                trendsLimit: 100
+                            )
+                        }
+                    }
                 }
             }
         }

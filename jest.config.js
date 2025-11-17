@@ -1,51 +1,16 @@
 export default {
-  preset: 'ts-jest/presets/default-esm',
+  preset: 'ts-jest',
   testEnvironment: 'node',
-  extensionsToTreatAsEsm: ['.ts'],
+  testMatch: ['**/__tests__/**/*.test.ts'],
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
-  transformIgnorePatterns: [
-    'node_modules/(?!(uuid)/)', // Transform uuid module
-  ],
-  globals: {
-    'ts-jest': {
-      useESM: true,
-      tsconfig: {
-        module: 'ESNext',
-        target: 'ES2022',
-        types: ['jest', 'node'],
-        lib: ['ES2022'],
-        moduleResolution: 'node',
-      },
-    },
-  },
-  transform: {
-    '^.+\\.ts$': [
-      'ts-jest',
-      {
-        useESM: true,
-        tsconfig: {
-          module: 'ESNext',
-          target: 'ES2022',
-          types: ['jest', 'node'],
-          lib: ['ES2022'],
-          moduleResolution: 'node',
-        },
-      },
-    ],
-  },
-  testMatch: ['**/__tests__/**/*.test.ts'],
   collectCoverageFrom: [
     'src/**/*.ts',
     '!src/**/*.d.ts',
     '!src/index.ts',
     '!src/prueba.ts',
   ],
-  testEnvironmentOptions: {
-    customExportConditions: ['node', 'node-addons'],
-    url: 'http://localhost',
-  },
   reporters: [
     'default',
     ['jest-junit', {
@@ -59,4 +24,14 @@ export default {
   ],
   maxWorkers: 1,
   testTimeout: 10000,
+  globals: {
+    'ts-jest': {
+      tsconfig: {
+        module: 'commonjs',
+        target: 'ES2022',
+        types: ['jest', 'node'],
+        esModuleInterop: true,
+      },
+    },
+  },
 };

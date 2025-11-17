@@ -67,9 +67,9 @@ pipeline {
                 echo 'Ejecutando tests unitarios con Jest...'
                 script {
                     if (isUnix()) {
-                        sh 'npm test -- --ci --coverage --reporters=default --reporters=jest-junit'
+                        sh 'NODE_OPTIONS=--no-experimental-fetch npm test -- --ci --coverage --reporters=default --reporters=jest-junit --runInBand'
                     } else {
-                        bat 'npm test -- --ci --coverage --reporters=default --reporters=jest-junit'
+                        bat 'set NODE_OPTIONS=--no-experimental-fetch && npm test -- --ci --coverage --reporters=default --reporters=jest-junit --runInBand'
                     }
                 }
             }

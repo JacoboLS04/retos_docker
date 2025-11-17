@@ -102,6 +102,9 @@ pipeline {
         stage('Java Build & Test') {
             steps {
                 script {
+                    echo "Dando permisos de ejecución a Maven Wrapper..."
+                    sh 'chmod +x mvnw'
+                    
                     echo "Compilando proyecto Java Spring Boot..."
                     sh './mvnw clean compile'
                     

@@ -215,8 +215,7 @@ pipeline {
             // Notificaciones de fallo
         }
         always {
-            echo '🧹 Limpiando workspace...'
-            cleanWs()
+            echo '🧹 Limpieza completada'
         }
     }
 }

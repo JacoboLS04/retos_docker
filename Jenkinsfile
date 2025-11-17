@@ -103,9 +103,10 @@ pipeline {
                 script {
                     // Crear directorio de reportes si no existe
                     if (isUnix()) {
-                        sh 'mkdir -p reports allure-results'
+                        sh 'rm -rf allure-results && mkdir -p reports allure-results'
                         sh 'npm run test:bdd || true'
                     } else {
+                        bat 'if exist allure-results rmdir /s /q allure-results'
                         bat 'if not exist reports mkdir reports'
                         bat 'if not exist allure-results mkdir allure-results'
                         bat 'npm run test:bdd || exit 0'
@@ -151,14 +152,7 @@ pipeline {
             }
         }
 
-        stage('Security Scan') {
-            when {
-                anyOf {
-                    branch 'main'
-                    branch 'develop'
-                    branch 'master'
-                }
-            }
+        stage('Security Scan') {            
             steps {
                 echo 'Escaneando vulnerabilidades...'
                 script {

@@ -44,6 +44,7 @@ export default {
   ],
   testEnvironmentOptions: {
     customExportConditions: ['node', 'node-addons'],
+    url: 'http://localhost',
   },
   reporters: [
     'default',
@@ -56,4 +57,6 @@ export default {
       usePathForSuiteName: true,
     }],
   ],
+  maxWorkers: 1,
+  testTimeout: 10000,
 };

@@ -5,12 +5,10 @@ module.exports = {
     format: [
       'progress-bar',
       'html:reports/cucumber-report.html',
-      'json:reports/cucumber-report.json',
-      'node_modules/allure-cucumberjs'
+      'json:reports/cucumber-report.json'
     ],
     formatOptions: {
-      snippetInterface: 'async-await',
-      resultsDir: 'allure-results'
+      snippetInterface: 'async-await'
     },
     publishQuiet: true
   }

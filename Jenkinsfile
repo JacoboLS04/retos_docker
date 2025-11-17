@@ -103,11 +103,10 @@ pipeline {
                 script {
                     // Crear directorio de reportes si no existe
                     if (isUnix()) {
-                        sh 'mkdir -p reports allure-results'
+                        sh 'mkdir -p reports'
                         sh 'npm run test:bdd || true'
                     } else {
                         bat 'if not exist reports mkdir reports'
-                        bat 'if not exist allure-results mkdir allure-results'
                         bat 'npm run test:bdd || exit 0'
                     }
                 }
@@ -135,15 +134,6 @@ pipeline {
                                 sortingMethod: 'ALPHABETICAL',
                                 trendsLimit: 100
                             )
-                        }
-                        // Publicar reporte Allure si existen resultados
-                        if (fileExists('allure-results')) {
-                            allure([
-                                includeProperties: false,
-                                jdk: '',
-                                results: [[path: 'allure-results']],
-                                reportBuildPolicy: 'ALWAYS'
-                            ])
                         }
                     }
                 }

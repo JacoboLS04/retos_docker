@@ -18,7 +18,7 @@ pipeline {
     }
 
     tools {
-        nodejs 'NodeJS-20' // Nombre configurado en Jenkins Global Tool Configuration
+        nodejs 'NodeJS'// Nombre configurado en Jenkins Global Tool Configuration
     }
 
     options {

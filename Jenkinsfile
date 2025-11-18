@@ -45,10 +45,9 @@ pipeline {
             steps {
                 echo 'Setting up Python virtual environment...'
                 sh '''
-                    apt-get update -qq
-                    apt-get install -y -qq python3 python3-pip python3-venv > /dev/null 2>&1
                     python3 --version
                     pip3 --version
+                    pip3 install --upgrade pip
                 '''
             }
         }

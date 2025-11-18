@@ -20,6 +20,7 @@ pipeline {
         TWILIO_ACCOUNT_SID = 'test-sid'
         TWILIO_AUTH_TOKEN = 'test-token'
         TWILIO_PHONE = '+1234567890'
+        PATH = "/var/jenkins_home/.local/bin:${env.PATH}"
     }
     
     options {

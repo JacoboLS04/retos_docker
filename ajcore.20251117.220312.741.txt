@@ -1,0 +1,308 @@
+---- AspectJ Properties ---
+AspectJ Compiler 1.9.22.1 built on Friday May 10, 2024 at 23:23:16 PDT
+---- Dump Properties ---
+Dump file: ajcore.20251117.220312.741.txt
+Dump reason: abort
+Dump on exception: true
+Dump at exit condition: abort
+---- System Properties ---
+java.specification.version=21
+sun.cpu.isalist=amd64
+sun.jnu.encoding=Cp1252
+org.gradle.test.worker=1
+java.class.path=C:\\Users\\londg\\.gradle\\caches\\8.14.3\\workerMain\\gradle-worker.jar;C:\\Users\\londg\\IdeaProjects\\microservicios\\gestion-perfiles\\build\\classes\\java\\test;C:\\Users\\londg\\IdeaProjects\\microservicios\\gestion-perfiles\\build\\resources\\test;C:\\Users\\londg\\IdeaProjects\\microservicios\\gestion-perfiles\\build\\classes\\java\\main;C:\\Users\\londg\\IdeaProjects\\microservicios\\gestion-perfiles\\build\\resources\\main;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.boot\\spring-boot-starter-web\\3.3.5\\51cc6cd5fb15f4eecfadea4ac689ed290e65c2cc\\spring-boot-starter-web-3.3.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.boot\\spring-boot-starter-security\\3.3.5\\662a0cd1672e55cdde5f8af1be79e18653e13c3d\\spring-boot-starter-security-3.3.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.boot\\spring-boot-starter-validation\\3.3.5\\5f32f28b5573c024c9aa16369914d8f2760bd38e\\spring-boot-starter-validation-3.3.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.boot\\spring-boot-starter-data-jpa\\3.3.5\\3fbef698f3a3c43c60ed493f96b11471f7d01ec7\\spring-boot-starter-data-jpa-3.3.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.boot\\spring-boot-starter-oauth2-resource-server\\3.3.5\\be280e981b0e751b844d61f6a442062c5e94e55e\\spring-boot-starter-oauth2-resource-server-3.3.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springdoc\\springdoc-openapi-starter-webmvc-ui\\2.6.0\\2dddebb56441dbaa1009c4de434a83c65596f6ad\\springdoc-openapi-starter-webmvc-ui-2.6.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\com.h2database\\h2\\2.2.224\\7bdade27d8cd197d9b5ce9dc251f41d2edc5f7ad\\h2-2.2.224.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.boot\\spring-boot-starter-test\\3.3.5\\b4b61da11affe88867c452b3b2c5277cb50b209\\spring-boot-starter-test-3.3.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.security\\spring-security-test\\6.3.4\\447b623685aa1becacae0d12367186fc2966b9f1\\spring-security-test-6.3.4.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.cucumber\\cucumber-java\\7.18.1\\d82edc1b8c38e0582fdfceabb66d080eb706b734\\cucumber-java-7.18.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.cucumber\\cucumber-junit-platform-engine\\7.18.1\\afaf4c438437db351913d47770cb6e39d7a7a619\\cucumber-junit-platform-engine-7.18.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.cucumber\\cucumber-spring\\7.18.1\\13329bdc9d426197f8fd5fec79350b6a2e5e30b2\\cucumber-spring-7.18.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.junit.jupiter\\junit-jupiter\\5.10.5\\cbf98926c44240c9ca1519a20e58722be6d6a44a\\junit-jupiter-5.10.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.junit.jupiter\\junit-jupiter-engine\\5.10.5\\e234785788419ffdfc4b65474b2081c0a9f7e77d\\junit-jupiter-engine-5.10.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.junit.platform\\junit-platform-suite-engine\\1.10.5\\8823bdb12e7cf7e6a342f54013939c27fa77db8\\junit-platform-suite-engine-1.10.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.junit.platform\\junit-platform-suite-commons\\1.10.5\\383d288a6b9e6f6b191a7dbc1e4d03c2707bd8d4\\junit-platform-suite-commons-1.10.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.mockito\\mockito-junit-jupiter\\5.11.0\\8e658dd339f40305ed4293db25545b5df98b171b\\mockito-junit-jupiter-5.11.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.junit.jupiter\\junit-jupiter-params\\5.10.5\\e19d95e190aedb81c883d50cc05b1860400d957c\\junit-jupiter-params-5.10.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.qameta.allure\\allure-junit-platform\\2.24.0\\a9cbe33ec88c20b09d74e15e70e633d69c6d98ea\\allure-junit-platform-2.24.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.junit.jupiter\\junit-jupiter-api\\5.10.5\\a5c09855b0087daaddaa5faa5100ab2555d5e111\\junit-jupiter-api-5.10.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.qameta.allure\\allure-junit5\\2.24.0\\15315dae33abf784c4185719172d541dfde3ceb9\\allure-junit5-2.24.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.junit.platform\\junit-platform-launcher\\1.10.5\\3b16b91a447cf687c968ee23d21827534fdac5a2\\junit-platform-launcher-1.10.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.junit.platform\\junit-platform-engine\\1.10.5\\7db4b98a955a2686d893a8a209591f029c438b44\\junit-platform-engine-1.10.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.junit.platform\\junit-platform-suite-api\\1.10.5\\d1a341b306cfd43c5d52658f21804f918fca367b\\junit-platform-suite-api-1.10.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.junit.platform\\junit-platform-commons\\1.10.5\\6d1985c5eece30fb9faafe9bf1f5e005ac3d0fcc\\junit-platform-commons-1.10.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.junit.platform\\junit-platform-suite\\1.10.2\\3234255109e0654a8785dcdbe1d35f8efe9fa77c\\junit-platform-suite-1.10.2.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.qameta.allure\\allure-cucumber7-jvm\\2.24.0\\629a4a3a5e974823ad8b3986170fce84de39c133\\allure-cucumber7-jvm-2.24.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.boot\\spring-boot-starter-json\\3.3.5\\a92dd0bc808c9de278bc62bc37db4e409027657a\\spring-boot-starter-json-3.3.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.boot\\spring-boot-starter-aop\\3.3.5\\872157ff7d70996d6302f61aad1b176b4905a169\\spring-boot-starter-aop-3.3.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.boot\\spring-boot-starter-jdbc\\3.3.5\\64c2c63ff90dffcd6996b3cd11e5d7e9805884d2\\spring-boot-starter-jdbc-3.3.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.boot\\spring-boot-starter\\3.3.5\\16b7a9acf1918a8f763e871ada3794e9ffd4a980\\spring-boot-starter-3.3.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.boot\\spring-boot-starter-tomcat\\3.3.5\\9fcf404e2efc06612af0c194e6d4f4162c6aac24\\spring-boot-starter-tomcat-3.3.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springdoc\\springdoc-openapi-starter-webmvc-api\\2.6.0\\d235c2989247641e5dfe764d7add3a11e4d54a5f\\springdoc-openapi-starter-webmvc-api-2.6.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework\\spring-webmvc\\6.1.14\\804478303aac6f91ea566efd4fef3dc06380528a\\spring-webmvc-6.1.14.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.security\\spring-security-oauth2-resource-server\\6.3.4\\12631d47bee1d9053df5bf357b08aed677b6a11f\\spring-security-oauth2-resource-server-6.3.4.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.security\\spring-security-web\\6.3.4\\d0b9e554c0cc3291086a53e3537935b820d82742\\spring-security-web-6.3.4.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.security\\spring-security-oauth2-jose\\6.3.4\\ad94da5eee18fae55d56090616d8898897ea1507\\spring-security-oauth2-jose-6.3.4.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.security\\spring-security-oauth2-core\\6.3.4\\b6cda68ead6bdb42ba2bec93439214fbd84d43ad\\spring-security-oauth2-core-6.3.4.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework\\spring-web\\6.1.14\\b45eaad7df4f37ce224acdcb555a6a3dd5c246b2\\spring-web-6.1.14.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.security\\spring-security-config\\6.3.4\\ef05a0653492b58f3cfb11f5ee4b69007e259f57\\spring-security-config-6.3.4.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.data\\spring-data-jpa\\3.3.5\\72a3aa723e1008cc6216f94e79e2de721fc4c513\\spring-data-jpa-3.3.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.security\\spring-security-core\\6.3.4\\b090f940b1db00f58f5cad0675ce82670cc75904\\spring-security-core-6.3.4.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.boot\\spring-boot-test-autoconfigure\\3.3.5\\c70d4805d5f0a39476326cf3e0dbfcf57d861c8d\\spring-boot-test-autoconfigure-3.3.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.boot\\spring-boot-test\\3.3.5\\91db886b7a202ae6f5a597f871b0c832ee1f78b3\\spring-boot-test-3.3.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springdoc\\springdoc-openapi-starter-common\\2.6.0\\c8cf5fbd1f9e4c410d67f1de27dfc3529de13620\\springdoc-openapi-starter-common-2.6.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.boot\\spring-boot-autoconfigure\\3.3.5\\1efbbd46eeef054986796200313f4bb0d53a7268\\spring-boot-autoconfigure-3.3.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.boot\\spring-boot\\3.3.5\\1a0d1dc425d445503bd01c9aa3683aaebc524e3b\\spring-boot-3.3.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework\\spring-context\\6.1.14\\b3d96fb4310376a608465c3544b7cfb790293787\\spring-context-6.1.14.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework\\spring-aop\\6.1.14\\3d5002d4c415c1ff4720f214c804d3d7e7d10111\\spring-aop-6.1.14.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.apache.tomcat.embed\\tomcat-embed-el\\10.1.31\\ab21108d69bb42160eff7b905f606a1d0c21ae67\\tomcat-embed-el-10.1.31.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.hibernate.validator\\hibernate-validator\\8.0.1.Final\\e49e116b3d3928060599b176b3538bb848718e95\\hibernate-validator-8.0.1.Final.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.hibernate.orm\\hibernate-core\\6.5.3.Final\\1e23c320a5d10f5eaecbd23095fca5c5c83c1fb5\\hibernate-core-6.5.3.Final.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework\\spring-aspects\\6.1.14\\cd9d1c53457ac159e1eba3f342cbd6bf8dad4027\\spring-aspects-6.1.14.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.webjars\\swagger-ui\\5.17.14\\7c746d197424eb721b4e08fcaa9e85231662d81f\\swagger-ui-5.17.14.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\com.jayway.jsonpath\\json-path\\2.9.0\\37fe2217f577b0b68b18e62c4d17a8858ecf9b69\\json-path-2.9.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.glassfish.jaxb\\jaxb-runtime\\4.0.5\\ca84c2a7169b5293e232b9d00d1e4e36d4c3914a\\jaxb-runtime-4.0.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.glassfish.jaxb\\jaxb-core\\4.0.5\\7b4b11ea5542eea4ad55e1080b23be436795b3\\jaxb-core-4.0.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.swagger.core.v3\\swagger-core-jakarta\\2.2.22\\9ed5daaaa1c94c9a6b56c058c9d1b3190044a2e2\\swagger-core-jakarta-2.2.22.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\jakarta.xml.bind\\jakarta.xml.bind-api\\4.0.2\\6cd5a999b834b63238005b7144136379dc36cad2\\jakarta.xml.bind-api-4.0.2.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\net.minidev\\json-smart\\2.5.1\\4c11d2808d009132dfbbf947ebf37de6bf266c8e\\json-smart-2.5.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.assertj\\assertj-core\\3.25.3\\792b270e73aa1cfc28fa135be0b95e69ea451432\\assertj-core-3.25.3.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.awaitility\\awaitility\\4.2.2\\7336242073ebf83fe034e42b46a403c5501b63c9\\awaitility-4.2.2.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.hamcrest\\hamcrest\\2.2\\1820c0968dba3a11a1b30669bb1f01978a91dedc\\hamcrest-2.2.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.mockito\\mockito-core\\5.11.0\\e4069fa4f4ff2c94322cfec5f2e45341c6c70aff\\mockito-core-5.11.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.skyscreamer\\jsonassert\\1.5.3\\aaa43e0823d2a0e106e8754d6a9c4ab24e05e9bc\\jsonassert-1.5.3.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework\\spring-test\\6.1.14\\8fbac6fc57f6ca7b429fb02b7aa3caea7e1a281d\\spring-test-6.1.14.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework\\spring-orm\\6.1.14\\fc113b824cb790ae320cc7f97803d92cbb9ebf6e\\spring-orm-6.1.14.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework\\spring-jdbc\\6.1.14\\30ecdc7b9031553835ae16fa786fb24297adc857\\spring-jdbc-6.1.14.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.data\\spring-data-commons\\3.3.5\\fb640c93121dc1e57b63d9315f646cd828f7368d\\spring-data-commons-3.3.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework\\spring-tx\\6.1.14\\f6cc1a08472e8ac51298a26bbe0f8b3d47d43175\\spring-tx-6.1.14.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework\\spring-beans\\6.1.14\\be71b919145e20fb7f38c81467d7d0f1c09ad1bd\\spring-beans-6.1.14.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework\\spring-expression\\6.1.14\\495646d4968fb90aa97bc05a7d298d0c32898a1d\\spring-expression-6.1.14.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework\\spring-core\\6.1.14\\45d2d808015bf6c5411e457fa09e843042dc3a76\\spring-core-6.1.14.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.xmlunit\\xmlunit-core\\2.9.1\\e5833662d9a1279a37da3ef6f62a1da29fcd68c4\\xmlunit-core-2.9.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.cucumber\\cucumber-core\\7.18.1\\29f9014ecc26c1719a7305f7416ca7a5dcdb24b\\cucumber-core-7.18.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.cucumber\\cucumber-expressions\\17.1.0\\ebe23b3f172ea9ae8217e55545b90b45df43c1ce\\cucumber-expressions-17.1.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.cucumber\\datatable\\7.18.1\\f698b157fd0024ca5224aca0b98ed1eab301c3eb\\datatable-7.18.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.cucumber\\cucumber-gherkin-messages\\7.18.1\\b588079f3c5f2b798355500ca4a045e62b7b63a\\cucumber-gherkin-messages-7.18.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.cucumber\\cucumber-gherkin\\7.18.1\\ea4a01c03cd8fd73b65dfca4f176c52ca9e99dea\\cucumber-gherkin-7.18.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.cucumber\\cucumber-plugin\\7.18.1\\1b5d95ba2c3c0f01e724df50a2782e68366c81c4\\cucumber-plugin-7.18.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.cucumber\\docstring\\7.18.1\\bb722fec1d3a0ba96a048542a75e995a923f747a\\docstring-7.18.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.apiguardian\\apiguardian-api\\1.1.2\\a231e0d844d2721b0fa1b238006d15c6ded6842a\\apiguardian-api-1.1.2.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.qameta.allure\\allure-test-filter\\2.24.0\\fbbf36a6da1675ce3f666cae6bb439bf0aadd5a1\\allure-test-filter-2.24.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.qameta.allure\\allure-java-commons\\2.24.0\\9deef1019dd7eeb302dd2585259b33b19bb1fa53\\allure-java-commons-2.24.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.cucumber\\gherkin\\28.0.0\\3bcbf23f3940f8f2c8cdb42c13356d230c2b40b5\\gherkin-28.0.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.boot\\spring-boot-starter-logging\\3.3.5\\de318d4baa64f02631accf51d708e906b304b4cc\\spring-boot-starter-logging-3.3.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\jakarta.annotation\\jakarta.annotation-api\\2.1.1\\48b9bda22b091b1f48b13af03fe36db3be6e1ae3\\jakarta.annotation-api-2.1.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\com.fasterxml.jackson.datatype\\jackson-datatype-jdk8\\2.17.2\\efd3dd0e1d0db8bc72abbe71c15e697bb83b4b45\\jackson-datatype-jdk8-2.17.2.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\com.fasterxml.jackson.datatype\\jackson-datatype-jsr310\\2.17.2\\267b85e9ba2892a37be6d80aa9ca1438a0d8c210\\jackson-datatype-jsr310-2.17.2.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\com.fasterxml.jackson.module\\jackson-module-parameter-names\\2.17.2\\d27b9f95ccce98984c1ba58d61c5a9c072b1ad95\\jackson-module-parameter-names-2.17.2.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\com.fasterxml.jackson.core\\jackson-databind\\2.17.2\\e6deb029e5901e027c129341fac39e515066b68c\\jackson-databind-2.17.2.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.swagger.core.v3\\swagger-models-jakarta\\2.2.22\\bc2809b2efa1f7b062bc9668304a84b198fececd\\swagger-models-jakarta-2.2.22.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\com.fasterxml.jackson.core\\jackson-annotations\\2.17.2\\147b7b9412ffff24339f8aba080b292448e08698\\jackson-annotations-2.17.2.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\com.fasterxml.jackson.core\\jackson-core\\2.17.2\\969a35cb35c86512acbadcdbbbfb044c877db814\\jackson-core-2.17.2.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\com.fasterxml.jackson.dataformat\\jackson-dataformat-yaml\\2.17.2\\78d2c73dbec62044d7cf3b544b2e0d24a1a093b0\\jackson-dataformat-yaml-2.17.2.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.yaml\\snakeyaml\\2.2\\3af797a25458550a16bf89acc8e4ab2b7f2bfce0\\snakeyaml-2.2.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.apache.tomcat.embed\\tomcat-embed-websocket\\10.1.31\\6f755a475e44ece496ae3402de0c6c2dbea63921\\tomcat-embed-websocket-10.1.31.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.apache.tomcat.embed\\tomcat-embed-core\\10.1.31\\a91cc0a95157228d9cccb1a9e8fb9c77c048c937\\tomcat-embed-core-10.1.31.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.micrometer\\micrometer-observation\\1.13.6\\8650b5372db17587f1271cd130beafa93d7eb573\\micrometer-observation-1.13.6.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\jakarta.validation\\jakarta.validation-api\\3.0.2\\92b6631659ba35ca09e44874d3eb936edfeee532\\jakarta.validation-api-3.0.2.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.jboss.logging\\jboss-logging\\3.5.3.Final\\c88fc1d8a96d4c3491f55d4317458ccad53ca663\\jboss-logging-3.5.3.Final.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\com.fasterxml\\classmate\\1.7.0\\e98374da1f2143ac8e6e0a95036994bb19137a3\\classmate-1.7.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.aspectj\\aspectjweaver\\1.9.22.1\\bca243d0af0db4758fbae45c5f4995cb5dabb612\\aspectjweaver-1.9.22.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\com.zaxxer\\HikariCP\\5.1.0\\8c96e36c14461fc436bb02b264b96ef3ca5dca8c\\HikariCP-5.1.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\jakarta.persistence\\jakarta.persistence-api\\3.1.0\\66901fa1c373c6aff65c13791cc11da72060a8d6\\jakarta.persistence-api-3.1.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\jakarta.transaction\\jakarta.transaction-api\\2.0.1\\51a520e3fae406abb84e2e1148e6746ce3f80a1a\\jakarta.transaction-api-2.0.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.hibernate.common\\hibernate-commons-annotations\\6.0.6.Final\\77a5f94b56d49508e0ee334751db5b78e5ccd50c\\hibernate-commons-annotations-6.0.6.Final.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.smallrye\\jandex\\3.1.2\\a6c1c89925c7df06242b03dddb353116ceb9584c\\jandex-3.1.2.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\net.bytebuddy\\byte-buddy\\1.14.19\\4c0c637b8f47dc08f89240e6f59900011752c97b\\byte-buddy-1.14.19.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\jakarta.inject\\jakarta.inject-api\\2.0.1\\4c28afe1991a941d7702fe1362c365f0a8641d1e\\jakarta.inject-api-2.0.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.antlr\\antlr4-runtime\\4.13.0\\5a02e48521624faaf5ff4d99afc88b01686af655\\antlr4-runtime-4.13.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\ch.qos.logback\\logback-classic\\1.5.11\\c4473fb51fea6682ad477cf3c2206b8b9623b9d8\\logback-classic-1.5.11.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.apache.logging.log4j\\log4j-to-slf4j\\2.23.1\\425ad1eb8a39904d2830e907a324e956fb456520\\log4j-to-slf4j-2.23.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.slf4j\\jul-to-slf4j\\2.0.16\\6d57da3e961daac65bcca0dd3def6cd11e48a24a\\jul-to-slf4j-2.0.16.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.slf4j\\slf4j-api\\2.0.16\\172931663a09a1fa515567af5fbef00897d3c04\\slf4j-api-2.0.16.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework.security\\spring-security-crypto\\6.3.4\\220656844844c23d07e8f0105e75c74530db2657\\spring-security-crypto-6.3.4.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\com.nimbusds\\nimbus-jose-jwt\\9.37.3\\700f71ffefd60c16bd8ce711a956967ea9071cec\\nimbus-jose-jwt-9.37.3.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.eclipse.angus\\angus-activation\\2.0.2\\41f1e0ddd157c856926ed149ab837d110955a9fc\\angus-activation-2.0.2.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\jakarta.activation\\jakarta.activation-api\\2.1.3\\fa165bd70cda600368eee31555222776a46b881f\\jakarta.activation-api-2.1.3.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\net.minidev\\accessors-smart\\2.5.1\\19b820261eb2e7de7d5bde11d1c06e4501dd7e5f\\accessors-smart-2.5.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\net.bytebuddy\\byte-buddy-agent\\1.14.19\\154da3a65b4f4a909d3e5bdec55d1b2b4cbb6ce1\\byte-buddy-agent-1.14.19.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.objenesis\\objenesis\\3.3\\1049c09f1de4331e8193e579448d0916d75b7631\\objenesis-3.3.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\com.vaadin.external.google\\android-json\\0.0.20131108.vaadin1\\fa26d351fe62a6a17f5cda1287c1c6110dec413f\\android-json-0.0.20131108.vaadin1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.springframework\\spring-jcl\\6.1.14\\842b2b24a375efd79af436860d22ba4e0082ff4b\\spring-jcl-6.1.14.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.cucumber\\testng-xml-formatter\\0.2.0\\c054063da9d923e3649e1ec385cea84af6dd712b\\testng-xml-formatter-0.2.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.cucumber\\html-formatter\\21.4.1\\b716c76781607ea1ae97d3c88df4b08ec8713884\\html-formatter-21.4.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.cucumber\\junit-xml-formatter\\0.5.0\\a3ecc37ce04a66ec679f9d1710a6891d2c703cc3\\junit-xml-formatter-0.5.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.cucumber\\query\\12.2.0\\1d8c90bc9cd4375dedd5a04b89cf12cd153714b0\\query-12.2.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.cucumber\\messages\\24.1.0\\bbf2037b6254713bb72fe384fbaf472e6e50eb9a\\messages-24.1.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.cucumber\\tag-expressions\\6.1.0\\af582eba20203fd376466b657f703932dcbe3d56\\tag-expressions-6.1.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.cucumber\\ci-environment\\10.0.1\\222cecc535529f093d3364856bfe5f8d343c4248\\ci-environment-10.0.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.opentest4j\\opentest4j\\1.3.0\\152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e\\opentest4j-1.3.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.qameta.allure\\allure-model\\2.24.0\\d9a7bab8d4cc35d70d65e7f6e2e32b7c005a05ae\\allure-model-2.24.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.micrometer\\micrometer-commons\\1.13.6\\224f398df08315a8f9cda21fcb4f062d24da4a49\\micrometer-commons-1.13.6.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\com.github.stephenc.jcip\\jcip-annotations\\1.0-1\\ef31541dd28ae2cefdd17c7ebf352d93e9058c63\\jcip-annotations-1.0-1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.ow2.asm\\asm\\9.6\\aa205cf0a06dbd8e04ece91c0b37c3f5d567546a\\asm-9.6.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\ch.qos.logback\\logback-core\\1.5.11\\727bdb8dc75b6c392f9be56224503948abc248e8\\logback-core-1.5.11.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.apache.logging.log4j\\log4j-api\\2.23.1\\9c15c29c526d9c6783049c0a77722693c66706e1\\log4j-api-2.23.1.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.glassfish.jaxb\\txw2\\4.0.5\\f36a4ef12120a9bb06d766d6a0e54b144fd7ed98\\txw2-4.0.5.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\com.sun.istack\\istack-commons-runtime\\4.1.2\\18ec117c85f3ba0ac65409136afa8e42bc74e739\\istack-commons-runtime-4.1.2.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\org.apache.commons\\commons-lang3\\3.14.0\\1ed471194b02f2c6cb734a0cd6f6f107c673afae\\commons-lang3-3.14.0.jar;C:\\Users\\londg\\.gradle\\caches\\modules-2\\files-2.1\\io.swagger.core.v3\\swagger-annotations-jakarta\\2.2.22\\1efc0b0af32fce629f0786062c89e8b117abe120\\swagger-annotations-jakarta-2.2.22.jar
+java.vm.vendor=Oracle Corporation
+sun.arch.data.model=64
+user.variant=
+java.vendor.url=https://java.oracle.com/
+user.timezone=America/Bogota
+org.jboss.logging.provider=slf4j
+java.vm.specification.version=21
+os.name=Windows 11
+user.country=CO
+sun.java.launcher=SUN_STANDARD
+sun.boot.library.path=C:\Program Files\Java\jdk-21\bin
+sun.java.command=worker.org.gradle.process.internal.worker.GradleWorkerMain 'Gradle Test Executor 1'
+jdk.debug=release
+allure.results.directory=C:\Users\londg\IdeaProjects\microservicios\gestion-perfiles\build\allure-results
+sun.cpu.endian=little
+user.home=C:\Users\londg
+user.language=es
+java.specification.vendor=Oracle Corporation
+java.version.date=2025-01-21
+java.home=C:\Program Files\Java\jdk-21
+file.separator=\
+java.vm.compressedOopsMode=32-bit
+line.separator=
+
+java.vm.specification.vendor=Oracle Corporation
+java.specification.name=Java Platform API Specification
+FILE_LOG_CHARSET=UTF-8
+java.awt.headless=true
+user.script=
+sun.management.compiler=HotSpot 64-Bit Tiered Compilers
+java.runtime.version=21.0.6+8-LTS-188
+user.name=londg
+stdout.encoding=Cp1252
+path.separator=;
+os.version=10.0
+java.runtime.name=Java(TM) SE Runtime Environment
+file.encoding=UTF-8
+java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+java.vendor.url.bug=https://bugreport.java.com/bugreport/
+java.io.tmpdir=C:\Users\londg\AppData\Local\Temp\
+java.version=21.0.6
+user.dir=C:\Users\londg\IdeaProjects\microservicios\gestion-perfiles
+os.arch=amd64
+java.vm.specification.name=Java Virtual Machine Specification
+PID=35528
+org.gradle.internal.worker.tmpdir=C:\Users\londg\IdeaProjects\microservicios\gestion-perfiles\build\tmp\test\work
+sun.os.patch.level=
+CONSOLE_LOG_CHARSET=UTF-8
+native.encoding=Cp1252
+java.library.path=C:\Program Files\Java\jdk-21\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;c:\Users\londg\AppData\Roaming\Code\User\globalStorage\github.copilot-chat\debugCommand;c:\Users\londg\AppData\Roaming\Code\User\globalStorage\github.copilot-chat\copilotCli;C:\app\londg\product\21c\dbhomeXE\bin;C:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\Python312\Scripts\;C:\Python312\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\ProgramData\chocolatey\bin;C:\Program Files\nodejs\;C:\Program Files\MongoDB\Server\7.0\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Microsoft SQL Server\160\Tools\Binn\;C:\Program Files\Microsoft SQL Server\160\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\160\DTS\Binn\;C:\Program Files\Git\cmd;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files\Oracle\VirtualBox;;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\Go\bin;C:\Program Files\PuTTY\;C:\Users\londg\AppData\Local\Microsoft\WindowsApps;C:\Program Files\JetBrains\IntelliJ IDEA 2023.3.3\bin;C:\Users\londg\AppData\Local\GitHubDesktop\bin;C:\Users\londg\AppData\Local\JetBrains\Toolbox\scripts;C:\Program Files\JetBrains\WebStorm 2024.1\bin;;C:\Users\londg\AppData\Roaming\npm;C:\Users\londg\AppData\Local\Microsoft\WindowsApps;C:\Users\londg\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\londg\go\bin;C:\Program Files\JetBrains\IntelliJ IDEA 2025.2.3\bin;c:\Users\londg\.vscode\extensions\vscjava.vscode-java-debug-0.58.3\bundled\scripts\noConfigScripts;.
+junit.jupiter.extensions.autodetection.enabled=true
+java.vm.info=mixed mode, sharing
+stderr.encoding=Cp1252
+java.vendor=Oracle Corporation
+java.vm.version=21.0.6+8-LTS-188
+sun.io.unicode.encoding=UnicodeLittle
+java.class.version=65.0
+LOGGED_APPLICATION_NAME=[gestion-perfiles] 
+---- Command Line ---
+Empty
+---- Full Classpath ---
+Empty
+---- Compiler Messages ---
+info AspectJ Weaver Version 1.9.22.1 built on Friday May 10, 2024 at 23:23:16 PDT
+info register classloader jdk.internal.loader.ClassLoaders$AppClassLoader@5a07e868
+info using configuration file:/C:/Users/londg/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aspects/6.1.14/cd9d1c53457ac159e1eba3f342cbd6bf8dad4027/spring-aspects-6.1.14.jar!/META-INF/aop.xml
+info using configuration file:/C:/Users/londg/.gradle/caches/modules-2/files-2.1/io.qameta.allure/allure-junit-platform/2.24.0/a9cbe33ec88c20b09d74e15e70e633d69c6d98ea/allure-junit-platform-2.24.0.jar!/META-INF/aop-ajc.xml
+info using configuration file:/C:/Users/londg/.gradle/caches/modules-2/files-2.1/io.qameta.allure/allure-cucumber7-jvm/2.24.0/629a4a3a5e974823ad8b3986170fce84de39c133/allure-cucumber7-jvm-2.24.0.jar!/META-INF/aop-ajc.xml
+abort trouble in: 
+class org.springframework.boot.jdbc.DataSourceBuilder$ComboPooledDataSourceProperties extends org.springframework.boot.jdbc.DataSourceBuilder$MappedDataSourceProperties:
+  void <init>():
+                    ALOAD_0     // Lorg/springframework/boot/jdbc/DataSourceBuilder$ComboPooledDataSourceProperties; this   (line 678)
+                    INVOKESPECIAL org.springframework.boot.jdbc.DataSourceBuilder$MappedDataSourceProperties.<init> ()V
+    constructor-execution(void org.springframework.boot.jdbc.DataSourceBuilder$ComboPooledDataSourceProperties.<init>())
+    |               ALOAD_0     // Lorg/springframework/boot/jdbc/DataSourceBuilder$ComboPooledDataSourceProperties; this   (line 679)
+    |               GETSTATIC org.springframework.boot.jdbc.DataSourceBuilder$DataSourceProperty.URL Lorg/springframework/boot/jdbc/DataSourceBuilder$DataSourceProperty;
+    |               INVOKEDYNAMIC #0.get ()Lorg/springframework/boot/jdbc/DataSourceBuilder$Getter;
+    |               INVOKEDYNAMIC #1.set ()Lorg/springframework/boot/jdbc/DataSourceBuilder$Setter;
+    |               INVOKEVIRTUAL org.springframework.boot.jdbc.DataSourceBuilder$ComboPooledDataSourceProperties.add (Lorg/springframework/boot/jdbc/DataSourceBuilder$DataSourceProperty;Lorg/springframework/boot/jdbc/DataSourceBuilder$Getter;Lorg/springframework/boot/jdbc/DataSourceBuilder$Setter;)V
+    |               ALOAD_0     // Lorg/springframework/boot/jdbc/DataSourceBuilder$ComboPooledDataSourceProperties; this   (line 680)
+    |               GETSTATIC org.springframework.boot.jdbc.DataSourceBuilder$DataSourceProperty.DRIVER_CLASS_NAME Lorg/springframework/boot/jdbc/DataSourceBuilder$DataSourceProperty;
+    |               INVOKEDYNAMIC #2.get ()Lorg/springframework/boot/jdbc/DataSourceBuilder$Getter;
+    |               ALOAD_0     // Lorg/springframework/boot/jdbc/DataSourceBuilder$ComboPooledDataSourceProperties; this
+    |               INVOKEDYNAMIC #3.set (Lorg/springframework/boot/jdbc/DataSourceBuilder$ComboPooledDataSourceProperties;)Lorg/springframework/boot/jdbc/DataSourceBuilder$Setter;
+    |               INVOKEVIRTUAL org.springframework.boot.jdbc.DataSourceBuilder$ComboPooledDataSourceProperties.add (Lorg/springframework/boot/jdbc/DataSourceBuilder$DataSourceProperty;Lorg/springframework/boot/jdbc/DataSourceBuilder$Getter;Lorg/springframework/boot/jdbc/DataSourceBuilder$Setter;)V
+    |               ALOAD_0     // Lorg/springframework/boot/jdbc/DataSourceBuilder$ComboPooledDataSourceProperties; this   (line 681)
+    |               GETSTATIC org.springframework.boot.jdbc.DataSourceBuilder$DataSourceProperty.USERNAME Lorg/springframework/boot/jdbc/DataSourceBuilder$DataSourceProperty;
+    |               INVOKEDYNAMIC #4.get ()Lorg/springframework/boot/jdbc/DataSourceBuilder$Getter;
+    |               INVOKEDYNAMIC #5.set ()Lorg/springframework/boot/jdbc/DataSourceBuilder$Setter;
+    |               INVOKEVIRTUAL org.springframework.boot.jdbc.DataSourceBuilder$ComboPooledDataSourceProperties.add (Lorg/springframework/boot/jdbc/DataSourceBuilder$DataSourceProperty;Lorg/springframework/boot/jdbc/DataSourceBuilder$Getter;Lorg/springframework/boot/jdbc/DataSourceBuilder$Setter;)V
+    |               ALOAD_0     // Lorg/springframework/boot/jdbc/DataSourceBuilder$ComboPooledDataSourceProperties; this   (line 682)
+    |               GETSTATIC org.springframework.boot.jdbc.DataSourceBuilder$DataSourceProperty.PASSWORD Lorg/springframework/boot/jdbc/DataSourceBuilder$DataSourceProperty;
+    |               INVOKEDYNAMIC #6.get ()Lorg/springframework/boot/jdbc/DataSourceBuilder$Getter;
+    |               INVOKEDYNAMIC #7.set ()Lorg/springframework/boot/jdbc/DataSourceBuilder$Setter;
+    |               INVOKEVIRTUAL org.springframework.boot.jdbc.DataSourceBuilder$ComboPooledDataSourceProperties.add (Lorg/springframework/boot/jdbc/DataSourceBuilder$DataSourceProperty;Lorg/springframework/boot/jdbc/DataSourceBuilder$Getter;Lorg/springframework/boot/jdbc/DataSourceBuilder$Setter;)V
+    |               RETURN   (line 683)
+    constructor-execution(void org.springframework.boot.jdbc.DataSourceBuilder$ComboPooledDataSourceProperties.<init>())
+  end void <init>()
+
+  private void setDriverClass(com.mchange.v2.c3p0.ComboPooledDataSource, String):
+    catch java.beans.PropertyVetoException -> E0
+    |               ALOAD_1     // Lcom/mchange/v2/c3p0/ComboPooledDataSource; dataSource   (line 687)
+    |               ALOAD_2     // Ljava/lang/String; driverClass
+    |               INVOKEVIRTUAL com.mchange.v2.c3p0.ComboPooledDataSource.setDriverClass (Ljava/lang/String;)V
+    catch java.beans.PropertyVetoException -> E0
+                    GOTO L0   (line 691)
+                E0: ASTORE_3   (line 689)
+                    NEW java.lang.IllegalArgumentException   (line 690)
+                    DUP
+                    ALOAD_3     // Ljava/beans/PropertyVetoException; ex
+                    INVOKESPECIAL java.lang.IllegalArgumentException.<init> (Ljava/lang/Throwable;)V
+                    ATHROW
+                L0: RETURN   (line 692)
+  end private void setDriverClass(com.mchange.v2.c3p0.ComboPooledDataSource, String)
+
+end class org.springframework.boot.jdbc.DataSourceBuilder$ComboPooledDataSourceProperties
+ -- (IllegalStateException) org.aspectj.weaver.MissingResolvedTypeWithKnownSignature) (typeBindings={T=com.mchange.v2.c3p0.ComboPooledDataSource})
+org.aspectj.weaver.MissingResolvedTypeWithKnownSignature) (typeBindings={T=com.mchange.v2.c3p0.ComboPooledDataSource})
+java.lang.IllegalStateException: org.aspectj.weaver.MissingResolvedTypeWithKnownSignature) (typeBindings={T=com.mchange.v2.c3p0.ComboPooledDataSource})
+	at org.aspectj.weaver.BoundedReferenceType.parameterize(BoundedReferenceType.java:112)
+	at org.aspectj.weaver.ResolvedType.parameterize(ResolvedType.java:2549)
+	at org.aspectj.weaver.ResolvedMemberImpl.parameterize(ResolvedMemberImpl.java:897)
+	at org.aspectj.weaver.ResolvedMemberImpl.parameterizedWith(ResolvedMemberImpl.java:789)
+	at org.aspectj.weaver.ResolvedMemberImpl.parameterizedWith(ResolvedMemberImpl.java:742)
+	at org.aspectj.weaver.ReferenceType.getDeclaredMethods(ReferenceType.java:865)
+	at org.aspectj.weaver.ResolvedType$MethodGetterIncludingItds.get(ResolvedType.java:271)
+	at org.aspectj.weaver.ResolvedType$MethodGetterIncludingItds.get(ResolvedType.java:268)
+	at org.aspectj.weaver.Iterators$4$1.hasNext(Iterators.java:213)
+	at org.aspectj.weaver.Iterators$4.hasNext(Iterators.java:230)
+	at org.aspectj.weaver.ResolvedType.lookupResolvedMember(ResolvedType.java:642)
+	at org.aspectj.weaver.JoinPointSignatureIterator.findSignaturesFromSupertypes(JoinPointSignatureIterator.java:192)
+	at org.aspectj.weaver.JoinPointSignatureIterator.hasNext(JoinPointSignatureIterator.java:68)
+	at org.aspectj.weaver.patterns.SignaturePattern.matches(SignaturePattern.java:317)
+	at org.aspectj.weaver.patterns.KindedPointcut.matchInternal(KindedPointcut.java:202)
+	at org.aspectj.weaver.patterns.Pointcut.match(Pointcut.java:137)
+	at org.aspectj.weaver.patterns.AndPointcut.matchInternal(AndPointcut.java:56)
+	at org.aspectj.weaver.patterns.Pointcut.match(Pointcut.java:137)
+	at org.aspectj.weaver.patterns.OrPointcut.matchInternal(OrPointcut.java:60)
+	at org.aspectj.weaver.patterns.Pointcut.match(Pointcut.java:137)
+	at org.aspectj.weaver.ShadowMunger.match(ShadowMunger.java:113)
+	at org.aspectj.weaver.Advice.match(Advice.java:113)
+	at org.aspectj.weaver.bcel.BcelAdvice.match(BcelAdvice.java:158)
+	at org.aspectj.weaver.bcel.BcelClassWeaver.match(BcelClassWeaver.java:3336)
+	at org.aspectj.weaver.bcel.BcelClassWeaver.match(BcelClassWeaver.java:2716)
+	at org.aspectj.weaver.bcel.BcelClassWeaver.weave(BcelClassWeaver.java:483)
+	at org.aspectj.weaver.bcel.BcelClassWeaver.weave(BcelClassWeaver.java:103)
+	at org.aspectj.weaver.bcel.BcelWeaver.weave(BcelWeaver.java:1703)
+	at org.aspectj.weaver.bcel.BcelWeaver.weaveWithoutDump(BcelWeaver.java:1647)
+	at org.aspectj.weaver.bcel.BcelWeaver.weaveAndNotify(BcelWeaver.java:1414)
+	at org.aspectj.weaver.bcel.BcelWeaver.weave(BcelWeaver.java:1189)
+	at org.aspectj.weaver.tools.WeavingAdaptor.getWovenBytes(WeavingAdaptor.java:574)
+	at org.aspectj.weaver.tools.WeavingAdaptor.weaveClass(WeavingAdaptor.java:398)
+	at org.aspectj.weaver.loadtime.Aj.preProcess(Aj.java:122)
+	at org.aspectj.weaver.loadtime.ClassPreProcessorAgentAdapter.transform(ClassPreProcessorAgentAdapter.java:51)
+	at java.instrument/java.lang.instrument.ClassFileTransformer.transform(ClassFileTransformer.java:244)
+	at java.instrument/sun.instrument.TransformerManager.transform(TransformerManager.java:188)
+	at java.instrument/sun.instrument.InstrumentationImpl.transform(InstrumentationImpl.java:610)
+	at java.base/java.lang.ClassLoader.defineClass1(Native Method)
+	at java.base/java.lang.ClassLoader.defineClass(ClassLoader.java:1027)
+	at java.base/java.security.SecureClassLoader.defineClass(SecureClassLoader.java:150)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.defineClass(BuiltinClassLoader.java:862)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.findClassOnClassPathOrNull(BuiltinClassLoader.java:760)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClassOrNull(BuiltinClassLoader.java:681)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:639)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+	at org.springframework.boot.jdbc.DataSourceBuilder$MappedDataSourceProperties.lookupPooled(DataSourceBuilder.java:412)
+	at org.springframework.boot.jdbc.DataSourceBuilder$MappedDataSourceProperties.forType(DataSourceBuilder.java:394)
+	at org.springframework.boot.jdbc.DataSourceBuilder.findType(DataSourceBuilder.java:266)
+	at org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration$PooledDataSourceAvailableCondition.getMatchOutcome(DataSourceAutoConfiguration.java:118)
+	at org.springframework.boot.autoconfigure.condition.AbstractNestedCondition$MemberOutcomes.getConditionOutcome(AbstractNestedCondition.java:195)
+	at org.springframework.boot.autoconfigure.condition.AbstractNestedCondition$MemberOutcomes.<init>(AbstractNestedCondition.java:189)
+	at org.springframework.boot.autoconfigure.condition.AbstractNestedCondition$MemberConditions.lambda$getMatchOutcomes$0(AbstractNestedCondition.java:169)
+	at java.base/java.util.LinkedHashMap.forEach(LinkedHashMap.java:986)
+	at org.springframework.util.MultiValueMapAdapter.forEach(MultiValueMapAdapter.java:179)
+	at java.base/java.util.Collections$UnmodifiableMap.forEach(Collections.java:1707)
+	at org.springframework.boot.autoconfigure.condition.AbstractNestedCondition$MemberConditions.getMatchOutcomes(AbstractNestedCondition.java:169)
+	at org.springframework.boot.autoconfigure.condition.AbstractNestedCondition$MemberMatchOutcomes.<init>(AbstractNestedCondition.java:78)
+	at org.springframework.boot.autoconfigure.condition.AbstractNestedCondition.getMatchOutcome(AbstractNestedCondition.java:63)
+	at org.springframework.boot.autoconfigure.condition.SpringBootCondition.matches(SpringBootCondition.java:47)
+	at org.springframework.context.annotation.ConditionEvaluator.shouldSkip(ConditionEvaluator.java:108)
+	at org.springframework.context.annotation.ConfigurationClassParser.processConfigurationClass(ConfigurationClassParser.java:220)
+	at org.springframework.context.annotation.ConfigurationClassParser.processMemberClasses(ConfigurationClassParser.java:382)
+	at org.springframework.context.annotation.ConfigurationClassParser.doProcessConfigurationClass(ConfigurationClassParser.java:273)
+	at org.springframework.context.annotation.ConfigurationClassParser.processConfigurationClass(ConfigurationClassParser.java:246)
+	at org.springframework.context.annotation.ConfigurationClassParser.processImports(ConfigurationClassParser.java:534)
+	at org.springframework.context.annotation.ConfigurationClassParser$DeferredImportSelectorGroupingHandler.lambda$processGroupImports$1(ConfigurationClassParser.java:746)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.context.annotation.ConfigurationClassParser$DeferredImportSelectorGroupingHandler.processGroupImports(ConfigurationClassParser.java:743)
+	at org.springframework.context.annotation.ConfigurationClassParser$DeferredImportSelectorHandler.process(ConfigurationClassParser.java:714)
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:183)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:417)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:290)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:349)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:118)
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:789)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:607)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.test.context.SpringBootContextLoader.lambda$loadContext$3(SpringBootContextLoader.java:137)
+	at org.springframework.util.function.ThrowingSupplier.get(ThrowingSupplier.java:58)
+	at org.springframework.util.function.ThrowingSupplier.get(ThrowingSupplier.java:46)
+	at org.springframework.boot.SpringApplication.withHook(SpringApplication.java:1463)
+	at org.springframework.boot.test.context.SpringBootContextLoader$ContextLoaderHook.run(SpringBootContextLoader.java:553)
+	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:137)
+	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:108)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:225)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:152)
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:130)
+	at org.springframework.test.context.web.ServletTestExecutionListener.setUpRequestContextIfNecessary(ServletTestExecutionListener.java:191)
+	at org.springframework.test.context.web.ServletTestExecutionListener.prepareTestInstance(ServletTestExecutionListener.java:130)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:260)
+	at org.springframework.test.context.junit.jupiter.SpringExtension.postProcessTestInstance(SpringExtension.java:163)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$10(ClassBasedTestDescriptor.java:378)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.executeAndMaskThrowable(ClassBasedTestDescriptor.java:383)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$11(ClassBasedTestDescriptor.java:378)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1708)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.StreamSpliterators$WrappingSpliterator.forEachRemaining(StreamSpliterators.java:310)
+	at java.base/java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:735)
+	at java.base/java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:734)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.invokeTestInstancePostProcessors(ClassBasedTestDescriptor.java:377)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$instantiateAndPostProcessTestInstance$6(ClassBasedTestDescriptor.java:290)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.instantiateAndPostProcessTestInstance(ClassBasedTestDescriptor.java:289)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$testInstancesProvider$4(ClassBasedTestDescriptor.java:279)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$testInstancesProvider$5(ClassBasedTestDescriptor.java:278)
+	at org.junit.jupiter.engine.execution.TestInstancesProvider.getTestInstances(TestInstancesProvider.java:31)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$prepare$0(TestMethodTestDescriptor.java:106)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.prepare(TestMethodTestDescriptor.java:105)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.prepare(TestMethodTestDescriptor.java:69)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$prepare$2(NodeTestTask.java:128)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.prepare(NodeTestTask.java:128)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:198)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:169)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:93)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:141)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:57)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:103)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:85)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:47)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.processAllTestClasses(JUnitPlatformTestClassProcessor.java:124)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.access$000(JUnitPlatformTestClassProcessor.java:99)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor.stop(JUnitPlatformTestClassProcessor.java:94)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.stop(SuiteTestClassProcessor.java:63)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:36)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)
+	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:92)
+	at jdk.proxy1/jdk.proxy1.$Proxy4.stop(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker$3.run(TestWorker.java:200)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.executeAndMaintainThreadName(TestWorker.java:132)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:103)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:63)
+	at org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:122)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:72)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
+

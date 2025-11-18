@@ -6,19 +6,8 @@ pipeline {
     timestamps()
   }
 
-  parameters {
-    booleanParam(name: 'DOCKER_BUILD', defaultValue: true, description: 'Build Docker image')
-    booleanParam(name: 'DOCKER_PUSH', defaultValue: false, description: 'Push Docker image to registry')
-    string(name: 'IMAGE_NAME', defaultValue: 'gestion-perfiles', description: 'Docker image name (without registry)')
-    string(name: 'REGISTRY_URL', defaultValue: '', description: 'Docker registry URL (e.g., ghcr.io/owner or registry.hub.docker.com)')
-    string(name: 'REGISTRY_CREDENTIALS_ID', defaultValue: '', description: 'Jenkins credentials ID for docker login (username/password or token)')
-  }
-
   environment {
-    // Used by health endpoint if manifest version is not available
     APP_VERSION = "${env.BUILD_TAG ?: "dev"}"
-    // Change if your Jenkins has a configured JDK tool named differently
-    // JAVA_HOME = tool name: 'jdk17'
   }
 
   stages {
@@ -27,28 +16,58 @@ pipeline {
         script {
           echo "Workspace: ${pwd()}"
           echo "Building microservicio-perfiles"
+          if (isUnix()) {
+            sh "chmod +x gradlew"
+          }
         }
       }
     }
 
-    stage('Build & Test') {
+    stage('Build') {
       steps {
         script {
-          // Full build including tests; produces bootJar by default with Spring Boot plugin
           if (isUnix()) {
-            sh "chmod +x gradlew"
-            sh "./gradlew clean build --no-daemon --stacktrace"
+            sh "./gradlew clean compileJava compileTestJava --no-daemon --stacktrace"
           } else {
-            bat ".\\gradlew.bat clean build --no-daemon --stacktrace"
+            bat ".\\gradlew.bat clean compileJava compileTestJava --no-daemon --stacktrace"
+          }
+        }
+      }
+    }
+
+    stage('Unit Tests') {
+      steps {
+        script {
+          if (isUnix()) {
+            sh "./gradlew test -x :test --tests '*Test' --no-daemon --stacktrace"
+          } else {
+            bat ".\\gradlew.bat test -x :test --tests '*Test' --no-daemon --stacktrace"
           }
         }
       }
       post {
         always {
-          // Publish JUnit test results for unit tests
           junit allowEmptyResults: true, testResults: 'build/test-results/test/*.xml'
+        }
+      }
+    }
+
+    stage('BDD Tests (Cucumber)') {
+      steps {
+        script {
+          if (isUnix()) {
+            sh "./gradlew test --tests '*CucumberTestRunner' --no-daemon --stacktrace"
+          } else {
+            bat ".\\gradlew.bat test --tests '*CucumberTestRunner' --no-daemon --stacktrace"
+          }
+        }
+      }
+      post {
+        always {
+          // Publish Cucumber results to Allure
+          allure includeProperties: false, jdk: '', results: [[path: 'build/allure-results']]
           
-          // Publish Cucumber BDD test reports
+          // Also keep HTML report for backup
           script {
             if (fileExists('build/reports/cucumber/cucumber-report.html')) {
               publishHTML(target: [
@@ -57,79 +76,28 @@ pipeline {
                 keepAll: true,
                 reportDir: 'build/reports/cucumber',
                 reportFiles: 'cucumber-report.html',
-                reportName: 'Cucumber BDD Report',
+                reportName: 'Cucumber HTML Report',
                 reportTitles: 'BDD Test Results'
               ])
             }
-            
-            // Archive Cucumber JSON report
-            if (fileExists('build/reports/cucumber/cucumber-report.json')) {
-              archiveArtifacts artifacts: 'build/reports/cucumber/cucumber-report.json', allowEmptyArchive: true
-            }
           }
         }
+      }
+    }
+
+    stage('Package') {
+      steps {
+        script {
+          if (isUnix()) {
+            sh "./gradlew bootJar --no-daemon"
+          } else {
+            bat ".\\gradlew.bat bootJar --no-daemon"
+          }
+        }
+      }
+      post {
         success {
           archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true, onlyIfSuccessful: true
-        }
-      }
-    }
-
-    stage('Docker Build') {
-      when { expression { return params.DOCKER_BUILD } }
-      steps {
-        script {
-          def tag = env.BUILD_NUMBER
-          def fullImage = params.REGISTRY_URL?.trim() ? 
-            "${params.REGISTRY_URL}/${params.IMAGE_NAME}:${tag}" : 
-            "${params.IMAGE_NAME}:${tag}"
-
-          echo "Building image: ${fullImage}"
-          if (isUnix()) {
-            sh "docker build -t ${fullImage} ."
-          } else {
-            bat "docker build -t ${fullImage} ."
-          }
-
-          // Also tag as latest on main/master/microservicio-perfiles branch
-          def branch = env.BRANCH_NAME ?: env.GIT_BRANCH ?: ''
-          if (branch == 'main' || branch == 'master' || branch == 'microservicio-perfiles') {
-            def latest = params.REGISTRY_URL?.trim() ? 
-              "${params.REGISTRY_URL}/${params.IMAGE_NAME}:latest" : 
-              "${params.IMAGE_NAME}:latest"
-            if (isUnix()) {
-              sh "docker tag ${fullImage} ${latest}"
-            } else {
-              bat "docker tag ${fullImage} ${latest}"
-            }
-          }
-        }
-      }
-    }
-
-    stage('Docker Push') {
-      when { expression { return params.DOCKER_BUILD && params.DOCKER_PUSH && params.REGISTRY_URL?.trim() && params.REGISTRY_CREDENTIALS_ID?.trim() } }
-      steps {
-        script {
-          def tag = env.BUILD_NUMBER
-          def base = "${params.REGISTRY_URL}/${params.IMAGE_NAME}"
-          def fullImage = "${base}:${tag}"
-          def latest = "${base}:latest"
-
-          withCredentials([usernamePassword(credentialsId: params.REGISTRY_CREDENTIALS_ID, usernameVariable: 'REG_USER', passwordVariable: 'REG_PASS')]) {
-            if (isUnix()) {
-              sh "echo $REG_PASS | docker login ${params.REGISTRY_URL} -u $REG_USER --password-stdin"
-              sh "docker push ${fullImage} || true"
-              // push latest if it exists
-              sh "docker images -q ${latest} >/dev/null 2>&1 && docker push ${latest} || true"
-              sh "docker logout ${params.REGISTRY_URL} || true"
-            } else {
-              bat "docker login ${params.REGISTRY_URL} -u %REG_USER% -p %REG_PASS%"
-              bat "docker push ${fullImage}"
-              // On Windows, ignore error if latest tag missing
-              bat "for /f \"tokens=*\" %i in ('docker images -q ${latest}') do docker push ${latest}"
-              bat "docker logout ${params.REGISTRY_URL}"
-            }
-          }
         }
       }
     }

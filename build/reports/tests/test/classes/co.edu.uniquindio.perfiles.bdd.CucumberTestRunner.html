@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">1.640s</div>
+<div class="counter">2.073s</div>
 <p>duration</p>
 </div>
 </td>
@@ -79,27 +79,27 @@
 </thead>
 <tr>
 <td class="success">Create a new profile</td>
-<td class="success">1.308s</td>
+<td class="success">1.446s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Create duplicate profile</td>
-<td class="success">0.024s</td>
+<td class="success">0.026s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Create profile with invalid URL</td>
-<td class="success">0.035s</td>
+<td class="success">0.037s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Create profile with very long bio</td>
-<td class="success">0.040s</td>
+<td class="success">0.032s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Delete my profile</td>
-<td class="success">0.132s</td>
+<td class="success">0.425s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -109,12 +109,12 @@
 </tr>
 <tr>
 <td class="success">Update profile partially</td>
-<td class="success">0.030s</td>
+<td class="success">0.032s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">View my profile</td>
-<td class="success">0.041s</td>
+<td class="success">0.045s</td>
 <td class="success">passed</td>
 </tr>
 </table>
@@ -122,8 +122,8 @@
 <div class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>2025-11-17T20:36:40.536-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration]: CucumberSpringConfiguration does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2025-11-17T20:36:40.557-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.edu.uniquindio.perfiles.ProfileServiceApplication for test class co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration
+<pre>2025-11-17T22:03:28.128-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration]: CucumberSpringConfiguration does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-11-17T22:03:28.142-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.edu.uniquindio.perfiles.ProfileServiceApplication for test class co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -134,30 +134,30 @@
 
  :: Spring Boot ::                (v3.3.5)
 
-2025-11-17T20:36:40.614-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] c.e.u.p.bdd.CucumberSpringConfiguration  : Starting CucumberSpringConfiguration using Java 21.0.6 with PID 12132 (started by londg in C:\Users\londg\IdeaProjects\microservicios\gestion-perfiles)
-2025-11-17T20:36:40.615-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] c.e.u.p.bdd.CucumberSpringConfiguration  : The following 1 profile is active: &quot;test&quot;
-2025-11-17T20:36:40.848-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-11-17T20:36:40.859-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 10 ms. Found 1 JPA repository interface.
-2025-11-17T20:36:41.095-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 0 (http)
-2025-11-17T20:36:41.117-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2025-11-17T20:36:41.117-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.31]
-2025-11-17T20:36:41.228-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2025-11-17T20:36:41.228-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 611 ms
-2025-11-17T20:36:41.316-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2025-11-17T20:36:41.319-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2025-11-17T20:36:41.330-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-11-17T20:36:41.332-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
-2025-11-17T20:36:41.333-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection conn10: url=jdbc:h2:mem:profiles user=SA
-2025-11-17T20:36:41.334-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
-2025-11-17T20:36:41.334-05:00  WARN 12132 --- [gestion-perfiles] [    Test worker] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2025-11-17T20:36:41.398-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2025-11-17T20:36:41.426-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-11-17T20:36:41.489-05:00  WARN 12132 --- [gestion-perfiles] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-11-17T20:36:41.650-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring TestDispatcherServlet ''
-2025-11-17T20:36:41.651-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-11-17T20:36:41.652-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
-2025-11-17T20:36:41.698-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 53113 (http) with context path '/'
-2025-11-17T20:36:41.702-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] c.e.u.p.bdd.CucumberSpringConfiguration  : Started CucumberSpringConfiguration in 1.139 seconds (process running for 11.681)
+2025-11-17T22:03:28.191-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] c.e.u.p.bdd.CucumberSpringConfiguration  : Starting CucumberSpringConfiguration using Java 21.0.6 with PID 35528 (started by londg in C:\Users\londg\IdeaProjects\microservicios\gestion-perfiles)
+2025-11-17T22:03:28.192-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] c.e.u.p.bdd.CucumberSpringConfiguration  : The following 1 profile is active: &quot;test&quot;
+2025-11-17T22:03:28.450-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-17T22:03:28.460-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9 ms. Found 1 JPA repository interface.
+2025-11-17T22:03:28.768-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 0 (http)
+2025-11-17T22:03:28.793-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-17T22:03:28.793-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.31]
+2025-11-17T22:03:28.915-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-17T22:03:28.915-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 720 ms
+2025-11-17T22:03:29.030-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-17T22:03:29.034-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-11-17T22:03:29.042-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-17T22:03:29.043-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2025-11-17T22:03:29.043-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection conn10: url=jdbc:h2:mem:profiles user=SA
+2025-11-17T22:03:29.044-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2025-11-17T22:03:29.044-05:00  WARN 35528 --- [gestion-perfiles] [    Test worker] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-17T22:03:29.086-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-17T22:03:29.104-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-17T22:03:29.155-05:00  WARN 35528 --- [gestion-perfiles] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-17T22:03:29.294-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring TestDispatcherServlet ''
+2025-11-17T22:03:29.294-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-11-17T22:03:29.295-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2025-11-17T22:03:29.351-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 62957 (http) with context path '/'
+2025-11-17T22:03:29.354-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] c.e.u.p.bdd.CucumberSpringConfiguration  : Started CucumberSpringConfiguration in 1.209 seconds (process running for 23.701)
 
 Scenario: Create a new profile                                                  ?[90m# features/profile_management.feature:6?[0m
   ?[32mGiven ?[0m?[32mI am authenticated as user with ID ?[0m?[32m?[1m1?[0m                                    ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.iAmAuthenticatedAsUserWithId(java.lang.Long)?[0m
@@ -165,8 +165,8 @@ Scenario: Create a new profile                                                  
   ?[32mThen ?[0m?[32mthe profile should be created successfully?[0m                               ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.theProfileShouldBeCreatedSuccessfully()?[0m
   ?[32mAnd ?[0m?[32mthe profile should have nickname ?[0m?[32m?[1m&quot;john_dev&quot;?[0m                               ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.theProfileShouldHaveNickname(java.lang.String)?[0m
   ?[32mAnd ?[0m?[32mthe profile should have bio ?[0m?[32m?[1m&quot;Software developer&quot;?[0m                          ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.theProfileShouldHaveBio(java.lang.String)?[0m
-2025-11-17T20:36:41.819-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration]: CucumberSpringConfiguration does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2025-11-17T20:36:41.821-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.edu.uniquindio.perfiles.ProfileServiceApplication for test class co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration
+2025-11-17T22:03:29.514-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration]: CucumberSpringConfiguration does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-11-17T22:03:29.516-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.edu.uniquindio.perfiles.ProfileServiceApplication for test class co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration
 
 Scenario: View my profile                                      ?[90m# features/profile_management.feature:13?[0m
   ?[32mGiven ?[0m?[32mI am authenticated as user with ID ?[0m?[32m?[1m2?[0m                   ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.iAmAuthenticatedAsUserWithId(java.lang.Long)?[0m
@@ -174,8 +174,8 @@ Scenario: View my profile                                      ?[90m# features/p
   ?[32mWhen ?[0m?[32mI request to view my profile?[0m                            ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.iRequestToViewMyProfile()?[0m
   ?[32mThen ?[0m?[32mI should receive my profile information?[0m                 ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.iShouldReceiveMyProfileInformation()?[0m
   ?[32mAnd ?[0m?[32mthe profile should contain my nickname ?[0m?[32m?[1m&quot;jane_designer&quot;?[0m   ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.theProfileShouldContainMyNickname(java.lang.String)?[0m
-2025-11-17T20:36:41.861-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration]: CucumberSpringConfiguration does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2025-11-17T20:36:41.863-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.edu.uniquindio.perfiles.ProfileServiceApplication for test class co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration
+2025-11-17T22:03:29.558-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration]: CucumberSpringConfiguration does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-11-17T22:03:29.559-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.edu.uniquindio.perfiles.ProfileServiceApplication for test class co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration
 
 Scenario: Update profile information                       ?[90m# features/profile_management.feature:20?[0m
   ?[32mGiven ?[0m?[32mI am authenticated as user with ID ?[0m?[32m?[1m3?[0m               ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.iAmAuthenticatedAsUserWithId(java.lang.Long)?[0m
@@ -183,8 +183,8 @@ Scenario: Update profile information                       ?[90m# features/profi
   ?[32mWhen ?[0m?[32mI update my profile with new bio ?[0m?[32m?[1m&quot;Updated bio text&quot;?[0m ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.iUpdateMyProfileWithNewBio(java.lang.String)?[0m
   ?[32mThen ?[0m?[32mthe profile should be updated successfully?[0m          ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.theProfileShouldBeUpdatedSuccessfully()?[0m
   ?[32mAnd ?[0m?[32mthe bio should be ?[0m?[32m?[1m&quot;Updated bio text&quot;?[0m                 ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.theBioShouldBe(java.lang.String)?[0m
-2025-11-17T20:36:41.890-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration]: CucumberSpringConfiguration does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2025-11-17T20:36:41.892-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.edu.uniquindio.perfiles.ProfileServiceApplication for test class co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration
+2025-11-17T22:03:29.589-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration]: CucumberSpringConfiguration does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-11-17T22:03:29.590-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.edu.uniquindio.perfiles.ProfileServiceApplication for test class co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration
 
 Scenario: Update profile partially                        ?[90m# features/profile_management.feature:27?[0m
   ?[32mGiven ?[0m?[32mI am authenticated as user with ID ?[0m?[32m?[1m4?[0m              ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.iAmAuthenticatedAsUserWithId(java.lang.Long)?[0m
@@ -192,8 +192,8 @@ Scenario: Update profile partially                        ?[90m# features/profil
   ?[32mWhen ?[0m?[32mI partially update only the country to ?[0m?[32m?[1m&quot;Argentina&quot;?[0m ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.iPartiallyUpdateOnlyTheCountryTo(java.lang.String)?[0m
   ?[32mThen ?[0m?[32mthe profile should be updated successfully?[0m         ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.theProfileShouldBeUpdatedSuccessfully()?[0m
   ?[32mAnd ?[0m?[32mthe country should be ?[0m?[32m?[1m&quot;Argentina&quot;?[0m                   ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.theCountryShouldBe(java.lang.String)?[0m
-2025-11-17T20:36:41.921-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration]: CucumberSpringConfiguration does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2025-11-17T20:36:41.924-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.edu.uniquindio.perfiles.ProfileServiceApplication for test class co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration
+2025-11-17T22:03:29.620-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration]: CucumberSpringConfiguration does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-11-17T22:03:29.622-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.edu.uniquindio.perfiles.ProfileServiceApplication for test class co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration
 
 Scenario: Delete my profile                                ?[90m# features/profile_management.feature:34?[0m
   ?[32mGiven ?[0m?[32mI am authenticated as user with ID ?[0m?[32m?[1m5?[0m               ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.iAmAuthenticatedAsUserWithId(java.lang.Long)?[0m
@@ -201,24 +201,24 @@ Scenario: Delete my profile                                ?[90m# features/profi
   ?[32mWhen ?[0m?[32mI request to delete my profile?[0m                      ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.iRequestToDeleteMyProfile()?[0m
   ?[32mThen ?[0m?[32mthe profile should be deleted successfully?[0m          ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.theProfileShouldBeDeletedSuccessfully()?[0m
   ?[32mAnd ?[0m?[32mthe profile should no longer exist?[0m                   ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.theProfileShouldNoLongerExist()?[0m
-2025-11-17T20:36:42.056-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration]: CucumberSpringConfiguration does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2025-11-17T20:36:42.061-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.edu.uniquindio.perfiles.ProfileServiceApplication for test class co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration
+2025-11-17T22:03:30.048-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration]: CucumberSpringConfiguration does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-11-17T22:03:30.050-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.edu.uniquindio.perfiles.ProfileServiceApplication for test class co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration
 
 Scenario: Create profile with invalid URL                                    ?[90m# features/profile_validation.feature:6?[0m
   ?[32mGiven ?[0m?[32mI am authenticated as user with ID ?[0m?[32m?[1m10?[0m                                ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.iAmAuthenticatedAsUserWithId(java.lang.Long)?[0m
   ?[32mWhen ?[0m?[32mI attempt to create a profile with invalid page URL ?[0m?[32m?[1m&quot;not-a-valid-url&quot;?[0m ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileValidationSteps.iAttemptToCreateProfileWithInvalidPageURL(java.lang.String)?[0m
   ?[32mThen ?[0m?[32mthe request should fail with validation error?[0m                         ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileValidationSteps.theRequestShouldFailWithValidationError()?[0m
   ?[32mAnd ?[0m?[32mthe error should indicate invalid URL format?[0m                           ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileValidationSteps.theErrorShouldIndicateInvalidURLFormat()?[0m
-2025-11-17T20:36:42.092-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration]: CucumberSpringConfiguration does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2025-11-17T20:36:42.093-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.edu.uniquindio.perfiles.ProfileServiceApplication for test class co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration
+2025-11-17T22:03:30.085-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration]: CucumberSpringConfiguration does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-11-17T22:03:30.086-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.edu.uniquindio.perfiles.ProfileServiceApplication for test class co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration
 
 Scenario: Create profile with very long bio                             ?[90m# features/profile_validation.feature:12?[0m
   ?[32mGiven ?[0m?[32mI am authenticated as user with ID ?[0m?[32m?[1m11?[0m                           ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.iAmAuthenticatedAsUserWithId(java.lang.Long)?[0m
   ?[32mWhen ?[0m?[32mI attempt to create a profile with bio exceeding ?[0m?[32m?[1m2000?[0m?[32m characters?[0m ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileValidationSteps.iAttemptToCreateProfileWithBioExceedingCharacters(int)?[0m
   ?[32mThen ?[0m?[32mthe request should fail with validation error?[0m                    ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileValidationSteps.theRequestShouldFailWithValidationError()?[0m
   ?[32mAnd ?[0m?[32mthe error should indicate bio is too long?[0m                         ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileValidationSteps.theErrorShouldIndicateBioIsTooLong()?[0m
-2025-11-17T20:36:42.133-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration]: CucumberSpringConfiguration does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2025-11-17T20:36:42.134-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.edu.uniquindio.perfiles.ProfileServiceApplication for test class co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration
+2025-11-17T22:03:30.117-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration]: CucumberSpringConfiguration does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-11-17T22:03:30.119-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.edu.uniquindio.perfiles.ProfileServiceApplication for test class co.edu.uniquindio.perfiles.bdd.CucumberSpringConfiguration
 
 Scenario: Create duplicate profile                     ?[90m# features/profile_validation.feature:18?[0m
   ?[32mGiven ?[0m?[32mI am authenticated as user with ID ?[0m?[32m?[1m12?[0m          ?[90m# co.edu.uniquindio.perfiles.bdd.ProfileManagementSteps.iAmAuthenticatedAsUserWithId(java.lang.Long)?[0m
@@ -237,7 +237,7 @@ Scenario: Create duplicate profile                     ?[90m# features/profile_v
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="https://www.gradle.org">Gradle 8.14.3</a> at 17/11/2025, 8:36:42 p. m.</p>
+<a href="https://www.gradle.org">Gradle 8.14.3</a> at 17/11/2025, 10:03:30 p. m.</p>
 </div>
 </div>
 </body>

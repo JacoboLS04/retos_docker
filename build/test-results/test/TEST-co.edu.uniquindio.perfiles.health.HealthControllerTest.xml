@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="co.edu.uniquindio.perfiles.health.HealthControllerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2025-11-18T01:36:40.044Z" hostname="SANTIAGO" time="0.028">
+<testsuite name="co.edu.uniquindio.perfiles.health.HealthControllerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2025-11-18T03:03:27.035Z" hostname="SANTIAGO" time="0.031">
   <properties/>
-  <testcase name="livenessEndpointOk()" classname="co.edu.uniquindio.perfiles.health.HealthControllerTest" time="0.009"/>
+  <testcase name="livenessEndpointOk()" classname="co.edu.uniquindio.perfiles.health.HealthControllerTest" time="0.008"/>
   <testcase name="readinessEndpointOk()" classname="co.edu.uniquindio.perfiles.health.HealthControllerTest" time="0.006"/>
-  <testcase name="healthRootIsAccessibleAndContainsChecks()" classname="co.edu.uniquindio.perfiles.health.HealthControllerTest" time="0.009"/>
-  <system-out><![CDATA[2025-11-17T20:36:40.026-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.edu.uniquindio.perfiles.health.HealthControllerTest]: HealthControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2025-11-17T20:36:40.040-05:00  INFO 12132 --- [gestion-perfiles] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.edu.uniquindio.perfiles.ProfileServiceApplication for test class co.edu.uniquindio.perfiles.health.HealthControllerTest
+  <testcase name="healthRootIsAccessibleAndContainsChecks()" classname="co.edu.uniquindio.perfiles.health.HealthControllerTest" time="0.008"/>
+  <system-out><![CDATA[2025-11-17T22:03:27.017-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [co.edu.uniquindio.perfiles.health.HealthControllerTest]: HealthControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-11-17T22:03:27.029-05:00  INFO 35528 --- [gestion-perfiles] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration co.edu.uniquindio.perfiles.ProfileServiceApplication for test class co.edu.uniquindio.perfiles.health.HealthControllerTest
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

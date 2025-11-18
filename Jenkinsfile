@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.12-slim'
+            args '-u root:root'
+        }
+    }
     
     environment {
         PYTHON_VERSION = '3.12'
@@ -45,11 +50,8 @@ pipeline {
             steps {
                 echo 'Setting up Python virtual environment...'
                 sh '''
-                    python3 --version
-                    rm -rf ${VENV_DIR}
-                    python3 -m venv ${VENV_DIR}
-                    . ${VENV_DIR}/bin/activate
-                    python -m pip install --upgrade pip
+                    python --version
+                    pip install --upgrade pip
                 '''
             }
         }
@@ -58,7 +60,6 @@ pipeline {
             steps {
                 echo 'Installing project dependencies...'
                 sh '''
-                    . ${VENV_DIR}/bin/activate
                     pip install -r requirements.txt
                     pip install -r requirements-dev.txt
                     pip install allure-behave
@@ -72,7 +73,6 @@ pipeline {
                     steps {
                         echo 'Running Flake8 linting...'
                         sh '''
-                            . ${VENV_DIR}/bin/activate
                             pip install flake8
                             flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || true
                             flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
@@ -84,7 +84,6 @@ pipeline {
                     steps {
                         echo 'Checking code formatting with Black...'
                         sh '''
-                            . ${VENV_DIR}/bin/activate
                             pip install black
                             black --check . || true
                         '''
@@ -97,7 +96,6 @@ pipeline {
             steps {
                 echo 'Running unit tests with pytest...'
                 sh '''
-                    . ${VENV_DIR}/bin/activate
                     mkdir -p reports
                     pytest tests/ -v --tb=short --junit-xml=reports/junit-unit-tests.xml --cov=. --cov-report=xml:reports/coverage.xml --cov-report=html:reports/coverage-html --cov-report=term
                 '''
@@ -121,7 +119,6 @@ pipeline {
             steps {
                 echo 'Running BDD tests with Behave and Allure...'
                 sh '''
-                    . ${VENV_DIR}/bin/activate
                     rm -rf allure-results
                     mkdir -p reports
                     behave features/ -f allure_behave.formatter:AllureFormatter -o allure-results --junit --junit-directory reports/
@@ -149,7 +146,6 @@ pipeline {
                     steps {
                         echo '🔍 Scanning dependencies for vulnerabilities...'
                         sh '''
-                            . ${VENV_DIR}/bin/activate
                             pip install safety
                             safety check --json || true
                         '''
@@ -160,7 +156,6 @@ pipeline {
                     steps {
                         echo 'Running Bandit security scanner...'
                         sh '''
-                            . ${VENV_DIR}/bin/activate
                             pip install bandit
                             mkdir -p reports
                             bandit -r . -f json -o reports/bandit-report.json || true

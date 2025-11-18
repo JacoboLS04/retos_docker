@@ -47,7 +47,6 @@ pipeline {
                 sh '''
                     python3 --version
                     pip3 --version
-                    pip3 install --upgrade pip
                 '''
             }
         }
@@ -56,9 +55,9 @@ pipeline {
             steps {
                 echo 'Installing project dependencies...'
                 sh '''
-                    pip3 install -r requirements.txt
-                    pip3 install -r requirements-dev.txt
-                    pip3 install allure-behave
+                    pip3 install --break-system-packages -r requirements.txt
+                    pip3 install --break-system-packages -r requirements-dev.txt
+                    pip3 install --break-system-packages allure-behave
                 '''
             }
         }
@@ -69,7 +68,7 @@ pipeline {
                     steps {
                         echo 'Running Flake8 linting...'
                         sh '''
-                            pip3 install flake8
+                            pip3 install --break-system-packages flake8
                             flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || true
                             flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
                         '''
@@ -80,7 +79,7 @@ pipeline {
                     steps {
                         echo 'Checking code formatting with Black...'
                         sh '''
-                            pip3 install black
+                            pip3 install --break-system-packages black
                             black --check . || true
                         '''
                     }
@@ -142,7 +141,7 @@ pipeline {
                     steps {
                         echo '🔍 Scanning dependencies for vulnerabilities...'
                         sh '''
-                            pip3 install safety
+                            pip3 install --break-system-packages safety
                             safety check --json || true
                         '''
                     }
@@ -152,7 +151,7 @@ pipeline {
                     steps {
                         echo 'Running Bandit security scanner...'
                         sh '''
-                            pip3 install bandit
+                            pip3 install --break-system-packages bandit
                             mkdir -p reports
                             bandit -r . -f json -o reports/bandit-report.json || true
                         '''

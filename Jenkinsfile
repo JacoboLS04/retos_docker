@@ -47,11 +47,19 @@ pipeline {
                 git branch: 'feature/ms-notifications-service',
                     url: 'https://github.com/JacoboLS04/retos_docker.git'
                 script {
-                    env.GIT_COMMIT_SHORT = bat(
-                        script: "@git rev-parse --short HEAD",
-                        returnStdout: true
-                    ).trim()
+                    if (isUnix()) {
+                        env.GIT_COMMIT_SHORT = sh(
+                            script: "git rev-parse --short HEAD",
+                            returnStdout: true
+                        ).trim()
+                    } else {
+                        env.GIT_COMMIT_SHORT = bat(
+                            script: "@git rev-parse --short HEAD",
+                            returnStdout: true
+                        ).trim()
+                    }
                 }
+                echo "Git commit: ${env.GIT_COMMIT_SHORT}"
             }
         }
         

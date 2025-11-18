@@ -44,14 +44,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Cloning repository...'
-                checkout([
-                    $class: 'GitSCM',
-                    branches: scm.branches,
-                    extensions: [
-                        [$class: 'CloneOption', depth: 1, noTags: false, shallow: true]
-                    ],
-                    userRemoteConfigs: scm.userRemoteConfigs
-                ])
+                checkout scm
                 script {
                     env.GIT_COMMIT_SHORT = bat(
                         script: "@git rev-parse --short HEAD",

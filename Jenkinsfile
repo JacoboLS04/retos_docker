@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.12-slim'
-            args '-u root:root'
-        }
-    }
+    agent any
     
     environment {
         PYTHON_VERSION = '3.12'
@@ -50,8 +45,10 @@ pipeline {
             steps {
                 echo 'Setting up Python virtual environment...'
                 sh '''
-                    python --version
-                    pip install --upgrade pip
+                    apt-get update -qq
+                    apt-get install -y -qq python3 python3-pip python3-venv > /dev/null 2>&1
+                    python3 --version
+                    pip3 --version
                 '''
             }
         }
@@ -60,9 +57,9 @@ pipeline {
             steps {
                 echo 'Installing project dependencies...'
                 sh '''
-                    pip install -r requirements.txt
-                    pip install -r requirements-dev.txt
-                    pip install allure-behave
+                    pip3 install -r requirements.txt
+                    pip3 install -r requirements-dev.txt
+                    pip3 install allure-behave
                 '''
             }
         }
@@ -73,7 +70,7 @@ pipeline {
                     steps {
                         echo 'Running Flake8 linting...'
                         sh '''
-                            pip install flake8
+                            pip3 install flake8
                             flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || true
                             flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
                         '''
@@ -84,7 +81,7 @@ pipeline {
                     steps {
                         echo 'Checking code formatting with Black...'
                         sh '''
-                            pip install black
+                            pip3 install black
                             black --check . || true
                         '''
                     }
@@ -97,7 +94,7 @@ pipeline {
                 echo 'Running unit tests with pytest...'
                 sh '''
                     mkdir -p reports
-                    pytest tests/ -v --tb=short --junit-xml=reports/junit-unit-tests.xml --cov=. --cov-report=xml:reports/coverage.xml --cov-report=html:reports/coverage-html --cov-report=term
+                    python3 -m pytest tests/ -v --tb=short --junit-xml=reports/junit-unit-tests.xml --cov=. --cov-report=xml:reports/coverage.xml --cov-report=html:reports/coverage-html --cov-report=term
                 '''
             }
             post {
@@ -121,7 +118,7 @@ pipeline {
                 sh '''
                     rm -rf allure-results
                     mkdir -p reports
-                    behave features/ -f allure_behave.formatter:AllureFormatter -o allure-results --junit --junit-directory reports/
+                    python3 -m behave features/ -f allure_behave.formatter:AllureFormatter -o allure-results --junit --junit-directory reports/
                 '''
             }
             post {
@@ -146,7 +143,7 @@ pipeline {
                     steps {
                         echo '🔍 Scanning dependencies for vulnerabilities...'
                         sh '''
-                            pip install safety
+                            pip3 install safety
                             safety check --json || true
                         '''
                     }
@@ -156,7 +153,7 @@ pipeline {
                     steps {
                         echo 'Running Bandit security scanner...'
                         sh '''
-                            pip install bandit
+                            pip3 install bandit
                             mkdir -p reports
                             bandit -r . -f json -o reports/bandit-report.json || true
                         '''
@@ -182,7 +179,7 @@ pipeline {
                 echo '🧪 Testing Docker container...'
                 script {
                     sh """
-                        docker run --rm ${DOCKER_IMAGE}:${DOCKER_TAG} python -c "import app; print('Container test passed')"
+                        docker run --rm ${DOCKER_IMAGE}:${DOCKER_TAG} python3 -c "import app; print('Container test passed')"
                     """
                 }
             }

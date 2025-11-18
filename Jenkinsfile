@@ -280,11 +280,6 @@ pipeline {
     }
     
     post {
-        always {
-            echo '🧹 Cleaning up workspace...'
-            cleanWs()
-        }
-        
         success {
             echo '✅ Pipeline completed successfully!'
             // Add notification logic (Slack, Email, etc.)

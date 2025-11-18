@@ -26,40 +26,35 @@ pipeline {
       steps {
         script {
           echo "Workspace: ${pwd()}"
-          // Ensure we run Gradle from the sibling wrapper in reto-automatizacion
-          // Build path vars for Windows/Linux
-          env.GRADLEW_WIN = "..\\reto-automatizacion\\gradlew.bat"
-          env.GRADLEW_NIX = "../reto-automatizacion/gradlew"
+          echo "Building microservicio-perfiles"
         }
       }
     }
 
     stage('Build & Test') {
       steps {
-        dir('gestion-perfiles') {
-          script {
-            // Full build including tests; produces bootJar by default with Spring Boot plugin
-            if (isUnix()) {
-              sh "${env.GRADLEW_NIX} -p . clean build --no-daemon --stacktrace"
-            } else {
-              bat "${env.GRADLEW_WIN} -p . clean build --no-daemon --stacktrace"
-            }
+        script {
+          // Full build including tests; produces bootJar by default with Spring Boot plugin
+          if (isUnix()) {
+            sh "./gradlew clean build --no-daemon --stacktrace"
+          } else {
+            bat ".\\gradlew.bat clean build --no-daemon --stacktrace"
           }
         }
       }
       post {
         always {
           // Publish JUnit test results for unit tests
-          junit allowEmptyResults: true, testResults: 'gestion-perfiles/build/test-results/test/*.xml'
+          junit allowEmptyResults: true, testResults: 'build/test-results/test/*.xml'
           
           // Publish Cucumber BDD test reports
           script {
-            if (fileExists('gestion-perfiles/build/reports/cucumber/cucumber-report.html')) {
+            if (fileExists('build/reports/cucumber/cucumber-report.html')) {
               publishHTML(target: [
                 allowMissing: false,
                 alwaysLinkToLastBuild: true,
                 keepAll: true,
-                reportDir: 'gestion-perfiles/build/reports/cucumber',
+                reportDir: 'build/reports/cucumber',
                 reportFiles: 'cucumber-report.html',
                 reportName: 'Cucumber BDD Report',
                 reportTitles: 'BDD Test Results'
@@ -67,13 +62,13 @@ pipeline {
             }
             
             // Archive Cucumber JSON report
-            if (fileExists('gestion-perfiles/build/reports/cucumber/cucumber-report.json')) {
-              archiveArtifacts artifacts: 'gestion-perfiles/build/reports/cucumber/cucumber-report.json', allowEmptyArchive: true
+            if (fileExists('build/reports/cucumber/cucumber-report.json')) {
+              archiveArtifacts artifacts: 'build/reports/cucumber/cucumber-report.json', allowEmptyArchive: true
             }
           }
         }
         success {
-          archiveArtifacts artifacts: 'gestion-perfiles/build/libs/*.jar', fingerprint: true, onlyIfSuccessful: true
+          archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true, onlyIfSuccessful: true
         }
       }
     }
@@ -81,31 +76,29 @@ pipeline {
     stage('Docker Build') {
       when { expression { return params.DOCKER_BUILD } }
       steps {
-        dir('gestion-perfiles') {
-          script {
-            def tag = env.BUILD_NUMBER
-            def fullImage = params.REGISTRY_URL?.trim() ? 
-              "${params.REGISTRY_URL}/${params.IMAGE_NAME}:${tag}" : 
-              "${params.IMAGE_NAME}:${tag}"
+        script {
+          def tag = env.BUILD_NUMBER
+          def fullImage = params.REGISTRY_URL?.trim() ? 
+            "${params.REGISTRY_URL}/${params.IMAGE_NAME}:${tag}" : 
+            "${params.IMAGE_NAME}:${tag}"
 
-            echo "Building image: ${fullImage}"
+          echo "Building image: ${fullImage}"
+          if (isUnix()) {
+            sh "docker build -t ${fullImage} ."
+          } else {
+            bat "docker build -t ${fullImage} ."
+          }
+
+          // Also tag as latest on main/master/microservicio-perfiles branch
+          def branch = env.BRANCH_NAME ?: env.GIT_BRANCH ?: ''
+          if (branch == 'main' || branch == 'master' || branch == 'microservicio-perfiles') {
+            def latest = params.REGISTRY_URL?.trim() ? 
+              "${params.REGISTRY_URL}/${params.IMAGE_NAME}:latest" : 
+              "${params.IMAGE_NAME}:latest"
             if (isUnix()) {
-              sh "docker build -t ${fullImage} ."
+              sh "docker tag ${fullImage} ${latest}"
             } else {
-              bat "docker build -t ${fullImage} ."
-            }
-
-            // Also tag as latest on main/master branch
-            def branch = env.BRANCH_NAME ?: env.GIT_BRANCH ?: ''
-            if (branch == 'main' || branch == 'master') {
-              def latest = params.REGISTRY_URL?.trim() ? 
-                "${params.REGISTRY_URL}/${params.IMAGE_NAME}:latest" : 
-                "${params.IMAGE_NAME}:latest"
-              if (isUnix()) {
-                sh "docker tag ${fullImage} ${latest}"
-              } else {
-                bat "docker tag ${fullImage} ${latest}"
-              }
+              bat "docker tag ${fullImage} ${latest}"
             }
           }
         }
@@ -115,27 +108,25 @@ pipeline {
     stage('Docker Push') {
       when { expression { return params.DOCKER_BUILD && params.DOCKER_PUSH && params.REGISTRY_URL?.trim() && params.REGISTRY_CREDENTIALS_ID?.trim() } }
       steps {
-        dir('gestion-perfiles') {
-          script {
-            def tag = env.BUILD_NUMBER
-            def base = "${params.REGISTRY_URL}/${params.IMAGE_NAME}"
-            def fullImage = "${base}:${tag}"
-            def latest = "${base}:latest"
+        script {
+          def tag = env.BUILD_NUMBER
+          def base = "${params.REGISTRY_URL}/${params.IMAGE_NAME}"
+          def fullImage = "${base}:${tag}"
+          def latest = "${base}:latest"
 
-            withCredentials([usernamePassword(credentialsId: params.REGISTRY_CREDENTIALS_ID, usernameVariable: 'REG_USER', passwordVariable: 'REG_PASS')]) {
-              if (isUnix()) {
-                sh "echo $REG_PASS | docker login ${params.REGISTRY_URL} -u $REG_USER --password-stdin"
-                sh "docker push ${fullImage} || true"
-                // push latest if it exists
-                sh "docker images -q ${latest} >/dev/null 2>&1 && docker push ${latest} || true"
-                sh "docker logout ${params.REGISTRY_URL} || true"
-              } else {
-                bat "docker login ${params.REGISTRY_URL} -u %REG_USER% -p %REG_PASS%"
-                bat "docker push ${fullImage}"
-                // On Windows, ignore error if latest tag missing
-                bat "for /f \"tokens=*\" %i in ('docker images -q ${latest}') do docker push ${latest}"
-                bat "docker logout ${params.REGISTRY_URL}"
-              }
+          withCredentials([usernamePassword(credentialsId: params.REGISTRY_CREDENTIALS_ID, usernameVariable: 'REG_USER', passwordVariable: 'REG_PASS')]) {
+            if (isUnix()) {
+              sh "echo $REG_PASS | docker login ${params.REGISTRY_URL} -u $REG_USER --password-stdin"
+              sh "docker push ${fullImage} || true"
+              // push latest if it exists
+              sh "docker images -q ${latest} >/dev/null 2>&1 && docker push ${latest} || true"
+              sh "docker logout ${params.REGISTRY_URL} || true"
+            } else {
+              bat "docker login ${params.REGISTRY_URL} -u %REG_USER% -p %REG_PASS%"
+              bat "docker push ${fullImage}"
+              // On Windows, ignore error if latest tag missing
+              bat "for /f \"tokens=*\" %i in ('docker images -q ${latest}') do docker push ${latest}"
+              bat "docker logout ${params.REGISTRY_URL}"
             }
           }
         }

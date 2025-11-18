@@ -2,30 +2,19 @@ pipeline {
     agent any
     
     environment {
-        // Python environment
         PYTHON_VERSION = '3.12'
         VENV_DIR = '.venv'
-        
-        // Docker configuration
         DOCKER_IMAGE = 'ms-notifications'
         DOCKER_TAG = "${env.BUILD_NUMBER}"
-        DOCKER_REGISTRY = credentials('docker-registry-url') // Configure in Jenkins
-        
-        // Service configuration
+        DOCKER_REGISTRY = credentials('docker-registry-url')
         SERVICE_VERSION = "${env.BUILD_NUMBER}"
-        
-        // RabbitMQ configuration (for integration tests)
         RABBIT_HOST = 'localhost'
         NOTIFICATION_EVENTS_QUEUE = 'notification.events.queue'
-        
-        // Database configuration (for integration tests)
         DB_HOST = 'localhost'
         DB_PORT = '5432'
         DB_NAME = 'notifications_test_db'
         DB_USER = 'test_user'
         DB_PASS = 'test_password'
-        
-        // External services (mock credentials for testing)
         SENDGRID_API_KEY = credentials('sendgrid-api-key')
         SENDER_EMAIL = 'londgav01@gmail.com'
         TWILIO_ACCOUNT_SID = credentials('twilio-account-sid')
@@ -44,33 +33,22 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Cloning repository...'
-                git branch: 'feature/ms-notifications-service',
-                    url: 'https://github.com/JacoboLS04/retos_docker.git'
+                checkout scm
                 script {
-                    if (isUnix()) {
-                        env.GIT_COMMIT_SHORT = sh(
-                            script: "git rev-parse --short HEAD",
-                            returnStdout: true
-                        ).trim()
-                    } else {
-                        env.GIT_COMMIT_SHORT = bat(
-                            script: "@git rev-parse --short HEAD",
-                            returnStdout: true
-                        ).trim()
-                    }
+                    env.GIT_COMMIT_SHORT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+                    echo "Git commit: ${env.GIT_COMMIT_SHORT}"
                 }
-                echo "Git commit: ${env.GIT_COMMIT_SHORT}"
             }
         }
         
         stage('Setup Python Environment') {
             steps {
                 echo 'Setting up Python virtual environment...'
-                bat '''
-                    python --version
-                    if exist %VENV_DIR% rmdir /s /q %VENV_DIR%
-                    python -m venv %VENV_DIR%
-                    call %VENV_DIR%\\Scripts\\activate.bat
+                sh '''
+                    python3 --version
+                    rm -rf ${VENV_DIR}
+                    python3 -m venv ${VENV_DIR}
+                    . ${VENV_DIR}/bin/activate
                     python -m pip install --upgrade pip
                 '''
             }
@@ -79,8 +57,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Installing project dependencies...'
-                bat '''
-                    call %VENV_DIR%\\Scripts\\activate.bat
+                sh '''
+                    . ${VENV_DIR}/bin/activate
                     pip install -r requirements.txt
                     pip install -r requirements-dev.txt
                     pip install allure-behave
@@ -93,10 +71,10 @@ pipeline {
                 stage('Lint with Flake8') {
                     steps {
                         echo 'Running Flake8 linting...'
-                        bat '''
-                            call %VENV_DIR%\\Scripts\\activate.bat
+                        sh '''
+                            . ${VENV_DIR}/bin/activate
                             pip install flake8
-                            flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || exit 0
+                            flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || true
                             flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
                         '''
                     }
@@ -105,10 +83,10 @@ pipeline {
                 stage('Code Formatting Check') {
                     steps {
                         echo 'Checking code formatting with Black...'
-                        bat '''
-                            call %VENV_DIR%\\Scripts\\activate.bat
+                        sh '''
+                            . ${VENV_DIR}/bin/activate
                             pip install black
-                            black --check . || exit 0
+                            black --check . || true
                         '''
                     }
                 }
@@ -118,8 +96,9 @@ pipeline {
         stage('Unit Tests') {
             steps {
                 echo 'Running unit tests with pytest...'
-                bat '''
-                    call %VENV_DIR%\\Scripts\\activate.bat
+                sh '''
+                    . ${VENV_DIR}/bin/activate
+                    mkdir -p reports
                     pytest tests/ -v --tb=short --junit-xml=reports/junit-unit-tests.xml --cov=. --cov-report=xml:reports/coverage.xml --cov-report=html:reports/coverage-html --cov-report=term
                 '''
             }
@@ -141,9 +120,10 @@ pipeline {
         stage('BDD Tests') {
             steps {
                 echo 'Running BDD tests with Behave and Allure...'
-                bat '''
-                    call %VENV_DIR%\\Scripts\\activate.bat
-                    if exist allure-results rmdir /s /q allure-results
+                sh '''
+                    . ${VENV_DIR}/bin/activate
+                    rm -rf allure-results
+                    mkdir -p reports
                     behave features/ -f allure_behave.formatter:AllureFormatter -o allure-results --junit --junit-directory reports/
                 '''
             }
@@ -168,10 +148,10 @@ pipeline {
                 stage('Dependency Check') {
                     steps {
                         echo '🔍 Scanning dependencies for vulnerabilities...'
-                        bat '''
-                            call %VENV_DIR%\\Scripts\\activate.bat
+                        sh '''
+                            . ${VENV_DIR}/bin/activate
                             pip install safety
-                            safety check --json || exit 0
+                            safety check --json || true
                         '''
                     }
                 }
@@ -179,10 +159,11 @@ pipeline {
                 stage('Bandit Security Scan') {
                     steps {
                         echo 'Running Bandit security scanner...'
-                        bat '''
-                            call %VENV_DIR%\\Scripts\\activate.bat
+                        sh '''
+                            . ${VENV_DIR}/bin/activate
                             pip install bandit
-                            bandit -r . -f json -o reports/bandit-report.json || exit 0
+                            mkdir -p reports
+                            bandit -r . -f json -o reports/bandit-report.json || true
                         '''
                     }
                 }
@@ -193,7 +174,7 @@ pipeline {
             steps {
                 echo '🐳 Building Docker image...'
                 script {
-                    bat """
+                    sh """
                         docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} -t ${DOCKER_IMAGE}:latest .
                         docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:${GIT_COMMIT_SHORT}
                     """
@@ -205,7 +186,7 @@ pipeline {
             steps {
                 echo '🧪 Testing Docker container...'
                 script {
-                    bat """
+                    sh """
                         docker run --rm ${DOCKER_IMAGE}:${DOCKER_TAG} python -c "import app; print('Container test passed')"
                     """
                 }
@@ -223,7 +204,7 @@ pipeline {
             steps {
                 echo '📤 Pushing Docker image to registry...'
                 script {
-                    bat """
+                    sh """
                         docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${DOCKER_TAG}
                         docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest
                         docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${DOCKER_TAG}
@@ -240,9 +221,7 @@ pipeline {
             steps {
                 echo '🚀 Deploying to Development environment...'
                 script {
-                    // Add your deployment logic here
-                    // Example: kubectl apply, docker-compose, etc.
-                    bat """
+                    sh """
                         echo Deploying ${DOCKER_IMAGE}:${DOCKER_TAG} to development
                     """
                 }
@@ -257,7 +236,7 @@ pipeline {
                 echo '🚀 Deploying to Staging environment...'
                 input message: 'Deploy to Staging?', ok: 'Deploy'
                 script {
-                    bat """
+                    sh """
                         echo Deploying ${DOCKER_IMAGE}:${DOCKER_TAG} to staging
                     """
                 }
@@ -272,7 +251,7 @@ pipeline {
                 echo '🚀 Deploying to Production environment...'
                 input message: 'Deploy to Production?', ok: 'Deploy', submitter: 'admin'
                 script {
-                    bat """
+                    sh """
                         echo Deploying ${DOCKER_IMAGE}:${DOCKER_TAG} to production
                     """
                 }
@@ -283,12 +262,10 @@ pipeline {
     post {
         success {
             echo '✅ Pipeline completed successfully!'
-            // Add notification logic (Slack, Email, etc.)
         }
         
         failure {
             echo '❌ Pipeline failed!'
-            // Add notification logic for failures
         }
         
         unstable {

@@ -44,7 +44,8 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Cloning repository...'
-                checkout scm
+                git branch: 'feature/ms-notifications-service',
+                    url: 'https://github.com/JacoboLS04/retos_docker.git'
                 script {
                     env.GIT_COMMIT_SHORT = bat(
                         script: "@git rev-parse --short HEAD",

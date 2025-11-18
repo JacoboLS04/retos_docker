@@ -160,103 +160,20 @@ pipeline {
                 }
             }
         }
-        
-        stage('🐳 Build Docker Image') {
-            steps {
-                echo '🐳 Building Docker image...'
-                script {
-                    sh """
-                        docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} -t ${DOCKER_IMAGE}:latest .
-                        docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:${GIT_COMMIT_SHORT}
-                    """
-                }
-            }
-        }
-        
-        stage('🧪 Container Tests') {
-            steps {
-                echo '🧪 Testing Docker container...'
-                script {
-                    sh """
-                        docker run --rm ${DOCKER_IMAGE}:${DOCKER_TAG} python3 -c "import app; print('Container test passed')"
-                    """
-                }
-            }
-        }
-        
-        stage('📤 Push Docker Image') {
-            when {
-                expression { return false } // Disabled by default
-            }
-            steps {
-                echo '📤 Pushing Docker image to registry...'
-                script {
-                    sh """
-                        docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${DOCKER_TAG}
-                        docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest
-                        docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${DOCKER_TAG}
-                        docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest
-                    """
-                }
-            }
-        }
-        
-        stage('🚀 Deploy to Development') {
-            when {
-                expression { return false } // Disabled by default
-            }
-            steps {
-                echo '🚀 Deploying to Development environment...'
-                script {
-                    sh """
-                        echo Deploying ${DOCKER_IMAGE}:${DOCKER_TAG} to development
-                    """
-                }
-            }
-        }
-        
-        stage('🚀 Deploy to Staging') {
-            when {
-                expression { return false } // Disabled by default
-            }
-            steps {
-                echo '🚀 Deploying to Staging environment...'
-                input message: 'Deploy to Staging?', ok: 'Deploy'
-                script {
-                    sh """
-                        echo Deploying ${DOCKER_IMAGE}:${DOCKER_TAG} to staging
-                    """
-                }
-            }
-        }
-        
-        stage('🚀 Deploy to Production') {
-            when {
-                expression { return false } // Disabled by default
-            }
-            steps {
-                echo '🚀 Deploying to Production environment...'
-                input message: 'Deploy to Production?', ok: 'Deploy', submitter: 'admin'
-                script {
-                    sh """
-                        echo Deploying ${DOCKER_IMAGE}:${DOCKER_TAG} to production
-                    """
-                }
-            }
-        }
+    
     }
     
     post {
         success {
-            echo '✅ Pipeline completed successfully!'
+            echo 'Pipeline completed successfully!'
         }
         
         failure {
-            echo '❌ Pipeline failed!'
+            echo 'Pipeline failed!'
         }
         
         unstable {
-            echo '⚠️ Pipeline is unstable!'
+            echo 'Pipeline is unstable!'
         }
     }
 }

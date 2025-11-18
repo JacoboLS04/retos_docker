@@ -36,6 +36,7 @@ pipeline {
         script {
           // Full build including tests; produces bootJar by default with Spring Boot plugin
           if (isUnix()) {
+            sh "chmod +x gradlew"
             sh "./gradlew clean build --no-daemon --stacktrace"
           } else {
             bat ".\\gradlew.bat clean build --no-daemon --stacktrace"

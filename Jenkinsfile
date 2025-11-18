@@ -6,7 +6,7 @@ pipeline {
         VENV_DIR = '.venv'
         DOCKER_IMAGE = 'ms-notifications'
         DOCKER_TAG = "${env.BUILD_NUMBER}"
-        DOCKER_REGISTRY = credentials('docker-registry-url')
+        DOCKER_REGISTRY = 'localhost:5000'
         SERVICE_VERSION = "${env.BUILD_NUMBER}"
         RABBIT_HOST = 'localhost'
         NOTIFICATION_EVENTS_QUEUE = 'notification.events.queue'
@@ -15,11 +15,11 @@ pipeline {
         DB_NAME = 'notifications_test_db'
         DB_USER = 'test_user'
         DB_PASS = 'test_password'
-        SENDGRID_API_KEY = credentials('sendgrid-api-key')
+        SENDGRID_API_KEY = 'test-api-key'
         SENDER_EMAIL = 'londgav01@gmail.com'
-        TWILIO_ACCOUNT_SID = credentials('twilio-account-sid')
-        TWILIO_AUTH_TOKEN = credentials('twilio-auth-token')
-        TWILIO_PHONE = credentials('twilio-phone-number')
+        TWILIO_ACCOUNT_SID = 'test-sid'
+        TWILIO_AUTH_TOKEN = 'test-token'
+        TWILIO_PHONE = '+1234567890'
     }
     
     options {
@@ -195,11 +195,7 @@ pipeline {
         
         stage('📤 Push Docker Image') {
             when {
-                anyOf {
-                    branch 'main'
-                    branch 'master'
-                    branch 'develop'
-                }
+                expression { return false } // Disabled by default
             }
             steps {
                 echo '📤 Pushing Docker image to registry...'
@@ -216,7 +212,7 @@ pipeline {
         
         stage('🚀 Deploy to Development') {
             when {
-                branch 'develop'
+                expression { return false } // Disabled by default
             }
             steps {
                 echo '🚀 Deploying to Development environment...'
@@ -230,7 +226,7 @@ pipeline {
         
         stage('🚀 Deploy to Staging') {
             when {
-                branch 'main'
+                expression { return false } // Disabled by default
             }
             steps {
                 echo '🚀 Deploying to Staging environment...'
@@ -245,7 +241,7 @@ pipeline {
         
         stage('🚀 Deploy to Production') {
             when {
-                buildingTag()
+                expression { return false } // Disabled by default
             }
             steps {
                 echo '🚀 Deploying to Production environment...'

@@ -48,8 +48,7 @@ pipeline {
                     $class: 'GitSCM',
                     branches: scm.branches,
                     extensions: [
-                        [$class: 'CloneOption', depth: 1, noTags: false, shallow: true],
-                        [$class: 'CheckoutOption', timeout: 10]
+                        [$class: 'CloneOption', depth: 1, noTags: false, shallow: true]
                     ],
                     userRemoteConfigs: scm.userRemoteConfigs
                 ])
